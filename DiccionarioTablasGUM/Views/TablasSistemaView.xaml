@@ -4,22 +4,38 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
-        mc:Ignorable="d"
-        Title="TablasSistemaView" Height="450" Width="800">
-    <Grid>
+        mc:Ignorable="d" FontFamily="Avenir Light"  FontSize="14"
+        Title="Siesa - Diccionario Tablas GUM" Height="450" Width="350">
+
+  
+    <Grid >
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8"/>
+            <ColumnDefinition Width="auto"/>            
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="8"/>
+        </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="8"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="8"/>
         </Grid.RowDefinitions>
 
-        <TextBlock  Grid.Row="0" x:Name="PubObjTablaSistemaSeleccionada_seleccion"  />
+        <CheckBox Content="Marcar tabla con sus relacionadas" Grid.Row="1"  Grid.ColumnSpan="3" Grid.Column="1" Margin="0,8,8,0"/>
 
-        <DataGrid Grid.Row="1"  x:Name="dgTablasSistema" 
-                  ItemsSource="{Binding PubListTablasSistema}"
+        <DataGrid x:Name="dgTablasSistema" 
+                  ItemsSource="{Binding PubListTablasSistema , IsAsync=True}"
                   AutoGenerateColumns="False" 
-                  SelectedItem="{Binding PubObjTablaSistemaSeleccionada}" >
+                  SelectedItem="{Binding PubObjTablaSistemaSeleccionada}" 
+                  Grid.Row="2"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="3"
+                  Margin="0,8,0,0">
             <DataGrid.Columns>
                 <DataGridTemplateColumn >
                     <DataGridTemplateColumn.CellTemplate>
@@ -28,11 +44,11 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>              
-               <DataGridTextColumn Header="Nombre Tabla" Binding="{Binding nombreTabla}"  />
+               <DataGridTextColumn Header="Nombre Tabla" Binding="{Binding nombreTabla}" Width="*" />
             </DataGrid.Columns>            
         </DataGrid>
 
-        <Button x:Name="AdicionarTablasGUM" Grid.Row="2" Margin="10" >Adicionar tablas</Button>
+        <Button x:Name="AdicionarTablasGUM" Grid.Row="3"  Grid.Column="3" Margin="0,8,8,0" >Guardar</Button>
 
 
 

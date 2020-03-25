@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.3.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -111,6 +112,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Assets\vssver.scc" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -121,5 +123,43 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\11.png" />
+    <Resource Include="Assets\12.png" />
+    <Resource Include="Assets\13.png" />
+    <Resource Include="Assets\21.png" />
+    <Resource Include="Assets\22.png" />
+    <Resource Include="Assets\23.png" />
+    <Resource Include="Assets\85Activo.png" />
+    <Resource Include="Assets\85Inactivo.png" />
+    <Resource Include="Assets\btnValidar.png" />
+    <Resource Include="Assets\Caso.png" />
+    <Resource Include="Assets\Casos.png" />
+    <Resource Include="Assets\CasosConocidos.png" />
+    <Resource Include="Assets\engranaje.gif" />
+    <Resource Include="Assets\enterpriseActivo.png" />
+    <Resource Include="Assets\enterpriseInactivo.png" />
+    <Resource Include="Assets\iconoSiesaCompBD.ICO" />
+    <Resource Include="Assets\img.png" />
+    <Resource Include="Assets\imgSplash.png" />
+    <Resource Include="Assets\importar.png" />
+    <Resource Include="Assets\info.png" />
+    <Resource Include="Assets\Logo85Inactivo.png" />
+    <Resource Include="Assets\LogoEEInactivo.png" />
+    <Resource Include="Assets\logoSiesaBlanco.png" />
+    <Resource Include="Assets\MasInfo.png" />
+    <Resource Include="Assets\oracle.png" />
+    <Resource Include="Assets\siesa logo old.png" />
+    <Resource Include="Assets\siesa logo.png" />
+    <Resource Include="Assets\SIESA-85-azul.png" />
+    <Resource Include="Assets\SIESA-85-gris.png" />
+    <Resource Include="Assets\SIESA-Enterprise-azul.png" />
+    <Resource Include="Assets\SIESA-Enterprise-gris.png" />
+    <Resource Include="Assets\Siesa85Activo.png" />
+    <Resource Include="Assets\Siesa85Inactivo.png" />
+    <Resource Include="Assets\SiesaEEActivo.png" />
+    <Resource Include="Assets\SiesaEEInactivo.png" />
+    <Resource Include="Assets\sql_server.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

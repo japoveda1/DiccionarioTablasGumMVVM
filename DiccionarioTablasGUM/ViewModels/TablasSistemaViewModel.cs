@@ -10,13 +10,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace DiccionarioTablasGUM.ViewModels
 {
     public class TablasSistemaViewModel:Screen
     {
         private TablaSistema _prvObjTablaSistemaSeleccionada;
-        public BindableCollection<TablaSistema> PubListTablasSistema { get; set; }
-        
+        //public BindableCollection<TablaSistema> PubListTablasSistema { get; set; }
+
+        private BindableCollection<TablaSistema> _pubListTablasSistema;
+
+        public BindableCollection<TablaSistema> PubListTablasSistema
+        {
+            get { return _pubListTablasSistema; }
+            set { _pubListTablasSistema = value;
+                NotifyOfPropertyChange(() => PubListTablasSistema);
+            }
+        }
+
+
         public TablaSistema PubObjTablaSistemaSeleccionada
         {
             get { 
@@ -129,10 +141,21 @@ namespace DiccionarioTablasGUM.ViewModels
 
             vObjConexionDB.CerrarConexion();
 
-            foreach (Window item in Application.Current.Windows)
+            MessageBoxResult dialogResult = System.Windows.MessageBox.Show("Las tablas del sistema se agregaron correctamente , ¿ Desea agregar mas tablas ?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo);
+
+            if (dialogResult == MessageBoxResult.Yes)  //
             {
-                if (item.DataContext == this) item.Close();
+                ObtenerTablasDelSistema();
             }
+            else
+            {
+                foreach (Window item in System.Windows.Application.Current.Windows)
+                {
+                    if (item.DataContext == this) item.Close();
+                }
+            }
+
+            
         }
 
 

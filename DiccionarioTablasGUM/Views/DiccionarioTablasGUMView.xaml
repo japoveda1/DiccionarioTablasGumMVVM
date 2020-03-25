@@ -5,52 +5,99 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
         mc:Ignorable="d" FontFamily="Avenir Light"  FontSize="14"
-        Title="Diccionario Tablas GUM" Height="480" Width="800">
-
-
+        Title="Siesa - Diccionario Tablas GUM" Height="480" Width="800" WindowStyle="None" Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen">
     <Grid>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="8"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="8"/>
+        <Grid.RowDefinitions >
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="8"/>
-
         </Grid.RowDefinitions>
 
-        <Button x:Name="prueba"  Height="21" Grid.Row="1" Grid.Column="4" MaxWidth="100" Margin="0,8,8,0" >Validar Campos</Button>
 
-        <DataGrid  AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="2" Grid.Column="1" x:Name="dtTablasGUM" Grid.ColumnSpan="5" ItemsSource="{Binding PubListTablasGum, IsAsync=True}" Margin="0,8,8,0"  >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nombre tabla" Binding="{Binding Path=nombre}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Descripcion" Binding="{Binding Path=descripcion}"  />
-                <DataGridCheckBoxColumn Header="Activo GUM" Binding="{Binding Path=IndProcesoGum}" />
-                <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding Path=notas}" Width="*"  />
-                <DataGridTemplateColumn Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button x:Name="cmdCampo" Content="Campos" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid Grid.Row="0" Background="#0E4D96" Height="50" VerticalAlignment="Top" MouseLeftButtonDown="Grid_MouseLeftButtonDown" >
 
-        <Button x:Name="abrirventana" Height="21"  Grid.Row="3" Grid.Column="1" Margin="0,8,8,0">Agregar tablas del sistema ...</Button>
-        <Button x:Name="exportar" Height="21" Grid.Row="3" Grid.Column="3" Margin="0,8,8,0">Exportar ...</Button>
-        <Button x:Name="ConfirmarCambios" Height="21" Grid.Row="3"  Grid.Column="4" Margin="0,8,8,0">Guardar</Button>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="TituloDiccionarioTablasGum" Text="DICCIONARIO TABLAS GUM" TextAlignment="center" VerticalAlignment="Center"
+                       Background="#0E4D96"
+                       FontFamily="Avenir LT Std 65 Medium" FontSize="16" FontWeight="Bold" Foreground="White" 
+                       Grid.Column="1"
+                       MinWidth="211"
+                       />
+
+           <Image x:Name="ImagenLogoSiesa" 
+                   Source="/Assets/logoSiesaBlanco.png" 
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center"
+                   Height="48"
+                   Grid.Column="2"/>
+            
+            <TextBlock x:Name="CerrarDiccionarioTablasGum" TextAlignment="Right" VerticalAlignment="Center"  FontFamily="Avenir LT Std 65 Medium"                            
+                            Cursor="Hand"
+                           Foreground="White" Grid.Column="3"
+                        MinWidth="211" ToolTip="Cerrar ventana"><Run Text="X" MouseLeftButtonDown="Run_MouseLeftButtonDown"/></TextBlock>
+        </Grid>
+
+
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="8"/>
+            </Grid.RowDefinitions>
+
+            <Button x:Name="prueba"  Height="21" Grid.Row="1" Grid.Column="4" MaxWidth="100" Margin="0,8,8,0" ToolTip="Valida que las tablas en el diccionario GUM no tengan cambios en las bases de datos de Desarrollo , el resultado se muestra en la columana 'Ind. Cambio en base de datos'" >Validar Campos</Button>
+
+            <DataGrid  AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="2" Grid.Column="1" x:Name="dtTablasGUM" Grid.ColumnSpan="5" ItemsSource="{Binding PubListTablasGum, IsAsync=True}" Margin="0,8,8,0"  >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nombre tabla" Binding="{Binding Path=nombre}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Descripcion" Binding="{Binding Path=descripcion}"  />
+                    <DataGridCheckBoxColumn Header="Activo GUM" Binding="{Binding Path=IndProcesoGum}" />
+                    <DataGridCheckBoxColumn Header="Ind. Cambio en base de datos" Binding="{Binding Path=indCambioEnDB}" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding Path=notas}" Width="*"  />
+                    <DataGridTemplateColumn Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="cmdCampo" Content="Campos" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Button x:Name="abrirventana" Height="21"  Grid.Row="3" Grid.Column="1" Margin="0,8,8,0" ToolTip="Abre ventana donde puede escoger la tablas del sistema que desea agregar al diccionario GUM">Agregar tablas del sistema ...</Button>
+            <Button x:Name="exportar" Height="21" Grid.Row="3" Grid.Column="3" Margin="0,8,8,0" ToolTip="Genera archivo con script para ejectur en la base de datos de oracle con el fin de actualizar los datos ingresados">Exportar ...</Button>
+            <Button x:Name="ConfirmarCambios" Height="21" Grid.Row="3"  Grid.Column="4" Margin="0,8,8,0" ToolTip="Guarda los cambios realizados sobre la tablas de diccionario GUM">Guardar</Button>
+
+        </Grid>
+
+
 
     </Grid>
+
+   
             
 
 
