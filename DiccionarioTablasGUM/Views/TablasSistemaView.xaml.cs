@@ -29,8 +29,7 @@ namespace DiccionarioTablasGUM.Views
 
         private void chkSeleccion_Click(object sender, RoutedEventArgs e)
         {
-            //Cursor en espera
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
             
             TablasSistemaViewModel vObjTablasSistemaViewModel = (TablasSistemaViewModel)this.DataContext;
             CheckBox vChkSeleccion = (CheckBox)sender;
@@ -46,8 +45,6 @@ namespace DiccionarioTablasGUM.Views
             vObjTablasSistemaViewModel.SeleccionarTablasRelacionadas(vIntIndSeleccion);
             dgTablasSistema.Items.Refresh();
 
-            //Cursor default
-            Mouse.OverrideCursor =null;
 
 
         }

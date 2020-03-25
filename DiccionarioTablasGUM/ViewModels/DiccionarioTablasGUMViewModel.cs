@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace DiccionarioTablasGUM.ViewModels
 {
@@ -27,7 +28,9 @@ namespace DiccionarioTablasGUM.ViewModels
         }
 
         public DiccionarioTablasGUMViewModel() {
+  
             ObtenerTablasGUM();
+           
         }
 
         private void ObtenerTablasGUM()
@@ -36,7 +39,8 @@ namespace DiccionarioTablasGUM.ViewModels
             List<TablasGUM> vListTablasGUM = new List<TablasGUM>();
             TablasGUM vTablaGum;
             DataSet vDsTablas;
-
+            //Cursor en espera
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             vObjConexionDB.AbrirConexion();
 
             vDsTablas = vObjConexionDB.EjecutarCommand("sp_tablas_gum");
@@ -59,6 +63,9 @@ namespace DiccionarioTablasGUM.ViewModels
             }
 
             PubListTablasGum = new BindableCollection<TablasGUM>(vListTablasGUM);
+
+            //Cursor en espera
+            Mouse.OverrideCursor = null;
         }
 
         public void ConfirmarCambios()
@@ -67,7 +74,8 @@ namespace DiccionarioTablasGUM.ViewModels
 
             //Objeto con parametros lista de parametros
             List<clsConexion.ParametrosSP> vListParametrosSP;
-
+            //Cursor en espera
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             vObjConexionDB.AbrirConexion();
 
             foreach (TablasGUM vTablaGUM in PubListTablasGum)
@@ -106,6 +114,14 @@ namespace DiccionarioTablasGUM.ViewModels
                 
             }
             vObjConexionDB.CerrarConexion();
+
+            //Cursor en espera
+            Mouse.OverrideCursor = null;
+
+             System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
+
+            
+
         }
 
         public void abrirventana()
@@ -113,6 +129,7 @@ namespace DiccionarioTablasGUM.ViewModels
             TablasSistemaViewModel vObjTablasSistemaViewModel = new TablasSistemaViewModel();
 
             prvObjManager.ShowDialog(vObjTablasSistemaViewModel, null, null);
+
             ObtenerTablasGUM();
         }
 

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using System.Windows.Input;
 
 namespace DiccionarioTablasGUM.ViewModels
 {
@@ -18,12 +18,27 @@ namespace DiccionarioTablasGUM.ViewModels
         private TablaSistema _prvObjTablaSistemaSeleccionada;
         //public BindableCollection<TablaSistema> PubListTablasSistema { get; set; }
 
-        private BindableCollection<TablaSistema> _pubListTablasSistema;
+        private BindableCollection<TablaSistema> _prvListTablasSistema;
+
+        private int _prvIndConRelacion;
+
+        public int PubIndConRelacion
+        {
+            get { 
+                    return _prvIndConRelacion; 
+                }
+            set {
+                    _prvIndConRelacion = value;
+                    NotifyOfPropertyChange(() => PubIndConRelacion);
+                }
+        }
+
 
         public BindableCollection<TablaSistema> PubListTablasSistema
         {
-            get { return _pubListTablasSistema; }
-            set { _pubListTablasSistema = value;
+            get { return _prvListTablasSistema; }
+            set {
+                _prvListTablasSistema = value;
                 NotifyOfPropertyChange(() => PubListTablasSistema);
             }
         }
@@ -42,6 +57,7 @@ namespace DiccionarioTablasGUM.ViewModels
         
         public TablasSistemaViewModel()
         {
+            PubIndConRelacion = 1;
             ObtenerTablasDelSistema();
         }
 
@@ -50,7 +66,7 @@ namespace DiccionarioTablasGUM.ViewModels
             clsConexion  vObjConexionDB = new clsConexion();
             List<TablaSistema> vListTablasSistema = new List<TablaSistema>();
             TablaSistema vTablaSistema;
-
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             vObjConexionDB.AbrirConexion();
             DataSet vDsTablasDB;
 
@@ -73,18 +89,26 @@ namespace DiccionarioTablasGUM.ViewModels
             }
 
             PubListTablasSistema = new BindableCollection<TablaSistema>(vListTablasSistema);
+            Mouse.OverrideCursor = null;
 
         }
 
-        public void SeleccionarTablasRelacionadas(Int16 pvIndSeleccion ) {
+        public void SeleccionarTablasRelacionadas(Int16 pvIndSeleccion) {
 
             //creo la conexion a la base de datos
             clsConexion vObjConexionDB = new clsConexion();
-            vObjConexionDB.AbrirConexion();
             DataSet vDsRelacionTablas;
 
-            List<clsConexion.ParametrosSP> vListParametrosSP;
+            if (PubIndConRelacion == 0) {
+                return;
+            }
 
+
+            //Cursor en espera
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            vObjConexionDB.AbrirConexion();
+
+            List<clsConexion.ParametrosSP> vListParametrosSP;
 
             vListParametrosSP = new List<clsConexion.ParametrosSP>();
 
@@ -95,22 +119,36 @@ namespace DiccionarioTablasGUM.ViewModels
                 tipoParametro = System.Data.SqlDbType.VarChar
             });
 
-
-
+            List<string> vListTablasRealacionadas = new List<string>();
+                
             vDsRelacionTablas = vObjConexionDB.EjecutarCommand("sp_dd_rel_tabla_gum", vListParametrosSP);
-                                 
+
             foreach (DataRow dtRowTabla in vDsRelacionTablas.Tables[0].Rows)
             {
-                (from p in PubListTablasSistema
-                 where p.nombreTabla == dtRowTabla["f_nombre_tabla_ref"].ToString()
-                 select p).ToList().ForEach(x => x.seleccion = pvIndSeleccion);
+                vListTablasRealacionadas.Add(dtRowTabla["f_nombre_tabla_ref"].ToString());
             }
 
+             (from p in PubListTablasSistema
+             join f in vListTablasRealacionadas on p.nombreTabla equals f
+             select p).ToList().ForEach(x => x.seleccion = pvIndSeleccion);
+
+
+            //foreach (DataRow dtRowTabla in vDsRelacionTablas.Tables[0].Rows)
+            //{
+            //    (from p in PubListTablasSistema
+            //     where p.nombreTabla == dtRowTabla["f_nombre_tabla_ref"].ToString()
+            //     select p).ToList().ForEach(x => x.seleccion = pvIndSeleccion);
+            //}
+
             vObjConexionDB.CerrarConexion();
+
+            //Cursor en espera
+            Mouse.OverrideCursor = null;
         }
 
         public void AdicionarTablasGUM()
         {
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             //creo la conexion a la base de datos
             clsConexion vObjConexionDB = new clsConexion();
 
@@ -140,6 +178,8 @@ namespace DiccionarioTablasGUM.ViewModels
             }
 
             vObjConexionDB.CerrarConexion();
+
+            Mouse.OverrideCursor = null;
 
             MessageBoxResult dialogResult = System.Windows.MessageBox.Show("Las tablas del sistema se agregaron correctamente , ¿ Desea agregar mas tablas ?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo);
 
