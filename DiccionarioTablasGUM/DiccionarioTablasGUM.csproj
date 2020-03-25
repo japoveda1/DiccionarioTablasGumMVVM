@@ -72,8 +72,12 @@
     <Compile Include="Conexion\clsConexion.cs" />
     <Compile Include="Models\TablasGUM.cs" />
     <Compile Include="Models\TablaSistema.cs" />
+    <Compile Include="ViewModels\CamposTablasGum.cs" />
     <Compile Include="ViewModels\DiccionarioTablasGUMViewModel.cs" />
     <Compile Include="ViewModels\TablasSistemaViewModel.cs" />
+    <Compile Include="Views\CamposTablasGum.xaml.cs">
+      <DependentUpon>CamposTablasGum.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DiccionarioTablasGUMView.xaml.cs">
       <DependentUpon>DiccionarioTablasGUMView.xaml</DependentUpon>
     </Compile>
@@ -85,6 +89,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Page Include="Views\CamposTablasGum.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DiccionarioTablasGUMView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

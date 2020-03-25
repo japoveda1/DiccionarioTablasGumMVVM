@@ -5,11 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
         mc:Ignorable="d" FontFamily="Avenir Light"  FontSize="14"
-        Title="Siesa - Diccionario Tablas GUM" Height="450" Width="350"  Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen" >
-
-  
+        Title="Siesa - Diccionario Tablas GUM" Height="450" Width="350"  Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen" >  
     <Grid >
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="auto"/>            
@@ -26,7 +23,7 @@
             <RowDefinition Height="8"/>
         </Grid.RowDefinitions>
 
-        <CheckBox Content="Marcar tabla con sus relacionadas" x:Name="PubIndConRelacion" Grid.Row="1"  Grid.ColumnSpan="3" Grid.Column="1" Margin="0,8,8,0"/>
+        <CheckBox Content="Marcar tabla con sus relacionadas" x:Name="PubIndConRelacion" Grid.Row="1"  Grid.ColumnSpan="3" Grid.Column="1" Margin="0,8,8,0" ToolTip="Permite la selección  de una tabla junto a la tablas que tiene relacionadas en la base"/>
 
         <DataGrid x:Name="dgTablasSistema" 
                   ItemsSource="{Binding PubListTablasSistema , IsAsync=True}"
@@ -49,8 +46,5 @@
         </DataGrid>
 
         <Button x:Name="AdicionarTablasGUM" Grid.Row="3"  Grid.Column="3" Margin="0,8,8,0" >Guardar</Button>
-
-
-
     </Grid>
 </Window>

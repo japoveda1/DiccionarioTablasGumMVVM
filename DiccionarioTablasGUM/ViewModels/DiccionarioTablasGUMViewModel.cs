@@ -118,9 +118,7 @@ namespace DiccionarioTablasGUM.ViewModels
             //Cursor en espera
             Mouse.OverrideCursor = null;
 
-             System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
-
-            
+             System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);            
 
         }
 
