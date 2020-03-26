@@ -70,13 +70,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Conexion\clsConexion.cs" />
+    <Compile Include="Models\CamposGUM.cs" />
     <Compile Include="Models\TablasGUM.cs" />
     <Compile Include="Models\TablaSistema.cs" />
-    <Compile Include="ViewModels\CamposTablasGum.cs" />
+    <Compile Include="ViewModels\CamposTablasGUMViewModel.cs" />
     <Compile Include="ViewModels\DiccionarioTablasGUMViewModel.cs" />
     <Compile Include="ViewModels\TablasSistemaViewModel.cs" />
-    <Compile Include="Views\CamposTablasGum.xaml.cs">
-      <DependentUpon>CamposTablasGum.xaml</DependentUpon>
+    <Compile Include="Views\CamposTablasGUMView.xaml.cs">
+      <DependentUpon>CamposTablasGUMView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DiccionarioTablasGUMView.xaml.cs">
       <DependentUpon>DiccionarioTablasGUMView.xaml</DependentUpon>
@@ -89,7 +90,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
-    <Page Include="Views\CamposTablasGum.xaml">
+    <Page Include="Views\CamposTablasGUMView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

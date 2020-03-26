@@ -68,24 +68,25 @@
 
             <Button x:Name="prueba"  Height="21" Grid.Row="1" Grid.Column="4"  Margin="0,8,0,0" MinWidth="105" MaxWidth="105" ToolTip="Valida que las tablas en el diccionario GUM no tengan cambios en las bases de datos de Desarrollo, el resultado se muestra en la columna 'Ind. Cambio en base de datos'" >Validar Campos</Button>
 
-            <DataGrid  AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="2" Grid.Column="1" x:Name="dtTablasGUM" Grid.ColumnSpan="5" ItemsSource="{Binding PubListTablasGum, IsAsync=True}" Margin="0,8,8,0"  >
+            <DataGrid  AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="2" Grid.Column="1" x:Name="dtTablasGUM" Grid.ColumnSpan="5" ItemsSource="{Binding PubListTablasGum}" SelectedItem="{Binding PubObjTablaGumSeleccionada}" Margin="0,8,8,0"  >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nombre tabla" Binding="{Binding Path=nombre}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Descripción" Binding="{Binding Path=descripcion}"  />
                     <DataGridCheckBoxColumn Header="Activo GUM" Binding="{Binding Path=IndProcesoGum}" />
                     <DataGridCheckBoxColumn Header="Ind. Cambio en base de datos" Binding="{Binding Path=indCambioEnDB}" IsReadOnly="True"/>
-                    <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding Path=notas}" Width="*"  />
+                    <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding Path=notas}" Width="auto"  />
                     <DataGridTemplateColumn Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button x:Name="cmdCampo" Content="Campos ... " />
+                                <Button x:Name="btnTablaCampos" Click="btnTablaCampos_Click"
+                                        >Campos ... </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button x:Name="abrirventana" Height="21"  Grid.Row="3" Grid.Column="1" Margin="0,8,8,0"  MinWidth="185" MaxWidth="185" ToolTip="Abre ventana donde puede escoger la tablas del sistema que desea agregar al diccionario GUM">Agregar tablas del sistema ...</Button>
+            <Button x:Name="AbrirVentanaTablasDelSistema" Height="21"  Grid.Row="3" Grid.Column="1" Margin="0,8,8,0"  MinWidth="185" MaxWidth="185" ToolTip="Abre ventana donde puede escoger la tablas del sistema que desea agregar al diccionario GUM">Agregar tablas del sistema ...</Button>
             <Button x:Name="exportar" Height="21" Grid.Row="3" Grid.Column="3" Margin="0,8,8,0" MinWidth="80" MaxWidth="80" ToolTip="Genera archivo con script para ejecutar en la base de datos de Oracle con el fin de actualizar los datos ingresados">Exportar ...</Button>
             <Button x:Name="ConfirmarCambios" Height="21" Grid.Row="3"  Grid.Column="4" MinWidth="100" MaxWidth="100" Margin="0,8,0,0" ToolTip="Guarda los cambios realizados sobre las tablas del diccionario GUM">Guardar</Button>
 

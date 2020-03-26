@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiccionarioTablasGUM.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,12 @@ namespace DiccionarioTablasGUM.Views
         private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Close();
+        }
+
+        private void btnTablaCampos_Click(object sender, RoutedEventArgs e)
+        {
+            DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
+            vObjDiccionarioTablasGUM.AbrirVentanaCampos();
         }
     }
 }

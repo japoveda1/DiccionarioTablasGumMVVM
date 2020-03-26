@@ -15,11 +15,11 @@ namespace DiccionarioTablasGUM.ViewModels
 {
     public class TablasSistemaViewModel:Screen
     {
-        private TablaSistema _prvObjTablaSistemaSeleccionada;
-        //public BindableCollection<TablaSistema> PubListTablasSistema { get; set; }
-
+        //Se almacenan las tablas del sistema que no estan en el diccionario GUM    
         private BindableCollection<TablaSistema> _prvListTablasSistema;
-
+        //Se almacena la tabla que esta siendo seleccionada en la grilla de la vista
+        private TablaSistema _prvObjTablaSistemaSeleccionada;
+        //Se almacena el valor segun el check "con relacion" en la vista
         private int _prvIndConRelacion;
 
         public int PubIndConRelacion
@@ -33,16 +33,16 @@ namespace DiccionarioTablasGUM.ViewModels
                 }
         }
 
-
         public BindableCollection<TablaSistema> PubListTablasSistema
         {
-            get { return _prvListTablasSistema; }
+            get { 
+                    return _prvListTablasSistema; 
+                }
             set {
-                _prvListTablasSistema = value;
-                NotifyOfPropertyChange(() => PubListTablasSistema);
-            }
+                    _prvListTablasSistema = value;
+                    NotifyOfPropertyChange(() => PubListTablasSistema);
+                }
         }
-
 
         public TablaSistema PubObjTablaSistemaSeleccionada
         {
@@ -54,31 +54,41 @@ namespace DiccionarioTablasGUM.ViewModels
                 NotifyOfPropertyChange(()=>PubObjTablaSistemaSeleccionada);                
                 }
         }
-        
+
+        /// <summary>
+        /// req. 162259 jpa 24032020
+        /// constructor
+        /// </summary>
         public TablasSistemaViewModel()
         {
             PubIndConRelacion = 1;
             ObtenerTablasDelSistema();
         }
 
+        /// <summary>
+        /// req. 162259 jpa 24032020
+        /// Se obtienen las tablas de la base de datos que no se encuentren el diccionario de tablas GUM
+        /// </summary>
         public void ObtenerTablasDelSistema()
         {
             clsConexion  vObjConexionDB = new clsConexion();
             List<TablaSistema> vListTablasSistema = new List<TablaSistema>();
             TablaSistema vTablaSistema;
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-            vObjConexionDB.AbrirConexion();
             DataSet vDsTablasDB;
+
+            //Cursor en espera
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            
+            vObjConexionDB.AbrirConexion();            
 
             vDsTablasDB = vObjConexionDB.EjecutarCommand("sp_dd_tablas_db");
 
             vObjConexionDB.CerrarConexion();
 
-
+            //Creacion de objeto tablas del sistema
             foreach (DataRow vDrTablas in vDsTablasDB.Tables[0].Rows)
             {
                 vTablaSistema = new TablaSistema();
-
 
                 vTablaSistema.nombreTabla = Convert.ToString(vDrTablas["f_nombre_tabla"]);
                 vTablaSistema.nombreRelacion = Convert.ToString(vDrTablas["f_nombre_relacion"]);
@@ -89,23 +99,32 @@ namespace DiccionarioTablasGUM.ViewModels
             }
 
             PubListTablasSistema = new BindableCollection<TablaSistema>(vListTablasSistema);
+            //Cursor por defecto
             Mouse.OverrideCursor = null;
 
         }
 
+        /// <summary>
+        /// req. 162259 jpa 24032020
+        /// Se seleccionan las tablas que estan relacionadas a la seleccionda
+        /// </summary>
+        /// <param name="pvIndSeleccion"> nos indica que tipo de marcacion se le va hacera cada tabla , marcar o desmarcar</param>
         public void SeleccionarTablasRelacionadas(Int16 pvIndSeleccion) {
+            
+            List<string> vListTablasRealacionadas = new List<string>();
+            DataSet vDsTablasRelacionadas;
 
             //creo la conexion a la base de datos
-            clsConexion vObjConexionDB = new clsConexion();
-            DataSet vDsRelacionTablas;
+            clsConexion vObjConexionDB = new clsConexion();      
 
+            //se valida que este habilitada la funcion "con relacion" con el checkbox en la vista
             if (PubIndConRelacion == 0) {
                 return;
             }
 
-
             //Cursor en espera
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
             vObjConexionDB.AbrirConexion();
 
             List<clsConexion.ParametrosSP> vListParametrosSP;
@@ -117,28 +136,18 @@ namespace DiccionarioTablasGUM.ViewModels
                 nombreParametro = "p_nombre_tabla",
                 valorParametro = PubObjTablaSistemaSeleccionada.nombreTabla,
                 tipoParametro = System.Data.SqlDbType.VarChar
-            });
-
-            List<string> vListTablasRealacionadas = new List<string>();
+            });            
                 
-            vDsRelacionTablas = vObjConexionDB.EjecutarCommand("sp_dd_rel_tabla_gum", vListParametrosSP);
+            vDsTablasRelacionadas = vObjConexionDB.EjecutarCommand("sp_dd_rel_tabla_gum", vListParametrosSP);
 
-            foreach (DataRow dtRowTabla in vDsRelacionTablas.Tables[0].Rows)
-            {
-                vListTablasRealacionadas.Add(dtRowTabla["f_nombre_tabla_ref"].ToString());
-            }
+            //Se pasa el dataset a un objeto para usuarlo en inner linq
+            vListTablasRealacionadas  = (from vTablaRelacionada in vDsTablasRelacionadas.Tables[0].AsEnumerable() select vTablaRelacionada.Field<string>("f_nombre_tabla_ref") ).ToList();
 
-             (from p in PubListTablasSistema
-             join f in vListTablasRealacionadas on p.nombreTabla equals f
-             select p).ToList().ForEach(x => x.seleccion = pvIndSeleccion);
+            //Actualizacion de campo seleccion en publica con tablas del sistema
+            (from vTablaSistema in PubListTablasSistema
+             join vTablaRelacionada in vListTablasRealacionadas on vTablaSistema.nombreTabla equals vTablaRelacionada
+             select vTablaSistema).ToList().ForEach(vTablaSistema => vTablaSistema.seleccion = pvIndSeleccion);
 
-
-            //foreach (DataRow dtRowTabla in vDsRelacionTablas.Tables[0].Rows)
-            //{
-            //    (from p in PubListTablasSistema
-            //     where p.nombreTabla == dtRowTabla["f_nombre_tabla_ref"].ToString()
-            //     select p).ToList().ForEach(x => x.seleccion = pvIndSeleccion);
-            //}
 
             vObjConexionDB.CerrarConexion();
 
@@ -146,12 +155,16 @@ namespace DiccionarioTablasGUM.ViewModels
             Mouse.OverrideCursor = null;
         }
 
+        /// <summary>
+        /// req. 162259 jpa 24032020
+        /// Adicciona las tablas seleccionadas
+        /// </summary>
         public void AdicionarTablasGUM()
-        {
+        {   
+            //cursor 
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-            //creo la conexion a la base de datos
-            clsConexion vObjConexionDB = new clsConexion();
 
+            clsConexion vObjConexionDB = new clsConexion();
             //Objeto donde se van a almacenar los parametros para el sp
             List<clsConexion.ParametrosSP> vParamsUserRolls;
 
@@ -181,7 +194,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
             Mouse.OverrideCursor = null;
 
-            MessageBoxResult dialogResult = System.Windows.MessageBox.Show("Las tablas del sistema se agregaron correctamente , ¿ Desea agregar mas tablas ?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo);
+            MessageBoxResult dialogResult = System.Windows.MessageBox.Show("Las tablas del sistema se agregaron correctamente.¿Desea agregar mas tablas?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo);
 
             if (dialogResult == MessageBoxResult.Yes)  //
             {

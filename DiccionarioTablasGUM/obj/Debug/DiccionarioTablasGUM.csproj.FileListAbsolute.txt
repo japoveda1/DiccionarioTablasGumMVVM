@@ -24,5 +24,5 @@ C:\Users\ruben\source\repos\DiccionarioTablasGUM\DiccionarioTablasGUM\obj\Debug\
 C:\Users\ruben\source\repos\DiccionarioTablasGUM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.exe
 C:\Users\ruben\source\repos\DiccionarioTablasGUM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.pdb
 C:\Users\ruben\source\repos\DiccionarioTablasGUM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.csprojAssemblyReference.cache
-C:\Users\ruben\source\repos\DiccionarioTablasGUM\DiccionarioTablasGUM\obj\Debug\Views\CamposTablasGum.g.cs
-C:\Users\ruben\source\repos\DiccionarioTablasGUM\DiccionarioTablasGUM\obj\Debug\Views\CamposTablasGum.baml
+C:\Users\ruben\source\repos\DiccionarioTablasGUM\DiccionarioTablasGUM\obj\Debug\Views\CamposTablasGumView.g.cs
+C:\Users\ruben\source\repos\DiccionarioTablasGUM\DiccionarioTablasGUM\obj\Debug\Views\CamposTablasGumView.baml

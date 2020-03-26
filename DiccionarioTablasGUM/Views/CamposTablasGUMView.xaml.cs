@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace DiccionarioTablasGUM.Views
 {
     /// <summary>
-    /// Lógica de interacción para CamposTablasGum.xaml
+    /// Lógica de interacción para CamposTablasGUMView.xaml
     /// </summary>
-    public partial class CamposTablasGum : Window
+    public partial class CamposTablasGUMView : Window
     {
-        public CamposTablasGum()
+        public CamposTablasGUMView()
         {
             InitializeComponent();
         }
