@@ -79,6 +79,10 @@ namespace DiccionarioTablasGUM.Conexion
         public DataSet EjecutarCommand(string stp_name, List<ParametrosSP> paramsStp)
         {
             DataSet vDataSet = new DataSet();
+            int vIntContDataReader;
+
+            vIntContDataReader = 0;
+
             SqlCommand vCommand = new SqlCommand
             {
                 CommandText = stp_name,
@@ -95,18 +99,31 @@ namespace DiccionarioTablasGUM.Conexion
 
             using (SqlDataReader dataReader = vCommand.ExecuteReader())
             {
-                //Create a new DataSet.
-                DataSet dsCustomers = new DataSet();
-                vDataSet.Tables.Add("Table");
 
-                //Load DataReader into the DataTable.
-                vDataSet.Tables[0].Load(dataReader);
+                    while (dataReader.IsClosed == false)
+                    {
+                        //Create a new DataSet.
+                        vDataSet.Tables.Add("Table" + vIntContDataReader.ToString());
+
+                        //Load DataReader into the DataTable.
+                        vDataSet.Tables[vIntContDataReader].Load(dataReader);
+
+                        vIntContDataReader++;
+                    }
+
+
+
+
             }
-            
+
+
             vCommand.Dispose();
 
             return vDataSet;
         }
+
+
+
 
 
     }

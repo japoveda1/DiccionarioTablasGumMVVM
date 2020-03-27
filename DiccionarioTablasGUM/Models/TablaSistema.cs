@@ -9,9 +9,6 @@ namespace DiccionarioTablasGUM.Models
     public class TablaSistema
     {
         public string nombreTabla { get; set; }
-
-        public string nombreRelacion { get; set; }
-
         public Int16 seleccion { get; set; }
     }
 }

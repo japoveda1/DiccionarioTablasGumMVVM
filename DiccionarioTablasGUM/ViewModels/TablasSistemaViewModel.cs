@@ -81,7 +81,7 @@ namespace DiccionarioTablasGUM.ViewModels
             
             vObjConexionDB.AbrirConexion();            
 
-            vDsTablasDB = vObjConexionDB.EjecutarCommand("sp_dd_tablas_db");
+            vDsTablasDB = vObjConexionDB.EjecutarCommand("sp_gum_dd_leer_todo_tablas_db");
 
             vObjConexionDB.CerrarConexion();
 
@@ -91,7 +91,6 @@ namespace DiccionarioTablasGUM.ViewModels
                 vTablaSistema = new TablaSistema();
 
                 vTablaSistema.nombreTabla = Convert.ToString(vDrTablas["f_nombre_tabla"]);
-                vTablaSistema.nombreRelacion = Convert.ToString(vDrTablas["f_nombre_relacion"]);
                 vTablaSistema.seleccion = Convert.ToInt16(vDrTablas["f_seleccion"]);
 
                 vListTablasSistema.Add(vTablaSistema);
@@ -138,7 +137,7 @@ namespace DiccionarioTablasGUM.ViewModels
                 tipoParametro = System.Data.SqlDbType.VarChar
             });            
                 
-            vDsTablasRelacionadas = vObjConexionDB.EjecutarCommand("sp_dd_rel_tabla_gum", vListParametrosSP);
+            vDsTablasRelacionadas = vObjConexionDB.EjecutarCommand("sp_gum_dd_leer_relac_x_tabla", vListParametrosSP);
 
             //Se pasa el dataset a un objeto para usuarlo en inner linq
             vListTablasRealacionadas  = (from vTablaRelacionada in vDsTablasRelacionadas.Tables[0].AsEnumerable() select vTablaRelacionada.Field<string>("f_nombre_tabla_ref") ).ToList();
@@ -186,7 +185,7 @@ namespace DiccionarioTablasGUM.ViewModels
                     tipoParametro = System.Data.SqlDbType.VarChar
                 });
 
-                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_dd_insetar_tablas_gum", vParamsUserRolls);
+                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_gum_dd_insetar_tablas_campos", vParamsUserRolls);
 
             }
 
@@ -211,6 +210,102 @@ namespace DiccionarioTablasGUM.ViewModels
             
         }
 
+
+        public void AdicionarTablasDiccionarioGUM() 
+        {
+
+
+
+            //cursor 
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+
+            AdicionarTablasYCampos();
+
+            AdicionarRelacionYCampos();
+
+            Mouse.OverrideCursor = null;
+
+            MessageBoxResult dialogResult = System.Windows.MessageBox.Show("Las tablas del sistema se agregaron correctamente.¿Desea agregar mas tablas?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo);
+
+            if (dialogResult == MessageBoxResult.Yes)  //
+            {
+                ObtenerTablasDelSistema();
+            }
+            else
+            {
+                foreach (Window item in System.Windows.Application.Current.Windows)
+                {
+                    if (item.DataContext == this) item.Close();
+                }
+            }
+
+        }
+
+        private void AdicionarTablasYCampos() 
+        {
+             clsConexion vObjConexionDB = new clsConexion();
+            //Objeto donde se van a almacenar los parametros para el sp
+            List<clsConexion.ParametrosSP> vParamsUserRolls;
+
+            List<TablaSistema> vListTablaSistemas = new List<TablaSistema>();
+
+            vListTablaSistemas = PubListTablasSistema.Where(x => x.seleccion == 1).ToList();
+
+            //abro conexxion
+            vObjConexionDB.AbrirConexion();
+
+            foreach (TablaSistema vObjTabla in vListTablaSistemas)
+            {
+                vParamsUserRolls = new List<clsConexion.ParametrosSP>();
+
+                vParamsUserRolls.Add(new clsConexion.ParametrosSP
+                {
+                    nombreParametro = "p_nombre_tabla",
+                    valorParametro = vObjTabla.nombreTabla,
+                    tipoParametro = System.Data.SqlDbType.VarChar
+                });
+
+                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_gum_dd_insetar_tablas_campos", vParamsUserRolls);
+
+            }
+
+            vObjConexionDB.CerrarConexion();
+
+        }
+
+        private void AdicionarRelacionYCampos() 
+        {
+
+            clsConexion vObjConexionDB = new clsConexion();
+            //Objeto donde se van a almacenar los parametros para el sp
+            List<clsConexion.ParametrosSP> vParamsUserRolls;
+
+            List<TablaSistema> vListTablaSistemas = new List<TablaSistema>();
+
+            vListTablaSistemas = PubListTablasSistema.Where(x => x.seleccion == 1).ToList();
+
+            //abro conexxion
+            vObjConexionDB.AbrirConexion();
+
+            foreach (TablaSistema vObjTabla in vListTablaSistemas)
+            {
+                vParamsUserRolls = new List<clsConexion.ParametrosSP>();
+
+                vParamsUserRolls.Add(new clsConexion.ParametrosSP
+                {
+                    nombreParametro = "p_nombre_tabla",
+                    valorParametro = vObjTabla.nombreTabla,
+                    tipoParametro = System.Data.SqlDbType.VarChar
+                });
+
+                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_gum_dd_insertar_relac_campos", vParamsUserRolls);
+
+            }
+
+            vObjConexionDB.CerrarConexion();
+
+        }
 
     }
 }

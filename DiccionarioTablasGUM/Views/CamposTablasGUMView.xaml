@@ -54,7 +54,19 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Relaciones">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid >
+                    <DataGrid x:Name="dtRelacGUM" CanUserAddRows="False" ItemsSource="{Binding PubListRelacCamposGUM}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Relacion" Binding="{Binding Path=nombreRelacion}" />
+                            <DataGridTextColumn Header="Orden" Binding="{Binding Path=indOrden}" />
+                            <DataGridTextColumn Header="Nombre tabla Referenciada" Binding="{Binding Path=nombreTablaRef}"/>
+                            <DataGridTextColumn Header="Nombre campo" Binding="{Binding Path=nombreCampo}" />
+                            <DataGridTextColumn Header="nombre campo Referenciado" Binding="{Binding Path=nombreCampoRef}" />                            
+                        </DataGrid.Columns>
+                     
+                    </DataGrid>
+                    
+                </Grid>
             </TabItem>
             <TabItem Header="Diferencias">
                 <Grid Background="#FFE5E5E5"/>

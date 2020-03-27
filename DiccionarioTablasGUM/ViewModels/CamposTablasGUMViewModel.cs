@@ -17,8 +17,17 @@ namespace DiccionarioTablasGUM.ViewModels
 
 		private BindableCollection<CamposGUM> _prvListTablasGUMCampos;
 
+        private BindableCollection<clsRelacCamposGUM> _prvListRelacCamposGUM;
 
-		public string PubStrNombreTablaGUM
+        public BindableCollection<clsRelacCamposGUM> PubListRelacCamposGUM
+        {
+            get { return _prvListRelacCamposGUM; }
+            set { _prvListRelacCamposGUM = value; }
+        }
+
+
+
+        public string PubStrNombreTablaGUM
 		{
 			get { return _prvStrNombreTablaGUM; }
 			set { _prvStrNombreTablaGUM = value; }
@@ -55,11 +64,13 @@ namespace DiccionarioTablasGUM.ViewModels
         private void ObtenerCamposGUM(string pvStrNombreTablasGUM)
         {
             clsConexion vObjConexionDB = new clsConexion();
-            List<CamposGUM> vListCamposGUM = new List<CamposGUM>();
-
-
             List<clsConexion.ParametrosSP> vListParametrosSP;
+            List<CamposGUM> vListCamposGUM = new List<CamposGUM>();
             CamposGUM vCamposGum;
+            List<clsRelacCamposGUM> vListRelacCamposGUM = new List<clsRelacCamposGUM>();
+            clsRelacCamposGUM vObjRelacCamposGUM;
+           
+            
             DataSet vDsCampos;
 
             //Cursor en espera
@@ -76,8 +87,8 @@ namespace DiccionarioTablasGUM.ViewModels
                 tipoParametro = System.Data.SqlDbType.VarChar
             });
 
-            vDsCampos = vObjConexionDB.EjecutarCommand("sp_dd_campos_gum", vListParametrosSP);
-
+            vDsCampos = vObjConexionDB.EjecutarCommand("sp_gum_dd_leer_campos_relac_x_tabla", vListParametrosSP);
+            
             //creacion de objeto tablasGUM
             foreach (DataRow vDrCampos in vDsCampos.Tables[0].Rows)
             {
@@ -104,7 +115,26 @@ namespace DiccionarioTablasGUM.ViewModels
                 vCamposGum = null;
             }
 
+
+            //creacion de objeto tablasGUM
+            foreach (DataRow vDrCampos in vDsCampos.Tables[1].Rows)
+            {
+                vObjRelacCamposGUM = new clsRelacCamposGUM();
+
+                vObjRelacCamposGUM.nombreTablaRef = Convert.ToString(vDrCampos["f_nombre_tabla_ref"]);
+                vObjRelacCamposGUM.nombreCampo = Convert.ToString(vDrCampos["f_nombre_campo"]);
+                vObjRelacCamposGUM.nombreCampoRef = Convert.ToString(vDrCampos["f_nombre_campo_ref"]);
+                vObjRelacCamposGUM.indInner = Convert.ToInt16(vDrCampos["f_ind_inner"]);
+                vObjRelacCamposGUM.nombreRelacion = Convert.ToString(vDrCampos["f_nombre_relacion"]);
+                vObjRelacCamposGUM.indOrden = Convert.ToInt16(vDrCampos["f_ind_orden"]);
+
+
+                vListRelacCamposGUM.Add(vObjRelacCamposGUM);
+                vObjRelacCamposGUM = null;
+            }
+
             PubListTablasGUMCampos = new BindableCollection<CamposGUM>(vListCamposGUM);
+            PubListRelacCamposGUM = new BindableCollection<clsRelacCamposGUM>(vListRelacCamposGUM);
 
             //Cursor default
             Mouse.OverrideCursor = null;
@@ -193,7 +223,7 @@ namespace DiccionarioTablasGUM.ViewModels
                 });
 
 
-                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_editar_campos_gum", vListParametrosSP);
+                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_gum_dd_actualizar_campo", vListParametrosSP);
 
             }
 

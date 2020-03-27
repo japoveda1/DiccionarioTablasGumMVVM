@@ -71,6 +71,7 @@
     </ApplicationDefinition>
     <Compile Include="Conexion\clsConexion.cs" />
     <Compile Include="Models\CamposGUM.cs" />
+    <Compile Include="Models\clsRelacCamposGUM.cs" />
     <Compile Include="Models\TablasGUM.cs" />
     <Compile Include="Models\TablaSistema.cs" />
     <Compile Include="ViewModels\CamposTablasGUMViewModel.cs" />

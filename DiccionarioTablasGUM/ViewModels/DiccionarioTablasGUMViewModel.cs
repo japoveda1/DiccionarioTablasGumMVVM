@@ -69,7 +69,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
             vObjConexionDB.AbrirConexion();
 
-            vDsTablas = vObjConexionDB.EjecutarCommand("sp_tablas_gum");
+            vDsTablas = vObjConexionDB.EjecutarCommand("sp_gum_dd_leer_todo_tablas");
 
             //creacion de objeto tablasGUM
             foreach (DataRow vDrTablas in vDsTablas.Tables[0].Rows)
@@ -143,7 +143,7 @@ namespace DiccionarioTablasGUM.ViewModels
                     tipoParametro = System.Data.SqlDbType.VarChar
                 });
 
-                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_editar_stablas_gum", vListParametrosSP);
+                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_gum_dd_actualizar_tabla", vListParametrosSP);
                 
             }
 
