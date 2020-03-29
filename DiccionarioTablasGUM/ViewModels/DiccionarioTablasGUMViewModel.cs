@@ -171,7 +171,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
         public void AbrirVentanaCampos()
         {
-            CamposTablasGUMViewModel vObjCamposTablasGum = new CamposTablasGUMViewModel(PubObjTablaGumSeleccionada.nombre);
+            CamposTablasGUMViewModel vObjCamposTablasGum = new CamposTablasGUMViewModel(PubObjTablaGumSeleccionada.nombre,PubObjTablaGumSeleccionada.indCambioEnDB);
 
             prvObjManager.ShowDialog(vObjCamposTablasGum, null, null);
 

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DiccionarioTablasGUM.ViewModels; 
 
 namespace DiccionarioTablasGUM.Views
 {
@@ -22,6 +23,28 @@ namespace DiccionarioTablasGUM.Views
         public CamposTablasGUMView()
         {
             InitializeComponent();
+        }
+
+        private void TabItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            //CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+
+            //TabItem tabItem = (TabItem)sender;
+
+            //if (tabItem != null)
+            //{
+            //    vObjCamposTablasGUMViewModel.ObtenerCambiosEnDB();
+            //}
+        }
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+
+           
+                vObjCamposTablasGUMViewModel.ObtenerCambiosEnDB();
+            
+
         }
     }
 }

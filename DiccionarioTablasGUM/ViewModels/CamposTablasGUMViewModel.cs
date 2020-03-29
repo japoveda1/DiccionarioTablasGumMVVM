@@ -14,17 +14,31 @@ namespace DiccionarioTablasGUM.ViewModels
 	class CamposTablasGUMViewModel : Screen
 	{
 		private string _prvStrNombreTablaGUM;
+        private int? _prvIntTablaConCambios;
 
-		private BindableCollection<CamposGUM> _prvListTablasGUMCampos;
+        public int? PubIntTablaConCambios
+        {
+            get { return _prvIntTablaConCambios; }
+            set { _prvIntTablaConCambios = value; }
+        }
+
+
+        private BindableCollection<CamposGUM> _prvListTablasGUMCampos;
 
         private BindableCollection<clsRelacCamposGUM> _prvListRelacCamposGUM;
 
-        public BindableCollection<clsRelacCamposGUM> PubListRelacCamposGUM
-        {
-            get { return _prvListRelacCamposGUM; }
-            set { _prvListRelacCamposGUM = value; }
-        }
+        private BindableCollection<clsCambiosCamposGUM> _prvListCambiosCampoGUM;
 
+        public BindableCollection<clsCambiosCamposGUM> PubListCambiosCampoGUM
+        {
+            get {
+                    return _prvListCambiosCampoGUM;
+                }
+            set {
+                    _prvListCambiosCampoGUM = value;
+                    NotifyOfPropertyChange(() => PubListCambiosCampoGUM);
+            }
+        }
 
 
         public string PubStrNombreTablaGUM
@@ -33,8 +47,7 @@ namespace DiccionarioTablasGUM.ViewModels
 			set { _prvStrNombreTablaGUM = value; }
 		}
 
-
-		public BindableCollection<CamposGUM> PubListTablasGUMCampos
+        public BindableCollection<CamposGUM> PubListTablasGUMCampos
 		{
 			get { 
 					return _prvListTablasGUMCampos; 
@@ -45,15 +58,21 @@ namespace DiccionarioTablasGUM.ViewModels
 				}
 		}
 
+        public BindableCollection<clsRelacCamposGUM> PubListRelacCamposGUM
+        {
+            get { return _prvListRelacCamposGUM; }
+            set { _prvListRelacCamposGUM = value; }
+        }
+
         /// <summary>
         /// req. 162116 jpa 25032020 
         /// Obitiene las tablas que ya fueron ingresadas en el diccionario GUM  (t735_dd_tablas)
         /// </summary>
-        public CamposTablasGUMViewModel(string pvStrNombreTablaGUM)
+        public CamposTablasGUMViewModel(string pvStrNombreTablaGUM,int? pvIntTablaConCambios=0)
 		{
 			PubStrNombreTablaGUM = pvStrNombreTablaGUM;
             ObtenerCamposGUM(pvStrNombreTablaGUM);
-
+            PubIntTablaConCambios = pvIntTablaConCambios;
         }
 
 
@@ -69,8 +88,6 @@ namespace DiccionarioTablasGUM.ViewModels
             CamposGUM vCamposGum;
             List<clsRelacCamposGUM> vListRelacCamposGUM = new List<clsRelacCamposGUM>();
             clsRelacCamposGUM vObjRelacCamposGUM;
-           
-            
             DataSet vDsCampos;
 
             //Cursor en espera
@@ -110,6 +127,8 @@ namespace DiccionarioTablasGUM.ViewModels
                 vCamposGum.indGumConfigurable = Convert.ToInt16(vDrCampos["f_ind_gum_configurable"]);
                 vCamposGum.indGumSincronizado = Convert.ToInt16(vDrCampos["f_ind_gum_sincronizado"]);
                 vCamposGum.indGumSugerir = Convert.ToInt16(vDrCampos["f_ind_gum_sugerir"]);
+                vCamposGum.indGumSugerir = Convert.ToInt16(vDrCampos["f_ind_gum_sugerir"]);
+                vCamposGum.indCambioEnDb = Convert.ToInt16(vDrCampos["f_ind_cambio_en_db"]);
 
                 vListCamposGUM.Add(vCamposGum);
                 vCamposGum = null;
@@ -133,8 +152,10 @@ namespace DiccionarioTablasGUM.ViewModels
                 vObjRelacCamposGUM = null;
             }
 
+
             PubListTablasGUMCampos = new BindableCollection<CamposGUM>(vListCamposGUM);
             PubListRelacCamposGUM = new BindableCollection<clsRelacCamposGUM>(vListRelacCamposGUM);
+           
 
             //Cursor default
             Mouse.OverrideCursor = null;
@@ -234,6 +255,58 @@ namespace DiccionarioTablasGUM.ViewModels
 
             System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
 
+        }
+
+        public void ObtenerCambiosEnDB() {
+
+            clsConexion vObjConexionDB = new clsConexion();
+            //Objeto con parametros lista de parametros
+            List<clsConexion.ParametrosSP> vListParametrosSP;
+            List<clsCambiosCamposGUM> vListCambiosCamposGUM = new List<clsCambiosCamposGUM>();
+            clsCambiosCamposGUM vObjCambiosCamposGUM;
+            DataSet vDsCampos;
+
+            if (PubIntTablaConCambios == 0) {
+                return;
+            }
+            //Cursor en espera
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+            vObjConexionDB.AbrirConexion();
+
+
+            vListParametrosSP = new List<clsConexion.ParametrosSP>();
+
+            vListParametrosSP.Add(new clsConexion.ParametrosSP
+            {
+                nombreParametro = "p_nombre_tabla",
+                valorParametro = PubStrNombreTablaGUM,
+                tipoParametro = System.Data.SqlDbType.VarChar
+            });
+
+            vDsCampos = vObjConexionDB.EjecutarCommand("sp_gum_dd_leer_cambios_campos", vListParametrosSP);
+
+
+
+            //creacion de objeto tablasGUM
+            foreach (DataRow vDrCampos in vDsCampos.Tables[0].Rows)
+            {
+                vObjCambiosCamposGUM = new clsCambiosCamposGUM();
+
+                vObjCambiosCamposGUM.campoModificados = Convert.ToString(vDrCampos["f_campo_modificado"]);
+                vObjCambiosCamposGUM.valorAnterior = Convert.ToString(vDrCampos["f_valor_anterior"]);
+                vObjCambiosCamposGUM.valorNuevo = Convert.ToString(vDrCampos["f_valor_nuevo"]);
+                vObjCambiosCamposGUM.propiedad = Convert.ToString(vDrCampos["f_propiedad"]);
+
+
+                vListCambiosCamposGUM.Add(vObjCambiosCamposGUM);
+                vObjCambiosCamposGUM = null;
+            }
+
+            PubListCambiosCampoGUM = new BindableCollection<clsCambiosCamposGUM>(vListCambiosCamposGUM);
+
+            //Cursor default
+            Mouse.OverrideCursor = null;
         }
 
 

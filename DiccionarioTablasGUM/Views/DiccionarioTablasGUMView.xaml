@@ -72,7 +72,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nombre tabla" Binding="{Binding Path=nombre}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Descripción" Binding="{Binding Path=descripcion}"  />
-                    <DataGridCheckBoxColumn Header="Activo GUM" Binding="{Binding Path=IndProcesoGum}" />
+                    <DataGridCheckBoxColumn Header="Activo GUM" Binding="{Binding Path=indProcesoGum}" />
                     <DataGridCheckBoxColumn Header="Ind. Cambio en base de datos" Binding="{Binding Path=indCambioEnDB}" IsReadOnly="True"/>
                     <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding Path=notas}" Width="*"  />
                     <DataGridTemplateColumn Width="Auto">

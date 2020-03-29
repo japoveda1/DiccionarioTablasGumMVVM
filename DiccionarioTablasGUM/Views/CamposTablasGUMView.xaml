@@ -27,6 +27,8 @@
             <TextBlock x:Name="PubStrNombreTablaGUM" />
         </StackPanel>
 
+        <CheckBox Content="Cambios en base de datos" Grid.Row="1" Grid.Column="3" IsChecked="{Binding PubIntTablaConCambios}" Margin="0,8,8,0"/>
+
         <TabControl Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8,0,0">
             <TabItem Header="Campos">
                 <Grid >
@@ -68,8 +70,22 @@
                     
                 </Grid>
             </TabItem>
-            <TabItem Header="Diferencias" >
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem   >
+                <TabItem.Header>
+                    <TextBlock MouseLeftButtonUp="TextBlock_MouseLeftButtonDown">
+                             Diferencias
+                    </TextBlock>
+                </TabItem.Header>
+                <Grid >
+                    <DataGrid  x:Name="dtCambiosCamposGUM" CanUserAddRows="False" ItemsSource="{Binding PubListCambiosCampoGUM}" AutoGenerateColumns="False">
+                        <DataGrid.Columns >
+                            <DataGridTextColumn  Header="Nombre de Campo" Binding="{Binding Path=campoModificados }" />
+                            <DataGridTextColumn Header="Propiedad" Binding="{Binding Path=propiedad}" />
+                            <DataGridTextColumn Header="Valor en Dicc. GUM" Binding="{Binding Path=valorAnterior }" />
+                            <DataGridTextColumn Header="Valor en DB" Binding="{Binding Path=valorNuevo}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
             </TabItem>
         </TabControl>
 
