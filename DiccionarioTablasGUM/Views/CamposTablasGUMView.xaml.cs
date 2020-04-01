@@ -25,26 +25,49 @@ namespace DiccionarioTablasGUM.Views
             InitializeComponent();
         }
 
-        private void TabItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+            this.DragMove();
+        }
 
-            //TabItem tabItem = (TabItem)sender;
-
-            //if (tabItem != null)
-            //{
-            //    vObjCamposTablasGUMViewModel.ObtenerCambiosEnDB();
-            //}
+        private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
         }
 
         private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
-
-           
-                vObjCamposTablasGUMViewModel.ObtenerCambiosEnDB();
+            vObjCamposTablasGUMViewModel.ObtenerCambiosEnDB();
             
 
+        }
+
+        private void BtnPrimero_Click(object sender, RoutedEventArgs e)
+        {
+            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+            vObjCamposTablasGUMViewModel.navegacion("primero");
+        }
+
+        private void BtnAnterior_Click(object sender, RoutedEventArgs e)
+        {
+            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+            vObjCamposTablasGUMViewModel.navegacion("anterior");
+
+        }
+
+        private void BtnSiguiente_Click(object sender, RoutedEventArgs e)
+        {
+            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+            vObjCamposTablasGUMViewModel.navegacion("siguiente");
+
+        }
+
+        private void BtnUltimo_Click(object sender, RoutedEventArgs e)
+        {
+            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+            vObjCamposTablasGUMViewModel.navegacion("ultimo");
         }
     }
 }

@@ -27,6 +27,17 @@ namespace DiccionarioTablasGUM.Views
         }
 
 
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
+        }
+
+
         private void chkSeleccion_Click(object sender, RoutedEventArgs e)
         {
 

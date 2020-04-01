@@ -93,7 +93,7 @@ namespace DiccionarioTablasGUM.Conexion
 
             foreach (var item in paramsStp) 
             {
-                vCommand.Parameters.Add("@" + item.nombreParametro, item.tipoParametro).Value = item.valorParametro;
+                vCommand.Parameters.AddWithValue("@" + item.nombreParametro, item.tipoParametro).Value = item.valorParametro;
             }
 
 

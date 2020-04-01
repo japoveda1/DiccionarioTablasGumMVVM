@@ -13,21 +13,28 @@ namespace DiccionarioTablasGUM.ViewModels
 {
 	class CamposTablasGUMViewModel : Screen
 	{
+
+
 		private string _prvStrNombreTablaGUM;
         private int? _prvIntTablaConCambios;
+        private TablasGUM PrvObjTablaGumSeleccionada;
 
-        public int? PubIntTablaConCambios
-        {
-            get { return _prvIntTablaConCambios; }
-            set { _prvIntTablaConCambios = value; }
-        }
-
+        //Objeto privado lista que contiene las tablas que  ya se encuentran agregadas al GUM
+        private List<TablasGUM> PrvListTablasGum;
 
         private BindableCollection<CamposGUM> _prvListTablasGUMCampos;
 
         private BindableCollection<clsRelacCamposGUM> _prvListRelacCamposGUM;
 
         private BindableCollection<clsCambiosCamposGUM> _prvListCambiosCampoGUM;
+
+        public int? PubIntTablaConCambios
+        {
+            get { return _prvIntTablaConCambios; }
+            set { _prvIntTablaConCambios = value;
+                NotifyOfPropertyChange(() => PubIntTablaConCambios);
+            }
+        }        
 
         public BindableCollection<clsCambiosCamposGUM> PubListCambiosCampoGUM
         {
@@ -40,11 +47,12 @@ namespace DiccionarioTablasGUM.ViewModels
             }
         }
 
-
         public string PubStrNombreTablaGUM
 		{
 			get { return _prvStrNombreTablaGUM; }
-			set { _prvStrNombreTablaGUM = value; }
+			set { _prvStrNombreTablaGUM = value;
+                NotifyOfPropertyChange(() => PubStrNombreTablaGUM);
+            }
 		}
 
         public BindableCollection<CamposGUM> PubListTablasGUMCampos
@@ -67,12 +75,18 @@ namespace DiccionarioTablasGUM.ViewModels
         /// <summary>
         /// req. 162116 jpa 25032020 
         /// Obitiene las tablas que ya fueron ingresadas en el diccionario GUM  (t735_dd_tablas)
-        /// </summary>
-        public CamposTablasGUMViewModel(string pvStrNombreTablaGUM,int? pvIntTablaConCambios=0)
+        ///// </summary>
+        public CamposTablasGUMViewModel(List<TablasGUM> pvListTablasGUM ,TablasGUM pvObjTablaGUMSeleccionada)
 		{
-			PubStrNombreTablaGUM = pvStrNombreTablaGUM;
-            ObtenerCamposGUM(pvStrNombreTablaGUM);
-            PubIntTablaConCambios = pvIntTablaConCambios;
+			PubStrNombreTablaGUM = pvObjTablaGUMSeleccionada.nombre;
+            ObtenerCamposGUM(PubStrNombreTablaGUM);
+            PubIntTablaConCambios = pvObjTablaGUMSeleccionada.indCambioEnDB;
+
+            PrvListTablasGum = pvListTablasGUM;
+            PrvObjTablaGumSeleccionada = pvObjTablaGUMSeleccionada;
+            //_prvListNombreTablasGUM = pvListNombreTablasGUM;
+
+           
         }
 
 
@@ -306,6 +320,60 @@ namespace DiccionarioTablasGUM.ViewModels
             PubListCambiosCampoGUM = new BindableCollection<clsCambiosCamposGUM>(vListCambiosCamposGUM);
 
             //Cursor default
+            Mouse.OverrideCursor = null;
+        }
+
+
+        //1:ultimo 2:anterior 3:siguiente 4:final
+        public void navegacion(string pvStrAccion) {
+
+            //Cursor en espera
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            int vIntIndexNuevaTablaSeleccionada;
+
+            switch (pvStrAccion) {
+
+
+                case "primero":
+
+                    PrvObjTablaGumSeleccionada = PrvListTablasGum.First();
+
+
+                    break;
+
+                case "anterior":
+
+
+                    vIntIndexNuevaTablaSeleccionada=  PrvListTablasGum.IndexOf(PrvObjTablaGumSeleccionada)-1;
+
+                    PrvObjTablaGumSeleccionada = PrvListTablasGum[vIntIndexNuevaTablaSeleccionada];
+
+                    break;
+
+                case "siguiente":
+
+
+                    vIntIndexNuevaTablaSeleccionada = PrvListTablasGum.IndexOf(PrvObjTablaGumSeleccionada) + 1;
+
+                    PrvObjTablaGumSeleccionada = PrvListTablasGum[vIntIndexNuevaTablaSeleccionada];
+                    break;
+
+                case "ultimo":
+
+                    PrvObjTablaGumSeleccionada = PrvListTablasGum.Last();
+                    break;
+
+
+
+
+
+            }
+
+            PubIntTablaConCambios = PrvObjTablaGumSeleccionada.indCambioEnDB;
+            PubStrNombreTablaGUM = PrvObjTablaGumSeleccionada.nombre;
+            ObtenerCamposGUM(PubStrNombreTablaGUM);
+
+            //Cursor en espera
             Mouse.OverrideCursor = null;
         }
 

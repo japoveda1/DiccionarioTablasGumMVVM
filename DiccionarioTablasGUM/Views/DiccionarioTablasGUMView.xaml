@@ -4,9 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
-        mc:Ignorable="d" FontFamily="Avenir Light"  FontSize="14"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d" 
+        FontFamily="Avenir Light"  
+        FontSize="14"
         Title="Siesa - Diccionario Tablas GUM" Height="480" Width="800" WindowStyle="None" Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Grid Background="#FFE0E0E0">
         <Grid.RowDefinitions >
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -66,7 +69,7 @@
                 <RowDefinition Height="8"/>
             </Grid.RowDefinitions>
 
-            <Button x:Name="prueba"  Height="21" Grid.Row="1" Grid.Column="4"  Margin="0,8,0,0" MinWidth="105" MaxWidth="105" ToolTip="Valida que las tablas en el diccionario GUM no tengan cambios en las bases de datos de Desarrollo, el resultado se muestra en la columna 'Ind. Cambio en base de datos'" >Validar Campos</Button>
+            <Button x:Name="prueba" Style="{DynamicResource BtnStiloBotones}" Foreground="White" Height="21" Grid.Row="1" Grid.Column="4"  Margin="0,8,0,0" MinWidth="105" MaxWidth="105" ToolTip="Valida que las tablas en el diccionario GUM no tengan cambios en las bases de datos de Desarrollo, el resultado se muestra en la columna 'Ind. Cambio en base de datos'" >Validar Campos</Button>
 
             <DataGrid  AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="2" Grid.Column="1" x:Name="dtTablasGUM" Grid.ColumnSpan="5" ItemsSource="{Binding PubListTablasGum}" SelectedItem="{Binding PubObjTablaGumSeleccionada}" Margin="0,8,8,0"  >
                 <DataGrid.Columns>
@@ -78,17 +81,18 @@
                     <DataGridTemplateColumn Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button x:Name="btnTablaCampos" Click="btnTablaCampos_Click"
-                                        >Campos ... </Button>
+                                <Button x:Name="btnTablaCampos" Click="btnTablaCampos_Click" Style="{DynamicResource BtnStiloBotones}" ToolTip="Edicion de campos de la tablas que estan registradas en el Diccionario de tablas GUM." >
+                                    <fa:ImageAwesome Icon="Table" Width="10" Height="10" Foreground="White"/>
+                                </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button x:Name="AbrirVentanaTablasDelSistema" Height="21"  Grid.Row="3" Grid.Column="1" Margin="0,8,8,0"  MinWidth="185" MaxWidth="185" ToolTip="Abre ventana donde puede escoger la tablas del sistema que desea agregar al diccionario GUM">Agregar tablas del sistema ...</Button>
-            <Button x:Name="exportar" Height="21" Grid.Row="3" Grid.Column="3" Margin="0,8,8,0" MinWidth="80" MaxWidth="80" ToolTip="Genera archivo con script para ejecutar en la base de datos de Oracle con el fin de actualizar los datos ingresados">Exportar ...</Button>
-            <Button x:Name="ConfirmarCambios" Height="21" Grid.Row="3"  Grid.Column="4" MinWidth="100" MaxWidth="100" Margin="0,8,0,0" ToolTip="Guarda los cambios realizados sobre las tablas del diccionario GUM">Guardar</Button>
+            <Button x:Name="AbrirVentanaTablasDelSistema" Style="{DynamicResource BtnStiloBotones}" Foreground="White" Height="21"  Grid.Row="3" Grid.Column="1" Margin="0,8,8,0"  MinWidth="185" MaxWidth="185" ToolTip="Abre ventana donde puede escoger la tablas del sistema que desea agregar al diccionario GUM">Agregar tablas del sistema ...</Button>
+            <Button x:Name="exportar" Style="{DynamicResource BtnStiloBotones}" Foreground="White" Height="21" Grid.Row="3" Grid.Column="3" Margin="0,8,8,0" MinWidth="80" MaxWidth="80" ToolTip="Genera archivo con script para ejecutar en la base de datos de Oracle con el fin de actualizar los datos ingresados">Exportar ...</Button>
+            <Button  x:Name="ConfirmarCambios" Style="{DynamicResource BtnStiloBotones}" Foreground="White" Height="21" Grid.Row="3"  Grid.Column="4" MinWidth="105" MaxWidth="100" Margin="0,8,0,0" ToolTip="Guarda los cambios realizados sobre las tablas del diccionario GUM">Guardar</Button>
 
         </Grid>
     </Grid> 

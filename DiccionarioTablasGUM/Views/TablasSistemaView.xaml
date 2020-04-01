@@ -5,8 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
         mc:Ignorable="d" FontFamily="Avenir Light"  FontSize="14"
-        Title="Siesa - Diccionario Tablas GUM" Height="450" Width="350"  Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen" >  
-    <Grid >
+        Title="Siesa - Diccionario Tablas GUM" Height="450" Width="350" WindowStyle="None"  Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen" >
+
+    <Grid Background="#FFE0E0E0">
+        <Grid.RowDefinitions >
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+
+        <Grid Grid.Row="0" Background="#0E4D96" Height="50" VerticalAlignment="Top" MouseLeftButtonDown="Grid_MouseLeftButtonDown" >
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="8"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Image x:Name="ImagenLogoSiesa" 
+                   Source="/Assets/logoSiesaBlanco.png" 
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Left"
+                   Height="48"
+                   Grid.Column="2"/>
+
+            <TextBlock x:Name="CerrarDiccionarioTablasGum" TextAlignment="Right" VerticalAlignment="Center"  FontFamily="Avenir LT Std 65 Medium"                            
+                            Cursor="Hand"
+                           Foreground="White" Grid.Column="3"
+                        MinWidth="211" ToolTip="Cerrar ventana"><Run Text="X" MouseLeftButtonDown="Run_MouseLeftButtonDown"/></TextBlock>
+        </Grid>
+
+    
+    
+    <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8"/>
             <ColumnDefinition Width="auto"/>            
@@ -46,6 +83,7 @@
             </DataGrid.Columns>            
         </DataGrid>
 
-        <Button x:Name="AdicionarTablasDiccionarioGUM" Grid.Row="3"  Grid.Column="3" Margin="0,8,8,0" >Guardar</Button>
+        <Button x:Name="AdicionarTablasDiccionarioGUM" Style="{DynamicResource BtnStiloBotones}" Foreground="White" Grid.Row="3" MinWidth="80" Grid.Column="3" Margin="0,8,8,0" >Guardar</Button>
+    </Grid>
     </Grid>
 </Window>

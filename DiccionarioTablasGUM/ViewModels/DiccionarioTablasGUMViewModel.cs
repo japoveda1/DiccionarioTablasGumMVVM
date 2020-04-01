@@ -19,6 +19,8 @@ namespace DiccionarioTablasGUM.ViewModels
         //Objeto para gestionar las ventanas hijas 
         private IWindowManager prvObjManager = new WindowManager();
 
+        private TablasGUM _prvObjTablaGumSeleccionada;
+
         //Objeto privado lista que contiene las tablas que  ya se encuentran agregadas al GUM
         private BindableCollection<TablasGUM> _prvListTablasGum;
 
@@ -33,7 +35,7 @@ namespace DiccionarioTablasGUM.ViewModels
                 }
         }
 
-        private TablasGUM _prvObjTablaGumSeleccionada;
+        
 
         public TablasGUM PubObjTablaGumSeleccionada
         {
@@ -171,7 +173,11 @@ namespace DiccionarioTablasGUM.ViewModels
 
         public void AbrirVentanaCampos()
         {
-            CamposTablasGUMViewModel vObjCamposTablasGum = new CamposTablasGUMViewModel(PubObjTablaGumSeleccionada.nombre,PubObjTablaGumSeleccionada.indCambioEnDB);
+            List<string> vListNombreTablasGUM;
+
+            vListNombreTablasGUM = PubListTablasGum.Select(vTabla => vTabla.nombre).ToList();
+
+            CamposTablasGUMViewModel vObjCamposTablasGum = new CamposTablasGUMViewModel(PubListTablasGum.ToList(),PubObjTablaGumSeleccionada );
 
             prvObjManager.ShowDialog(vObjCamposTablasGum, null, null);
 
