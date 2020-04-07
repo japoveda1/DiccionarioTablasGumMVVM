@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace DiccionarioTablasGUM.Models
 {
     public class clsCambiosCamposGUM
-    { 
+    {
+        public string nombreTabla { get; set; }
         public string campoModificados { get; set; }
         public string valorAnterior { get; set; }
         public string valorNuevo { get; set; }

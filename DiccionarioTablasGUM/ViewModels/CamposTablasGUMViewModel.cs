@@ -17,16 +17,31 @@ namespace DiccionarioTablasGUM.ViewModels
 
 		private string _prvStrNombreTablaGUM;
         private int? _prvIntTablaConCambios;
-        private TablasGUM PrvObjTablaGumSeleccionada;
+        private clsTablasGUM PrvObjTablaGumSeleccionada;
 
         //Objeto privado lista que contiene las tablas que  ya se encuentran agregadas al GUM
-        private List<TablasGUM> PrvListTablasGum;
+        private List<clsTablasGUM> PrvListTablasGum;
 
         private BindableCollection<CamposGUM> _prvListTablasGUMCampos;
 
         private BindableCollection<clsRelacCamposGUM> _prvListRelacCamposGUM;
 
         private BindableCollection<clsCambiosCamposGUM> _prvListCambiosCampoGUM;
+
+        public CamposGUM _prvListTablasGUMCamposSeleccionada;
+
+        public CamposGUM PubListTablasGUMCamposSeleccionada
+        {
+            get
+            {
+                return _prvListTablasGUMCamposSeleccionada;
+            }
+            set
+            {
+                _prvListTablasGUMCamposSeleccionada = value;
+                NotifyOfPropertyChange(() => PubListTablasGUMCamposSeleccionada);
+            }
+        }
 
         public int? PubIntTablaConCambios
         {
@@ -76,16 +91,21 @@ namespace DiccionarioTablasGUM.ViewModels
         /// req. 162116 jpa 25032020 
         /// Obitiene las tablas que ya fueron ingresadas en el diccionario GUM  (t735_dd_tablas)
         ///// </summary>
-        public CamposTablasGUMViewModel(List<TablasGUM> pvListTablasGUM ,TablasGUM pvObjTablaGUMSeleccionada)
+        public CamposTablasGUMViewModel(List<clsTablasGUM> pvListTablasGUM ,clsTablasGUM pvObjTablaGUMSeleccionada)
 		{
 			PubStrNombreTablaGUM = pvObjTablaGUMSeleccionada.nombre;
             ObtenerCamposGUM(PubStrNombreTablaGUM);
+            //PubListTablasGUMCampos = new BindableCollection<CamposGUM>(pvListTablasGUMCampos);
+            //PubListRelacCamposGUM = new BindableCollection<clsRelacCamposGUM>(pvListRelacCamposGUM);
+
+            //,
+            //                            List<CamposGUM> pvListTablasGUMCampos, List< clsRelacCamposGUM > pvListRelacCamposGUM,
+            //                            List<clsCambiosCamposGUM> pvListCambiosCampoGUM
             PubIntTablaConCambios = pvObjTablaGUMSeleccionada.indCambioEnDB;
 
             PrvListTablasGum = pvListTablasGUM;
             PrvObjTablaGumSeleccionada = pvObjTablaGUMSeleccionada;
             //_prvListNombreTablasGUM = pvListNombreTablasGUM;
-
            
         }
 
@@ -120,7 +140,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
             vDsCampos = vObjConexionDB.EjecutarCommand("sp_gum_dd_leer_campos_relac_x_tabla", vListParametrosSP);
             
-            //creacion de objeto tablasGUM
+            //creacion de objeto clsTablasGUM
             foreach (DataRow vDrCampos in vDsCampos.Tables[0].Rows)
             {
                 vCamposGum = new CamposGUM();
@@ -149,7 +169,7 @@ namespace DiccionarioTablasGUM.ViewModels
             }
 
 
-            //creacion de objeto tablasGUM
+            //creacion de objeto clsTablasGUM
             foreach (DataRow vDrCampos in vDsCampos.Tables[1].Rows)
             {
                 vObjRelacCamposGUM = new clsRelacCamposGUM();
@@ -184,14 +204,18 @@ namespace DiccionarioTablasGUM.ViewModels
             clsConexion vObjConexionDB = new clsConexion();
             //Objeto con parametros lista de parametros
             List<clsConexion.ParametrosSP> vListParametrosSP;
+            List<CamposGUM> vListCamposGUM;
 
             //Cursor en espera
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
             vObjConexionDB.AbrirConexion();
 
+            vListCamposGUM = PubListTablasGUMCampos.Where(vTablaCampos => vTablaCampos.indCambio == 1).ToList();
+
+
             // se recorren las tablas editadas y se guardan sus datos
-            foreach (CamposGUM vCamposGUM in PubListTablasGUMCampos)
+            foreach (CamposGUM vCamposGUM in vListCamposGUM)
             {
                 vListParametrosSP = new List<clsConexion.ParametrosSP>();
 
@@ -302,7 +326,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
 
 
-            //creacion de objeto tablasGUM
+            //creacion de objeto clsTablasGUM
             foreach (DataRow vDrCampos in vDsCampos.Tables[0].Rows)
             {
                 vObjCambiosCamposGUM = new clsCambiosCamposGUM();
@@ -322,7 +346,6 @@ namespace DiccionarioTablasGUM.ViewModels
             //Cursor default
             Mouse.OverrideCursor = null;
         }
-
 
         //1:ultimo 2:anterior 3:siguiente 4:final
         public void navegacion(string pvStrAccion) {

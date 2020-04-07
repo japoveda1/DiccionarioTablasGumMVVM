@@ -55,9 +55,7 @@ namespace DiccionarioTablasGUM.Views
 
             vObjTablasSistemaViewModel.SeleccionarTablasRelacionadas(vIntIndSeleccion);
             dgTablasSistema.Items.Refresh();
-
-
-
+                       
         }
 
     }

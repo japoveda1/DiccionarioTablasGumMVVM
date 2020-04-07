@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
         mc:Ignorable="d" FontFamily="Avenir Light"  FontSize="14"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         Title="Siesa - Diccionario Tablas GUM" Height="450" Width="350" WindowStyle="None"  Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen" >
 
     <Grid Background="#FFE0E0E0">
@@ -25,20 +26,25 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
+                <RowDefinition Height="8" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="8" />
             </Grid.RowDefinitions>
 
             <Image x:Name="ImagenLogoSiesa" 
                    Source="/Assets/logoSiesaBlanco.png" 
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Left"
-                   Height="48"
-                   Grid.Column="2"/>
+                   Height="auto"
+                   Grid.Column="2"
+                   Grid.Row="1"/>
 
             <TextBlock x:Name="CerrarDiccionarioTablasGum" TextAlignment="Right" VerticalAlignment="Center"  FontFamily="Avenir LT Std 65 Medium"                            
                             Cursor="Hand"
-                           Foreground="White" Grid.Column="3"
-                        MinWidth="211" ToolTip="Cerrar ventana"><Run Text="X" MouseLeftButtonDown="Run_MouseLeftButtonDown"/></TextBlock>
+                           Foreground="White" 
+                       Grid.Column="3"
+                       Grid.Row="1"
+                       ToolTip="Cerrar ventana"><Run Text="X" MouseLeftButtonDown="Run_MouseLeftButtonDown"/></TextBlock>
         </Grid>
 
     
@@ -83,7 +89,17 @@
             </DataGrid.Columns>            
         </DataGrid>
 
-        <Button x:Name="AdicionarTablasDiccionarioGUM" Style="{DynamicResource BtnStiloBotones}" Foreground="White" Grid.Row="3" MinWidth="80" Grid.Column="3" Margin="0,8,8,0" >Guardar</Button>
+            <Button x:Name="AdicionarTablasDiccionarioGUM"  
+                    Foreground="White"
+                    Background="Transparent" 
+                    BorderThickness="0" 
+                    Grid.Row="3" 
+                    Height="30" 
+                    MinWidth="30" MaxWidth="30"
+                    Grid.Column="3" 
+                    Margin="0,8,0,0" >
+                <fa:ImageAwesome Icon="Save" Width="21" Height="21" Foreground="#0E4D96"/>
+            </Button>
     </Grid>
     </Grid>
 </Window>

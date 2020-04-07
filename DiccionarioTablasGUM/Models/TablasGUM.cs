@@ -15,7 +15,10 @@ namespace DiccionarioTablasGUM.Models
 		public Int16 indCambio { get; set; }
 		public Int16 indCambioEnDB { get; set; }
 		public Int16 IndEsNuevo { get; set; }
-		
+        public Int16 indCampoAgregado { get; set; }
+        public Int16 indCampoModificado { get; set; }
 
-	}
+
+
+    }
 }

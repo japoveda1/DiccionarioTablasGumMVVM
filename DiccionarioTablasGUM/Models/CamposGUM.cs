@@ -25,8 +25,6 @@ namespace DiccionarioTablasGUM.Models
         public Int16 indGumSincronizado	{ get; set; }
         public Int16 indGumSugerir      { get; set; }
         public Int16 indCambioEnDb      { get; set; }
-
-
-		public int MyProperty { get; set; }
+        public Int16 indCambio          { get; set; }
     }
 }

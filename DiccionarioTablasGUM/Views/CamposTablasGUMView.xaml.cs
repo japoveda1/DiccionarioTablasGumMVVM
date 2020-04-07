@@ -69,5 +69,12 @@ namespace DiccionarioTablasGUM.Views
             CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
             vObjCamposTablasGUMViewModel.navegacion("ultimo");
         }
+
+        private void DtCamposGUM_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+            vObjCamposTablasGUMViewModel.PubListTablasGUMCampos.Where(vTabla => vTabla.nombre == vObjCamposTablasGUMViewModel.PubListTablasGUMCamposSeleccionada.nombre).First().indCambio = 1;
+
+        }
     }
 }
