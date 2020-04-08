@@ -48,11 +48,16 @@
                   Grid.Row="1"
                    Grid.Column="2"/>
 
-            <TextBlock x:Name="CerrarDiccionarioTablasGum" TextAlignment="Right" VerticalAlignment="Center"  FontFamily="Avenir LT Std 65 Medium"                            
+
+            <StackPanel Grid.Column="3" Grid.Row="1">
+
+                <TextBlock x:Name="CerrarDiccionarioTablasGum" TextAlignment="Right" VerticalAlignment="Center"  FontFamily="Avenir LT Std 65 Medium"                            
                             Cursor="Hand"
-                           Foreground="White" Grid.Column="3" Grid.Row="1"
+                           Foreground="White" 
                         MinWidth="211" ToolTip="Cerrar ventana"><Run Text="X" MouseLeftButtonDown="Run_MouseLeftButtonDown"/></TextBlock>
-        </Grid>
+            </StackPanel>
+
+         </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -73,31 +78,28 @@
                 <RowDefinition Height="8"/>
             </Grid.RowDefinitions>
 
-
-
             <DataGrid  AutoGenerateColumns="False"
                        CanUserAddRows="False"  
                        Grid.Row="2" 
-                       Grid.Column="1" x:Name="dtTablasGUM" 
+                       Grid.Column="1" 
+                       x:Name="dtTablasGUM" 
                        Grid.ColumnSpan="5" 
                        CellEditEnding="DtTablasGUM_CellEditEnding"
-                       RowEditEnding="DtTablasGUM_RowEditEnding"
+                       CurrentCellChanged="DtTablasGUM_CurrentCellChanged"
                        ItemsSource="{Binding PubListTablasGum }" 
                        SelectedItem="{Binding PubObjTablaGumSeleccionada}" 
-                       Margin="0,8,0,0"
-                       CurrentCellChanged="DtTablasGUM_CurrentCellChanged"
-                       >
+                       Margin="0,8,0,0">
                 <DataGrid.Columns>
                     <DataGridCheckBoxColumn Header="Ind. Cambio en base de datos" Binding="{Binding  indCambioEnDB}" IsReadOnly="True"/>
-                    <DataGridCheckBoxColumn Header="Ind. Cambio en herramienta" Binding="{Binding Path=indCambio}"   />
+                    <DataGridCheckBoxColumn Header="Ind. Cambio en herramienta" Binding="{Binding indCambio}"   />
                     <DataGridTextColumn Header="Nombre tabla" Binding="{Binding  nombre }" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion }"  />
+                    <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion}"  />
                     <DataGridCheckBoxColumn Header="Activo GUM" Binding="{Binding  indProcesoGum }" />
                     <DataGridCheckBoxColumn Header="Campos Agregados" Binding="{Binding  indCampoAgregado  }" IsReadOnly="True"/>
                     <DataGridCheckBoxColumn Header="Campos Modificados" Binding="{Binding  indCampoModificado }" IsReadOnly="True"/>
                     <DataGridCheckBoxColumn Header="Objeto Nuevo" Binding="{Binding  IndEsNuevo }" IsReadOnly="True"/>
                     <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding  notas}" Width="*"  />
-                    <DataGridTemplateColumn Width="Auto">
+                    <DataGridTemplateColumn Header="Acciones" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button x:Name="btnTablaCampos"  
@@ -130,7 +132,7 @@
                     <TextBlock Text=" Actualizar"/>
                 </StackPanel>
             </Button>
-            <Button Click="ButtonCerrar_Click"
+            <Button x:Name="exportar"
                     Foreground="White"
                     Style="{DynamicResource BtnStiloBotones}" 
                     BorderThickness="0" 

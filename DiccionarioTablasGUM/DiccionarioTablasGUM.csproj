@@ -78,6 +78,8 @@
     <Compile Include="Conexion\clsConexion.cs" />
     <Compile Include="Models\CamposGUM.cs" />
     <Compile Include="Models\clsCambiosCamposGUM.cs" />
+    <Compile Include="Models\clsCamposGUM.cs" />
+    <Compile Include="Models\clsObjetosExportar.cs" />
     <Compile Include="Models\clsRelacCamposGUM.cs" />
     <Compile Include="Models\clsTablasGUM.cs" />
     <Compile Include="Models\TablasGUM.cs" />

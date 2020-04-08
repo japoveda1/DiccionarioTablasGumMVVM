@@ -15,5 +15,6 @@ namespace DiccionarioTablasGUM.Models
         public string nombreCampoRef { get; set; }
         public Int16 indInner { get; set; }
         public Int16 indOrden { get; set; }
+        public Int16 indCreado { get; set; }
     }
 }

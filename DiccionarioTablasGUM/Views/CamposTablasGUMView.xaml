@@ -87,7 +87,13 @@
         <TabControl Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8,0,0">
             <TabItem Header="Campos">
                 <Grid >
-                        <DataGrid x:Name="dtCamposGUM" CanUserAddRows="False" ItemsSource="{Binding PubListTablasGUMCampos}" SelectedItem="{Binding PubListTablasGUMCamposSeleccionada}" AutoGenerateColumns="False" CellEditEnding="DtCamposGUM_CellEditEnding">
+                        <DataGrid x:Name="dtCamposGUM" 
+                                  CanUserAddRows="False" 
+                                  ItemsSource="{Binding PubListCamposGUMActual}" 
+                                  SelectedItem="{Binding PubListTablasGUMCamposSeleccionada}" 
+                                  AutoGenerateColumns="False" 
+                                  CellEditEnding="DtCamposGUM_CellEditEnding"
+                                  CurrentCellChanged="DtCamposGUM_CurrentCellChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Nombre Campo" Binding="{Binding nombre}" Width="auto"  IsReadOnly="True"/>
                             <DataGridTextColumn Header="Descripción" Binding="{Binding  Path=descripcion}" Width="auto" />
@@ -102,7 +108,7 @@
                             <DataGridCheckBoxColumn Header="Configurable en GUM" Binding="{Binding  Path=indGumConfigurable}" Width="auto" />
                             <DataGridCheckBoxColumn Header="Sincronizable en GUM" Binding="{Binding  Path=indGumSincronizado}" Width="auto" />
                             <DataGridCheckBoxColumn Header="Sugerible en GUM" Binding="{Binding  Path=indGumSugerir}" Width="auto" />
-
+                            <DataGridCheckBoxColumn Header="Ind Modificado en Herrmaienta" Binding="{Binding  Path=indCambio}" Width="auto" />
                         </DataGrid.Columns>
                                       
                         
@@ -112,27 +118,20 @@
             </TabItem>
             <TabItem Header="Relaciones">
                 <Grid >
-                    <DataGrid x:Name="dtRelacGUM" CanUserAddRows="False" ItemsSource="{Binding PubListRelacCamposGUM}" AutoGenerateColumns="False">
+                        <DataGrid x:Name="dtRelacGUM" CanUserAddRows="False" ItemsSource="{Binding PubListRelacCamposGUMActual}" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Relacion" Binding="{Binding Path=nombreRelacion}" />
                             <DataGridTextColumn Header="Orden" Binding="{Binding Path=indOrden}" />
                             <DataGridTextColumn Header="Nombre tabla Referenciada" Binding="{Binding Path=nombreTablaRef}"/>
                             <DataGridTextColumn Header="Nombre campo" Binding="{Binding Path=nombreCampo}" />
                             <DataGridTextColumn Header="nombre campo Referenciado" Binding="{Binding Path=nombreCampoRef}" />                            
-                        </DataGrid.Columns>
-                     
-                    </DataGrid>
-                    
+                        </DataGrid.Columns>                     
+                    </DataGrid>                    
                 </Grid>
             </TabItem>
-            <TabItem   >
-                <TabItem.Header>
-                    <TextBlock MouseLeftButtonUp="TextBlock_MouseLeftButtonDown">
-                             Diferencias
-                    </TextBlock>
-                </TabItem.Header>
-                <Grid >
-                    <DataGrid  x:Name="dtCambiosCamposGUM" CanUserAddRows="False" ItemsSource="{Binding PubListCambiosCampoGUM}" AutoGenerateColumns="False">
+            <TabItem    Header="Actualizacion">
+                    <Grid >
+                        <DataGrid  x:Name="dtCambiosCamposGUM" CanUserAddRows="False" ItemsSource="{Binding PubListCambiosCampoGUMAtual}" AutoGenerateColumns="False">
                         <DataGrid.Columns >
                             <DataGridTextColumn  Header="Nombre de Campo" Binding="{Binding Path=campoModificados }" />
                             <DataGridTextColumn Header="Propiedad" Binding="{Binding Path=propiedad}" />

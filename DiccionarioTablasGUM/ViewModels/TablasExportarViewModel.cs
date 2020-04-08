@@ -41,7 +41,7 @@ namespace DiccionarioTablasGUM.ViewModels
                 {
 
                     nombreTabla = v,
-                    seleccion = 1
+                    seleccion = 0
                 };
 
                 vListObj.Add(vObj);

@@ -25,20 +25,30 @@ namespace DiccionarioTablasGUM.Views
     public partial class DiccionarioTablasGUMView : Window
     {
         ProcesandoView procesando;
+        private DataGridRow vRow;
+        private int prvIndPermiteDragMove;
+
         public DiccionarioTablasGUMView()
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            prvIndPermiteDragMove = 1;
         }
 
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.DragMove();
+            if (prvIndPermiteDragMove == 1) {
+
+                this.DragMove();
+
+            }
+            prvIndPermiteDragMove = 1;
         }
 
         private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+
             this.Close();
         }
 
@@ -50,99 +60,23 @@ namespace DiccionarioTablasGUM.Views
 
         private void DtTablasGUM_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            //DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
-            ////dtTablasGUM.BeginEdit();
-            //vObjDiccionarioTablasGUM.MarcarCambio();
-            //dtTablasGUM.CommitEdit(DataGridEditingUnit.Cell, true);
-            //dtTablasGUM.Items.Refresh();
+            if (e.Column.Header.Equals("Descripción") || e.Column.Header.Equals("Notas") || e.Column.Header.Equals("Activo GUM"))
+            {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                ((clsTablasGUM)dtTablasGUM.Items.GetItemAt(e.Row.GetIndex())).indCambio = 1;
 
-
-            //var a = 5;
-            //var vObj = (System.Windows.Controls.DataGrid)sender;
-
-            //if (vObj.CurrentColumn.Header.Equals("Descripción"))
-            //{
-
-            //    var c = (clsTablasGUM)vObj.CurrentItem;
-
-
-            //    c.indCambio = 1;
-
-            //    dtTablasGUM.CommitEdit(DataGridEditingUnit.Cell, true);
-            //    dtTablasGUM.Items.Refresh();
-
-            //}
-
-
-            //var vObj = (System.Windows.Controls.DataGrid)sender;
+                vRow = e.Row;
+                Mouse.OverrideCursor = null;
+            }
         }
 
-
-        private void DtTablasGUM_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        {
-            var a = 5;
-            var vObj = (System.Windows.Controls.DataGrid)sender;
-
-
-            var vE =e.Row;
-
-            var f = (clsTablasGUM)vE.Item;
-
-            f.indCambio = 1;
-
-            dtTablasGUM.CommitEdit(DataGridEditingUnit.Row, true);
-
-            //if (vObj.CurrentColumn.Header.Equals("Descripción"))
-            //{
-
-            //    var c = (clsTablasGUM)vObj.CurrentItem;
-
-            //    //vObjDiccionarioTablasGUM.MarcarCambio();
-
-            //    c.indCambio = 1;
-
-            //    dtTablasGUM.CommitEdit(DataGridEditingUnit.Cell, true);
-            //    //dtTablasGUM.Items.Refresh();
-
-            //}
-            //            DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
-            //dtTablasGUM.BeginEdit();
-
-            //vObjDiccionarioTablasGUM.MarcarCambio();
-
-            //dtTablasGUM.Items.Refresh();
-
-
-            //var vItemCurrent = (clsTablasGUM)dtTablasGUM.CurrentItem;
-            ////vItemCurrent.indCambio = 1;
-            ////vItemCurrent.indCampoAgregado = 1;
-            ////vItemCurrent.indCampoModificado = -1;
-            ////vItemCurrent.IndEsNuevo = 1;
-            ////vItemCurrent.indProcesoGum = 1;
-            ////dtTablasGUM.CommitEdit();
-            //var vObj = (System.Windows.Controls.DataGrid)sender;
-            //var c = (clsTablasGUM)vObj.CurrentItem;
-
-            //c.indCambio = 1;
-            //c.indCampoAgregado = 1;
-            //c.indCampoModificado = -1;
-            //c.IndEsNuevo = 1;
-            //c.indProcesoGum = 1;
-
-        }
-
-
-
-
-
-
-
+ 
         private async void ButtonAbrir_Click(object sender, RoutedEventArgs e)
         {
            
             procesando = new ProcesandoView();
-            procesando.Show();
 
+            procesando.Show();
 
             await ActualizarTablasGum();
 
@@ -158,40 +92,33 @@ namespace DiccionarioTablasGUM.Views
 
         private async Task ActualizarTablasGum() {
             DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
-
-            await Task.Run(()=> vObjDiccionarioTablasGUM.ActualizarTablasGum());
-
+            //if (vObjDiccionarioTablasGUM.ConfirmacionCambiosPendientes("Hay cambios sin guardar , si continua con la actualizacion los perdera.¿Desea continuar?", 1))
+            //{
+                await Task.Run(() => vObjDiccionarioTablasGUM.ObtenerTablasGUM(1));
+            //}
+            //else {
+            //    await Task.CompletedTask;
+            //}
+          
         }
 
         private void DtTablasGUM_CurrentCellChanged(object sender, EventArgs e)
         {
+           
+            if (vRow != null)
 
+            {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                dtTablasGUM.CommitEdit();
 
-            //DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
-            ////dtTablasGUM.BeginEdit();
-            //var a = 5;
-            //var vObj = (System.Windows.Controls.DataGrid)sender;
+                dtTablasGUM.Items.Refresh();
 
-            //if (vObj.CurrentColumn.Header.Equals("Descripción"))
-            //{
-
-            //    var c = (clsTablasGUM)vObj.CurrentItem;
-
-            //    //vObjDiccionarioTablasGUM.MarcarCambio();
-
-            //    c.indCambio = 1;
-
-            //    dtTablasGUM.CommitEdit(DataGridEditingUnit.Cell, true);
-                //dtTablasGUM.Items.Refresh();
-
-            //}
-
-
-
-
+                vRow = null;
+                Mouse.OverrideCursor = null;
+            }
+           
         }
 
-
-
+ 
     }
 }

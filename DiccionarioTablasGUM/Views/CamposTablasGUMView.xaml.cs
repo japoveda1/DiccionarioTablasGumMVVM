@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DiccionarioTablasGUM.Models;
 using DiccionarioTablasGUM.ViewModels; 
 
 namespace DiccionarioTablasGUM.Views
@@ -20,6 +21,9 @@ namespace DiccionarioTablasGUM.Views
     /// </summary>
     public partial class CamposTablasGUMView : Window
     {
+        private DataGridRow vRow;
+
+
         public CamposTablasGUMView()
         {
             InitializeComponent();
@@ -34,14 +38,6 @@ namespace DiccionarioTablasGUM.Views
         private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.Close();
-        }
-
-        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
-            vObjCamposTablasGUMViewModel.ObtenerCambiosEnDB();
-            
-
         }
 
         private void BtnPrimero_Click(object sender, RoutedEventArgs e)
@@ -72,8 +68,30 @@ namespace DiccionarioTablasGUM.Views
 
         private void DtCamposGUM_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
-            vObjCamposTablasGUMViewModel.PubListTablasGUMCampos.Where(vTabla => vTabla.nombre == vObjCamposTablasGUMViewModel.PubListTablasGUMCamposSeleccionada.nombre).First().indCambio = 1;
+            if (e.Column.Header.Equals("Descripción") || e.Column.Header.Equals("Notas") || e.Column.Header.Equals("Activo GUM"))
+            {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                ((clsCamposGUM)dtCamposGUM.Items.GetItemAt(e.Row.GetIndex())).indCambio = 1;
+
+                vRow = e.Row;
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        private void DtCamposGUM_CurrentCellChanged(object sender, EventArgs e)
+        {
+
+            if (vRow != null)
+
+            {
+                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+                dtCamposGUM.CommitEdit();
+
+                dtCamposGUM.Items.Refresh();
+
+                vRow = null;
+                Mouse.OverrideCursor = null;
+            }
 
         }
     }
