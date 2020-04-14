@@ -63,26 +63,27 @@ namespace DiccionarioTablasGUM.Conexion
             SqlDataAdapter vSqlDataAdapter = new SqlDataAdapter();
             DataSet vDataSet = new DataSet();
 
-            vTransaction = prvSqlConnection.BeginTransaction();
+            //vTransaction = prvSqlConnection.BeginTransaction();
 
             try
             {
 
                 vCommand.CommandText = pvStrQuery;
                 vCommand.CommandTimeout = 600;
-                vCommand.Transaction = vTransaction;
+                //vCommand.Transaction = vTransaction;
                 vCommand.Connection = prvSqlConnection;
 
                 vSqlDataAdapter.SelectCommand = vCommand;
 
                 vSqlDataAdapter.Fill(vDataSet);
 
-                vTransaction.Commit();
+               // vTransaction.Commit();
 
 
-            } catch {
+            } catch(Exception e) {
 
-                vTransaction.Commit();
+
+                //vTransaction.Rollback();
 
             }
 
@@ -135,7 +136,7 @@ namespace DiccionarioTablasGUM.Conexion
                 vTransaction.Commit();
 
             }
-            catch {
+            catch(Exception e) {
 
                 vTransaction.Rollback();
 

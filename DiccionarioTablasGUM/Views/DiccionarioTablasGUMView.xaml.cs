@@ -123,6 +123,32 @@ namespace DiccionarioTablasGUM.Views
 
         private void cerrar_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult vObjRespuestaUsuario;
+            DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
+
+            if (vObjDiccionarioTablasGUM.PubListTablasGum.Where(vCampo => vCampo.indCambio == 1).Any())
+            {
+
+                vObjRespuestaUsuario = System.Windows.MessageBox.Show("Hay cambios sin salvar.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNoCancel);
+
+                if (vObjRespuestaUsuario == MessageBoxResult.None)
+                {
+                    return;
+                }
+
+                if (vObjRespuestaUsuario == MessageBoxResult.Yes)
+                {
+                    vObjDiccionarioTablasGUM.ConfirmarCambios();
+                }
+                else
+                {
+                    if (vObjRespuestaUsuario == MessageBoxResult.Cancel) {
+                        return;
+                    }
+
+                }
+            }
+
             this.Close();
         }
 

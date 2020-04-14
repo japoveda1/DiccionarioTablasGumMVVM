@@ -175,6 +175,7 @@ namespace DiccionarioTablasGUM.ViewModels
                 vObjRelacCamposGUM.nombreCampoRef = Convert.ToString(vDrRelaciones["f_nombre_campo_ref"]).Trim();
                 vObjRelacCamposGUM.indInner = Convert.ToInt16(vDrRelaciones["f_ind_inner"]);
                 vObjRelacCamposGUM.indOrden = Convert.ToInt16(vDrRelaciones["f_ind_orden"]);
+                vObjRelacCamposGUM.indCreadoEnGrilla = 0;
 
                 PrvListRelacCamposGum.Add(vObjRelacCamposGUM);
                 vObjRelacCamposGUM = null;
@@ -427,6 +428,9 @@ namespace DiccionarioTablasGUM.ViewModels
             
         }
 
+        /// <summary>
+        /// req. 162116 jpa 13042020
+        /// </summary>
         public void Exportar()
         {
             List<clsConexion.ParametrosSP> vListParametrosSP;
@@ -441,6 +445,21 @@ namespace DiccionarioTablasGUM.ViewModels
             //creo la conexion a la base de datos
             clsConexion vObjConexionDB = new clsConexion();
 
+            if (PubListTablasGum.Where(vTabla => vTabla.indCambio == 1).Any())
+            {
+
+                if (System.Windows.MessageBox.Show("Para realizar esta operacion es necesario salvar los datos.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    ConfirmarCambios();
+                }
+                else
+                {
+
+                    return;
+                }
+            }
+
+
             //Cursor en espera
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
@@ -452,7 +471,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
             vObjConexionDB.CerrarConexion();
 
-
+            /*
             vDtmFechaHora = DateTime.Now;
             vStrPrefijoFecha = Convert.ToDateTime(vDtmFechaHora).ToString("yyddMM");
             vStrPrefijoHora = Convert.ToDateTime(vDtmFechaHora).ToString("HHmmss");
@@ -475,8 +494,10 @@ namespace DiccionarioTablasGUM.ViewModels
                 }
             }
 
-            vListParametrosSP.Clear();            
+                     
+            */
 
+            System.Windows.MessageBox.Show("Todos los datos del diccionario se actualizaron en Oracle desarrollo", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
             Mouse.OverrideCursor = null;
 
 

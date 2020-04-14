@@ -133,6 +133,8 @@ namespace DiccionarioTablasGUM.ViewModels
             //Cursor en espera
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
+            var a = PubListRelacCamposGUMActual;
+
             vObjConexionDB.AbrirConexion();
 
             vListCamposGUM = PubListCamposGUMActual.Where(vTablaCampos => vTablaCampos.indCambio == 1).ToList();
@@ -212,6 +214,9 @@ namespace DiccionarioTablasGUM.ViewModels
 
             PubListCamposGUMActual.Where(vTablaCampos => vTablaCampos.indCambio == 1).Apply(x => x.indCambio =0);
 
+            PubListCamposGUMActual = PubListCamposGUMActual;
+
+            AgregarRelacionManual();
             //Cursor en espera
             Mouse.OverrideCursor = null;
 
@@ -227,7 +232,7 @@ namespace DiccionarioTablasGUM.ViewModels
         public void Navegacion(string pvStrAccion) {
 
             //Cursor en espera
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            
 
             int vIntIndexNuevaTablaSeleccionada;
 
@@ -242,6 +247,8 @@ namespace DiccionarioTablasGUM.ViewModels
                 }
             }
 
+
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
             switch (pvStrAccion) {
                 case "primero":
                     PrvObjTablaGumSeleccionada = PrvListTablasGum.First();
@@ -286,6 +293,91 @@ namespace DiccionarioTablasGUM.ViewModels
             Mouse.OverrideCursor = null;
         }
 
-  
+
+        public void AgregarRelacionManual()
+        {
+            clsConexion vObjConexionDB = new clsConexion();
+            //Objeto con parametros lista de parametros
+            List<clsConexion.ParametrosSP> vListParametrosSP;
+            List<clsRelacCamposGUM> vListCamposGUM;
+
+            //Cursor en espera
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+            var a = PubListRelacCamposGUMActual;
+
+            vObjConexionDB.AbrirConexion();
+
+            vListCamposGUM = PubListRelacCamposGUMActual.Where(vTablaCampos => vTablaCampos.indCreadoEnGrilla == 1).ToList();
+
+            if (vListCamposGUM.Count() == 0) {
+                return;
+            }
+
+            // se recorren las tablas editadas y se guardan sus datos
+            foreach (clsRelacCamposGUM vCamposGUM in vListCamposGUM)
+            {
+                vListParametrosSP = new List<clsConexion.ParametrosSP>();
+
+                vListParametrosSP.Add(new clsConexion.ParametrosSP
+                {
+                    nombreParametro = "p_nombre_relacion",
+                    valorParametro = vCamposGUM.nombreRelacion,
+                    tipoParametro = System.Data.SqlDbType.VarChar
+                });
+
+                vListParametrosSP.Add(new clsConexion.ParametrosSP
+                {
+                    nombreParametro = "p_nombre_tabla",
+                    valorParametro = vCamposGUM.nombreTabla,
+                    tipoParametro = System.Data.SqlDbType.VarChar
+                });
+
+                vListParametrosSP.Add(new clsConexion.ParametrosSP
+                {
+                    nombreParametro = "p_nombre_campo",
+                    valorParametro = vCamposGUM.nombreCampo,
+                    tipoParametro = System.Data.SqlDbType.VarChar
+                });
+
+                vListParametrosSP.Add(new clsConexion.ParametrosSP
+                {
+                    nombreParametro = "p_nombre_tabla_ref",
+                    valorParametro = vCamposGUM.nombreTablaRef,
+                    tipoParametro = System.Data.SqlDbType.VarChar
+                });
+
+                vListParametrosSP.Add(new clsConexion.ParametrosSP
+                {
+                    nombreParametro = "@p_nombre_campo_ref",
+                    valorParametro = vCamposGUM.nombreCampoRef,
+                    tipoParametro = System.Data.SqlDbType.VarChar
+                });
+                vListParametrosSP.Add(new clsConexion.ParametrosSP
+                {
+                    nombreParametro = "p_ind_orden",
+                    valorParametro = vCamposGUM.indOrden,
+                    tipoParametro = System.Data.SqlDbType.SmallInt
+                });
+
+               
+
+                var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_gum_dd_insertar_relacion", vListParametrosSP);
+
+            }
+
+            vObjConexionDB.CerrarConexion();
+
+            PubListRelacCamposGUMActual.Where(vTablaCampos => vTablaCampos.indCreadoEnGrilla == 1).Apply(x => x.indCreadoEnGrilla = 0);
+
+            PubListRelacCamposGUMActual = PubListRelacCamposGUMActual;
+            //Cursor en espera
+            Mouse.OverrideCursor = null;
+
+            System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
+
+        }
+
+
     }
 }
