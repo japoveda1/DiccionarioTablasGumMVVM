@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DiccionarioTablasGUM.Conexion
 {
-    public  class clsConexion
+    public class clsConexion
     {
         private SqlConnection prvSqlConnection;
 
@@ -19,8 +19,6 @@ namespace DiccionarioTablasGUM.Conexion
             public object valorParametro { get; set; }
             public SqlDbType? tipoParametro { get; set; }
         }
-
-
 
         private void Inicializar()
         {
@@ -61,16 +59,34 @@ namespace DiccionarioTablasGUM.Conexion
         {
 
             SqlCommand vCommand = new SqlCommand();
+            SqlTransaction vTransaction;
             SqlDataAdapter vSqlDataAdapter = new SqlDataAdapter();
             DataSet vDataSet = new DataSet();
 
-            vCommand.CommandText = pvStrQuery;
-            vCommand.CommandTimeout = 600;
-            vCommand.Connection = prvSqlConnection;
+            vTransaction = prvSqlConnection.BeginTransaction();
 
-            vSqlDataAdapter.SelectCommand = vCommand;
+            try
+            {
 
-            vSqlDataAdapter.Fill(vDataSet);
+                vCommand.CommandText = pvStrQuery;
+                vCommand.CommandTimeout = 600;
+                vCommand.Transaction = vTransaction;
+                vCommand.Connection = prvSqlConnection;
+
+                vSqlDataAdapter.SelectCommand = vCommand;
+
+                vSqlDataAdapter.Fill(vDataSet);
+
+                vTransaction.Commit();
+
+
+            } catch {
+
+                vTransaction.Commit();
+
+            }
+
+            vCommand.Dispose();
 
             return vDataSet;
         }
@@ -80,26 +96,30 @@ namespace DiccionarioTablasGUM.Conexion
         {
             DataSet vDataSet = new DataSet();
             int vIntContDataReader;
+            SqlTransaction vTransaction;
 
             vIntContDataReader = 0;
+            vTransaction = prvSqlConnection.BeginTransaction();
 
             SqlCommand vCommand = new SqlCommand
             {
                 CommandText = stp_name,
                 CommandTimeout = 600,
                 Connection = prvSqlConnection,
-                CommandType = CommandType.StoredProcedure
+                CommandType = CommandType.StoredProcedure,
+                Transaction = vTransaction
             };
 
-            foreach (var item in paramsStp) 
+            try
             {
-                vCommand.Parameters.AddWithValue("@" + item.nombreParametro, item.tipoParametro).Value = item.valorParametro;
-            }
+                foreach (var item in paramsStp)
+                {
+                    vCommand.Parameters.AddWithValue("@" + item.nombreParametro, item.tipoParametro).Value = item.valorParametro;
+                }
 
 
-            using (SqlDataReader dataReader = vCommand.ExecuteReader())
-            {
-
+                using (SqlDataReader dataReader = vCommand.ExecuteReader())
+                {
                     while (dataReader.IsClosed == false)
                     {
                         //Create a new DataSet.
@@ -110,11 +130,16 @@ namespace DiccionarioTablasGUM.Conexion
 
                         vIntContDataReader++;
                     }
+                }
 
-
-
+                vTransaction.Commit();
 
             }
+            catch {
+
+                vTransaction.Rollback();
+
+            }         
 
 
             vCommand.Dispose();

@@ -76,38 +76,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Conexion\clsConexion.cs" />
-    <Compile Include="Models\CamposGUM.cs" />
     <Compile Include="Models\clsCambiosCamposGUM.cs" />
     <Compile Include="Models\clsCamposGUM.cs" />
     <Compile Include="Models\clsObjetosExportar.cs" />
     <Compile Include="Models\clsRelacCamposGUM.cs" />
     <Compile Include="Models\clsTablasGUM.cs" />
-    <Compile Include="Models\TablasGUM.cs" />
-    <Compile Include="Models\TablaSistema.cs" />
     <Compile Include="ViewModels\CamposTablasGUMViewModel.cs" />
     <Compile Include="ViewModels\DiccionarioTablasGUMViewModel.cs" />
-    <Compile Include="ViewModels\TablasExportarViewModel.cs" />
-    <Compile Include="ViewModels\TablasSistemaViewModel.cs" />
     <Compile Include="Views\CamposTablasGUMView.xaml.cs">
       <DependentUpon>CamposTablasGUMView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DiccionarioTablasGUMView.xaml.cs">
       <DependentUpon>DiccionarioTablasGUMView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\espera.xaml.cs">
-      <DependentUpon>espera.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ProcesandoView.xaml.cs">
       <DependentUpon>ProcesandoView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TablasExportar.xaml.cs">
-      <DependentUpon>TablasExportar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TablasExportarView.xaml.cs">
-      <DependentUpon>TablasExportarView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TablasSistemaView.xaml.cs">
-      <DependentUpon>TablasSistemaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -126,23 +109,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\espera.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ProcesandoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TablasExportar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TablasExportarView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TablasSistemaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

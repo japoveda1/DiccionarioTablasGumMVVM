@@ -35,7 +35,6 @@ namespace DiccionarioTablasGUM.Views
             prvIndPermiteDragMove = 1;
         }
 
-
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (prvIndPermiteDragMove == 1) {
@@ -69,7 +68,6 @@ namespace DiccionarioTablasGUM.Views
                 Mouse.OverrideCursor = null;
             }
         }
-
  
         private async void ButtonAbrir_Click(object sender, RoutedEventArgs e)
         {
@@ -83,6 +81,7 @@ namespace DiccionarioTablasGUM.Views
             procesando.Close();
 
         }
+
         private  void ButtonCerrar_Click(object sender, RoutedEventArgs e)
         {
 
@@ -92,14 +91,7 @@ namespace DiccionarioTablasGUM.Views
 
         private async Task ActualizarTablasGum() {
             DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
-            //if (vObjDiccionarioTablasGUM.ConfirmacionCambiosPendientes("Hay cambios sin guardar , si continua con la actualizacion los perdera.¿Desea continuar?", 1))
-            //{
-                await Task.Run(() => vObjDiccionarioTablasGUM.ObtenerTablasGUM(1));
-            //}
-            //else {
-            //    await Task.CompletedTask;
-            //}
-          
+             await Task.Run(() => vObjDiccionarioTablasGUM.ObtenerTablasGUM(1));
         }
 
         private void DtTablasGUM_CurrentCellChanged(object sender, EventArgs e)
@@ -119,6 +111,26 @@ namespace DiccionarioTablasGUM.Views
            
         }
 
- 
+        private void minimizar_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+               
+        private void maximizar_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Maximized;
+        }
+
+        private void cerrar_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void restaurar_Click(object sender, RoutedEventArgs e) {
+            WindowState = WindowState.Normal;
+
+        }
+
+
     }
 }

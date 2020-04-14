@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +17,17 @@ namespace DiccionarioTablasGUM.ViewModels
 {
     public class DiccionarioTablasGUMViewModel:Screen
     {
+
+        //VARIABLE PRIVADAS
+
         //Objeto para gestionar las ventanas hijas 
         private IWindowManager prvObjManager = new WindowManager();
         
         //Objeto privado lista que contiene las tablas que  ya se encuentran agregadas al GUM
-        private BindableCollection<clsTablasGUM> _prvListTablasGum;
+        private BindableCollection<clsTablasGUM> _prvListTablasGum; 
         
         //Objeto de la tabla seleccionada en la grilla principal
-        private clsTablasGUM _prvObjTablaGumSeleccionada;
+        private clsTablasGUM _prvObjTablaGumSeleccionada; 
         
         //Objeto campos de todas las tablas en el diccionario gum
         private List<clsCamposGUM> PrvListCamposGum;
@@ -34,6 +38,8 @@ namespace DiccionarioTablasGUM.ViewModels
         private List<clsObjetosExportar> PubListExportar = new List<clsObjetosExportar>();
 
         public List<clsCambiosCamposGUM> PrvListCambiosCamposGum;
+        
+        //VARIABLE PUBLICAS
 
         //Objeto publico lista que contiene las tablas que  ya se encuentran agregadas al GUM
         public BindableCollection<clsTablasGUM> PubListTablasGum
@@ -84,32 +90,38 @@ namespace DiccionarioTablasGUM.ViewModels
             clsCamposGUM vCamposGum;
             clsRelacCamposGUM vObjRelacCamposGUM;
             clsCambiosCamposGUM vObjCambiosCamposGUM;
-
             DataSet vDsDiccionarioGUM;
 
             vObjConexionDB.AbrirConexion();
-
-          
+            
             if (pvIndActualizarDiccionario == 1) {
-                GuardarExportar();
+
+                if ( PubListTablasGum.Where(vTabla => vTabla.indCambio ==1 ).Any()) {
+
+                    if (System.Windows.MessageBox.Show("Para realizar esta operacion es necesario salvar los datos.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        ConfirmarCambios();
+                    }
+                    else {
+
+                        return;
+                    }
+                }
 
                 vDsDiccionarioGUM = vObjConexionDB.EjecutarCommand("sp_gum_dd_actualizar_todo");
             }
             else
             {
                 vDsDiccionarioGUM = vObjConexionDB.EjecutarCommand("sp_gum_dd_leer_todo_tablas");
-
             }
-
 
             //creacion de objeto clsTablasGUM
             foreach (DataRow vDrTablas in vDsDiccionarioGUM.Tables[0].Rows)
             {
                 vTablaGum = new clsTablasGUM();
 
-
                 vTablaGum.nombre = Convert.ToString(vDrTablas["f1_nombre"]);
-                vTablaGum.descripcion = Convert.ToString(vDrTablas["f1_descripcion"]);
+                vTablaGum.descripcion = Convert.ToString(vDrTablas["f1_descripcion"]).Trim();
                 vTablaGum.notas = Convert.ToString(vDrTablas["f1_notas"]);
                 vTablaGum.indProcesoGum = Convert.ToInt16(vDrTablas["f1_ind_proceso_gum"]);
                 vTablaGum.indCambio = 0;
@@ -122,15 +134,14 @@ namespace DiccionarioTablasGUM.ViewModels
                 vTablaGum = null;
             }
 
-
             foreach (DataRow vDrCampos in vDsDiccionarioGUM.Tables[1].Rows)
             {
                 vCamposGum = new clsCamposGUM();
 
-                vCamposGum.nombreTabla = Convert.ToString(vDrCampos["f2_nombre_tabla"]);
-                vCamposGum.nombre = Convert.ToString(vDrCampos["f2_nombre"]);
-                vCamposGum.descripcion = Convert.ToString(vDrCampos["f2_descripcion"]);
-                vCamposGum.notas = Convert.ToString(vDrCampos["f2_notas"]);
+                vCamposGum.nombreTabla = Convert.ToString(vDrCampos["f2_nombre_tabla"]).Trim();
+                vCamposGum.nombre = Convert.ToString(vDrCampos["f2_nombre"]).Trim();
+                vCamposGum.descripcion = Convert.ToString(vDrCampos["f2_descripcion"]).Trim();
+                vCamposGum.notas = Convert.ToString(vDrCampos["f2_notas"]).Trim();
                 vCamposGum.orden = Convert.ToInt16(vDrCampos["f2_orden"]);
                 vCamposGum.ordenPk = Convert.ToInt16(vDrCampos["f2_orden_pk"]);
                 vCamposGum.indIdentity = Convert.ToInt16(vDrCampos["f2_ind_identity"]);
@@ -152,17 +163,16 @@ namespace DiccionarioTablasGUM.ViewModels
                 vCamposGum = null;
             }
 
-
             //creacion de objeto clsTablasGUM
             foreach (DataRow vDrRelaciones in vDsDiccionarioGUM.Tables[2].Rows)
             {
                 vObjRelacCamposGUM = new clsRelacCamposGUM();
 
-                vObjRelacCamposGUM.nombreRelacion = Convert.ToString(vDrRelaciones["f_nombre_relacion"]);
-                vObjRelacCamposGUM.nombreTabla = Convert.ToString(vDrRelaciones["f_nombre_tabla"]);
-                vObjRelacCamposGUM.nombreTablaRef = Convert.ToString(vDrRelaciones["f_nombre_tabla_ref"]);
-                vObjRelacCamposGUM.nombreCampo = Convert.ToString(vDrRelaciones["f_nombre_campo"]);
-                vObjRelacCamposGUM.nombreCampoRef = Convert.ToString(vDrRelaciones["f_nombre_campo_ref"]);
+                vObjRelacCamposGUM.nombreRelacion = Convert.ToString(vDrRelaciones["f_nombre_relacion"]).Trim();
+                vObjRelacCamposGUM.nombreTabla = Convert.ToString(vDrRelaciones["f_nombre_tabla"]).Trim();
+                vObjRelacCamposGUM.nombreTablaRef = Convert.ToString(vDrRelaciones["f_nombre_tabla_ref"]).Trim();
+                vObjRelacCamposGUM.nombreCampo = Convert.ToString(vDrRelaciones["f_nombre_campo"]).Trim();
+                vObjRelacCamposGUM.nombreCampoRef = Convert.ToString(vDrRelaciones["f_nombre_campo_ref"]).Trim();
                 vObjRelacCamposGUM.indInner = Convert.ToInt16(vDrRelaciones["f_ind_inner"]);
                 vObjRelacCamposGUM.indOrden = Convert.ToInt16(vDrRelaciones["f_ind_orden"]);
 
@@ -175,19 +185,17 @@ namespace DiccionarioTablasGUM.ViewModels
             {
                 vObjCambiosCamposGUM = new clsCambiosCamposGUM();
 
-                vObjCambiosCamposGUM.nombreTabla = Convert.ToString(vDrCambios["f5_nombre_tabla"]);
-                vObjCambiosCamposGUM.campoModificados = Convert.ToString(vDrCambios["f5_campo_modificado"]);
-                vObjCambiosCamposGUM.propiedad = Convert.ToString(vDrCambios["f5_propiedad"]);
-                vObjCambiosCamposGUM.valorAnterior = Convert.ToString(vDrCambios["f5_valor_anterior"]);
-                vObjCambiosCamposGUM.valorNuevo = Convert.ToString(vDrCambios["f5_valor_nuevo"]);
+                vObjCambiosCamposGUM.nombreTabla = Convert.ToString(vDrCambios["f5_nombre_tabla"]).Trim();
+                vObjCambiosCamposGUM.campoModificados = Convert.ToString(vDrCambios["f5_campo_modificado"]).Trim();
+                vObjCambiosCamposGUM.propiedad = Convert.ToString(vDrCambios["f5_propiedad"]).Trim();
+                vObjCambiosCamposGUM.valorAnterior = Convert.ToString(vDrCambios["f5_valor_anterior"]).Trim();
+                vObjCambiosCamposGUM.valorNuevo = Convert.ToString(vDrCambios["f5_valor_nuevo"]).Trim();
 
                 PrvListCambiosCamposGum.Add(vObjCambiosCamposGUM);
                 vObjCambiosCamposGUM = null;
             }
 
-
             PubListTablasGum = new BindableCollection<clsTablasGUM>(vListTablasGUM);
-
 
         }
 
@@ -197,20 +205,21 @@ namespace DiccionarioTablasGUM.ViewModels
         /// </summary>
         public void ConfirmarCambios()
         {
+            //Cursor en espera
+            //Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
             clsConexion vObjConexionDB = new clsConexion();
             //Objeto con parametros lista de parametros
             List<clsConexion.ParametrosSP> vListParametrosSP;
-            List<clsTablasGUM> vListTablasGum;
+            List<clsTablasGUM> vListTablasGumModificados;
 
-
-            vListTablasGum = PubListTablasGum.Where(vTablas => vTablas.indCambio == 1).ToList();
-            //Cursor en espera
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+            //Solo los registros editados
+            vListTablasGumModificados = PubListTablasGum.Where(vTablas => vTablas.indCambio == 1).ToList();
 
             vObjConexionDB.AbrirConexion();
-            GuardarExportar();
+
             // se recorren las tablas editadas y se guardan sus datos
-            foreach (clsTablasGUM vTablaGUM in vListTablasGum)
+            foreach (clsTablasGUM vTablaGUM in vListTablasGumModificados)
             {
                 vListParametrosSP = new List<clsConexion.ParametrosSP>();
 
@@ -251,23 +260,10 @@ namespace DiccionarioTablasGUM.ViewModels
 
             ObtenerTablasGUM();
             //Cursor en espera
-            Mouse.OverrideCursor = null;
+            //Mouse.OverrideCursor = null;
 
             System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);            
 
-        }
-
-        /// <summary>
-        /// req. 162259 jpa 24032020
-        /// Abre la ventana donde se adjuntan las tablas de sistema al diccionario GUM
-        /// </summary>
-        public void AbrirVentanaTablasDelSistema()
-        {
-            TablasSistemaViewModel vObjTablasSistemaViewModel = new TablasSistemaViewModel();
-
-            prvObjManager.ShowDialog(vObjTablasSistemaViewModel, null, null);
-
-            ObtenerTablasGUM();
         }
 
         /// <summary>
@@ -277,31 +273,33 @@ namespace DiccionarioTablasGUM.ViewModels
         public void AbrirVentanaCampos()
         {
             List<string> vListNombreTablasGUM;
+            string vStrNombreTablaSeleccionda;
 
+            if (PubListTablasGum.Where(vTablas => vTablas.indCambio == 1).Any()) {
 
-            if (ConfirmacionCambiosPendientes("Debe guardar los cambios para contonuar con la edicion de campos", 0)) {
-                return;
+                if (System.Windows.MessageBox.Show("Para realizar esta operacion es necesario salvar los datos.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+
+                    vStrNombreTablaSeleccionda = PubObjTablaGumSeleccionada.nombre;
+
+                    ConfirmarCambios();
+
+                    PubObjTablaGumSeleccionada = PubListTablasGum.Where(vTabla => vTabla.nombre == vStrNombreTablaSeleccionda).First();
+
+                }
+                else {
+
+                    return;
+                }
             }
 
             vListNombreTablasGUM = PubListTablasGum.Select(vTabla => vTabla.nombre).ToList();
 
             CamposTablasGUMViewModel vObjCamposTablasGum = new CamposTablasGUMViewModel(PubListTablasGum.ToList(),PubObjTablaGumSeleccionada,   
-                                                                                        PrvListCamposGum,PrvListRelacCamposGum,PrvListCambiosCamposGum,ref PubListExportar);
+                                                                                        PrvListCamposGum,PrvListRelacCamposGum,PrvListCambiosCamposGum);
 
             prvObjManager.ShowDialog(vObjCamposTablasGum, null, null);
         }
-
-        public void exportar() {
-
-            TablasExportarViewModel vObj = new TablasExportarViewModel(PubListTablasGum.Select(x => x.nombre).ToList());
-
-            prvObjManager.ShowDialog(vObj, null, null);
-            //GuardarExportar();
-            //var a = PubListExportar;
-            //PubListExportar.Clear();
-
-        }
-
 
         /// <summary>
         /// req. 162259 jpa 03042020
@@ -329,7 +327,6 @@ namespace DiccionarioTablasGUM.ViewModels
             List<clsTablasGUM> vListTablasGUM = new List<clsTablasGUM>();
             clsTablasGUM vTablaGum;
 
-            //List<CamposGUM> vListCamposGUM = new List<CamposGUM>();
             clsCamposGUM vCamposGum;
 
             //List<clsRelacCamposGUM> vListRelacCamposGUM = new List<clsRelacCamposGUM>();
@@ -340,12 +337,11 @@ namespace DiccionarioTablasGUM.ViewModels
 
             DataSet vDsDiccionarioGUM;
 
-            //Cursor en espera
-            //Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-
             vObjConexionDB.AbrirConexion();
 
             vDsDiccionarioGUM = vObjConexionDB.EjecutarCommand("sp_gum_dd_actualizar_todo");
+
+            vObjConexionDB.CerrarConexion();
 
             //creacion de objeto clsTablasGUM
             foreach (DataRow vDrTablas in vDsDiccionarioGUM.Tables[0].Rows)
@@ -428,112 +424,63 @@ namespace DiccionarioTablasGUM.ViewModels
             }
 
             PubListTablasGum = new BindableCollection<clsTablasGUM>(vListTablasGUM);
-
             
         }
 
+        public void Exportar()
+        {
+            List<clsConexion.ParametrosSP> vListParametrosSP;
+            List<string> vListTablasseleccionadas = new List<string>();
+            DataSet vDsTablasRelacionadas;
+            DateTime vDtmFechaHora = new DateTime();
+            string vStrPrefijoFecha;
+            string vStrPrefijoHora;
+            string vStrRuta;
+            string vStrQuery;
 
-        /// <summary>
-        /// Valida si hay tablas sin almacenar y muesta mensaje para que el usuario desida la operacion
-        /// </summary>
-        /// <param name="pvStrMensaje"></param>
-        /// <returns></returns>
-        public bool ConfirmacionCambiosPendientes(string pvStrMensaje,int pvIntIndYesNo) {
+            //creo la conexion a la base de datos
+            clsConexion vObjConexionDB = new clsConexion();
 
-            bool vBoolresultado;
+            //Cursor en espera
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
 
-            vBoolresultado = false;
+            vObjConexionDB.AbrirConexion();
 
-            if (PubListTablasGum.Where(vTablas => vTablas.indCambio == 1).Any())
+            vListParametrosSP = new List<clsConexion.ParametrosSP>();
+
+            vDsTablasRelacionadas = vObjConexionDB.EjecutarCommand("sp_gum_dd_exportar");
+
+            vObjConexionDB.CerrarConexion();
+
+
+            vDtmFechaHora = DateTime.Now;
+            vStrPrefijoFecha = Convert.ToDateTime(vDtmFechaHora).ToString("yyddMM");
+            vStrPrefijoHora = Convert.ToDateTime(vDtmFechaHora).ToString("HHmmss");
+
+
+            vStrRuta = @" C:\Users\johan.poveda\Desktop\"+ vStrPrefijoFecha + "_"+ vStrPrefijoHora + "_diccionarioGum.pdc";
+
+            for (int i = 0; i <= 11; i++)
             {
-                if (pvIntIndYesNo == 1)
+                foreach (DataRow vDR in vDsTablasRelacionadas.Tables[i].Rows)
                 {
-                    if (System.Windows.MessageBox.Show(pvStrMensaje, "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.No)
-                    {
-                        vBoolresultado= false;
-                    }
-                    else
-                    {
-                        vBoolresultado= true;
-                    }
+                    vStrQuery = Convert.ToString(vDR["f_query"]);
 
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show(pvStrMensaje, "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
-                    vBoolresultado= true;
+                    using (StreamWriter ArchivoExportar = File.AppendText(vStrRuta))         //se crea el archivo
+                    {
+                        ArchivoExportar.WriteLine(vStrQuery);
+
+                        ArchivoExportar.Close();
+                    }
                 }
             }
 
-            return vBoolresultado;
+            vListParametrosSP.Clear();            
 
-        }
-
-        //llamar antes de ejecutar procesos
-        private void GuardarExportar() {
-
-            clsObjetosExportar vObjExportar;
-            int v=0;
-
-            foreach (clsTablasGUM vTabla in PubListTablasGum.Where(vTabla => vTabla.IndEsNuevo ==1 || vTabla.indCambio ==1 ).ToList()) {
-
-                if (!PubListExportar.Where(vExpo => vExpo.nombreObjeto == vTabla.nombre).Any()) {
-                    vObjExportar = new clsObjetosExportar();
-                    vObjExportar.nombreTablaGUM = "t735_dd_tablas";
-                    vObjExportar.nombreObjeto = vTabla.nombre;
-                    if (vTabla.IndEsNuevo == 1)
-                    {
-
-                        vObjExportar.indUpdate = 0;
-                        vObjExportar.IndInsert = 1;
-
-
-                    }
-                    else
-                    {
-
-                        vObjExportar.indUpdate = 1;
-                        vObjExportar.IndInsert = 0;
-
-                    }
-
-                    PubListExportar.Add(vObjExportar);
-                    vObjExportar = null;
-
-                }     
-            }
-
-
-
-            foreach (clsCamposGUM vTabla in PrvListCamposGum.Where(vCampos => vCampos.indEsNuevo == 1 || vCampos.indCambio == 1 || vCampos.indCambioEnDb == 1).ToList())
-            {
-                if (!PubListExportar.Where(vExpo => vExpo.nombreObjeto == vTabla.nombre).Any())
-                {
-                    vObjExportar = new clsObjetosExportar();
-                    vObjExportar.nombreTablaGUM = "t7351_dd_campos";
-                    vObjExportar.nombreObjeto = vTabla.nombre;
-                    if (vTabla.indEsNuevo == 1)
-                    {
-                        vObjExportar.indUpdate = 0;
-                        vObjExportar.IndInsert = 1;
-                    }
-                    else
-                    {
-                        vObjExportar.indUpdate = 1;
-                        vObjExportar.IndInsert = 0;
-                    }
-
-                    PubListExportar.Add(vObjExportar);
-                    vObjExportar = null;
-                }
-                v++;
-
-            }
-
-
+            Mouse.OverrideCursor = null;
 
 
         }
 
-     }
+    }
 }

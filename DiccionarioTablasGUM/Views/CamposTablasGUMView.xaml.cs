@@ -43,27 +43,27 @@ namespace DiccionarioTablasGUM.Views
         private void BtnPrimero_Click(object sender, RoutedEventArgs e)
         {
             CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
-            vObjCamposTablasGUMViewModel.navegacion("primero");
+            vObjCamposTablasGUMViewModel.Navegacion("primero");
         }
 
         private void BtnAnterior_Click(object sender, RoutedEventArgs e)
         {
             CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
-            vObjCamposTablasGUMViewModel.navegacion("anterior");
+            vObjCamposTablasGUMViewModel.Navegacion("anterior");
 
         }
 
         private void BtnSiguiente_Click(object sender, RoutedEventArgs e)
         {
             CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
-            vObjCamposTablasGUMViewModel.navegacion("siguiente");
+            vObjCamposTablasGUMViewModel.Navegacion("siguiente");
 
         }
 
         private void BtnUltimo_Click(object sender, RoutedEventArgs e)
         {
             CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
-            vObjCamposTablasGUMViewModel.navegacion("ultimo");
+            vObjCamposTablasGUMViewModel.Navegacion("ultimo");
         }
 
         private void DtCamposGUM_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)

@@ -102,7 +102,7 @@ namespace DiccionarioTablasGUM.ViewModels
         ///// </summary>
         public CamposTablasGUMViewModel(List<clsTablasGUM> pvListTablasGUM ,clsTablasGUM pvObjTablaGUMSeleccionada,
                                         List<clsCamposGUM> pvListTablasGUMCampos, List<clsRelacCamposGUM> pvListRelacCamposGUM,
-                                        List<clsCambiosCamposGUM> pvListCambiosCampoGUM,ref List<clsObjetosExportar> pvListExportar)
+                                        List<clsCambiosCamposGUM> pvListCambiosCampoGUM)
 		    {
 
             PubStrNombreTablaGUM = pvObjTablaGUMSeleccionada.nombre;
@@ -117,7 +117,6 @@ namespace DiccionarioTablasGUM.ViewModels
             PrvListCambiosCamposGum = pvListCambiosCampoGUM;
             PubListCambiosCampoGUMAtual = new BindableCollection<clsCambiosCamposGUM>(PrvListCambiosCamposGum.Where(vCambios => vCambios.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
 
-            PubListExportar = pvListExportar;
             }
 
         /// <summary>
@@ -137,7 +136,6 @@ namespace DiccionarioTablasGUM.ViewModels
             vObjConexionDB.AbrirConexion();
 
             vListCamposGUM = PubListCamposGUMActual.Where(vTablaCampos => vTablaCampos.indCambio == 1).ToList();
-            GuardarExportar();
 
             // se recorren las tablas editadas y se guardan sus datos
             foreach (clsCamposGUM vCamposGUM in vListCamposGUM)
@@ -206,7 +204,6 @@ namespace DiccionarioTablasGUM.ViewModels
                     tipoParametro = System.Data.SqlDbType.SmallInt
                 });
 
-
                 var vListSIDocument = vObjConexionDB.EjecutarCommand("sp_gum_dd_actualizar_campo", vListParametrosSP);
 
             }
@@ -221,17 +218,28 @@ namespace DiccionarioTablasGUM.ViewModels
             System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
 
         }
-        
-        //1:ultimo 2:anterior 3:siguiente 4:final
-        public void navegacion(string pvStrAccion) {
+
+        /// <summary>
+        /// req. 162259 jpa 08042020 
+        /// Permite la navegacion en la ventana de campos 
+        /// </summary>
+        /// <param name="pvStrAccion">Indica que boton ejecuto la accion </param>
+        public void Navegacion(string pvStrAccion) {
 
             //Cursor en espera
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
             int vIntIndexNuevaTablaSeleccionada;
 
-            if (ConfirmacionCambiosPendientes("Hay cambios sin guardar.¿Desea continuar?", 1)) {
-                Mouse.OverrideCursor = null;
-                return;
+            if (PubListCamposGUMActual.Where(vCampos => vCampos.indCambio == 1).Any()) {
+
+                if (System.Windows.MessageBox.Show("Para realizar esta operacion es necesario salvar los datos.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    ConfirmarCambios();
+                }
+                else {
+                    return;
+                }
             }
 
             switch (pvStrAccion) {
@@ -240,11 +248,23 @@ namespace DiccionarioTablasGUM.ViewModels
 
                     break;
                 case "anterior":
+                    //Validacion de primer registro
+                    if (PrvListTablasGum.IndexOf(PrvObjTablaGumSeleccionada) == 0) {
+                        break;
+                    }
+
                     vIntIndexNuevaTablaSeleccionada=  PrvListTablasGum.IndexOf(PrvObjTablaGumSeleccionada)-1;
                     PrvObjTablaGumSeleccionada = PrvListTablasGum[vIntIndexNuevaTablaSeleccionada];
 
                     break;
                 case "siguiente":
+
+                    //Validacion de ultimo registro
+                    if (PrvListTablasGum.IndexOf(PrvObjTablaGumSeleccionada) == PrvListTablasGum.Count()-1)
+                    {
+                        break;
+                    }
+
                     vIntIndexNuevaTablaSeleccionada = PrvListTablasGum.IndexOf(PrvObjTablaGumSeleccionada) + 1;
                     PrvObjTablaGumSeleccionada = PrvListTablasGum[vIntIndexNuevaTablaSeleccionada];
 
@@ -258,84 +278,14 @@ namespace DiccionarioTablasGUM.ViewModels
             PubIntTablaConCambios = PrvObjTablaGumSeleccionada.indCambioEnDB;
             PubStrNombreTablaGUM = PrvObjTablaGumSeleccionada.nombre;
 
-
-
-
             PubListCamposGUMActual = new BindableCollection<clsCamposGUM>(PrvListCamposGUM.Where(vCampo => vCampo.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
             PubListRelacCamposGUMActual = new BindableCollection<clsRelacCamposGUM>(PrvListRelacCamposGUM.Where(vRelac => vRelac.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
             PubListCambiosCampoGUMAtual = new BindableCollection<clsCambiosCamposGUM>(PrvListCambiosCamposGum.Where(vCambios => vCambios.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
-
-
 
             //Cursor en espera
             Mouse.OverrideCursor = null;
         }
 
-        /// <summary>
-        /// Valida si hay tablas sin almacenar y muesta mensaje para que el usuario desida la operacion
-        /// </summary>
-        /// <param name="pvStrMensaje"></param>
-        /// <returns></returns>
-        public bool ConfirmacionCambiosPendientes(string pvStrMensaje, int pvIntIndYesNo)
-        {
-
-            bool vBoolresultado;
-
-            vBoolresultado = false;
-
-            if (PubListCamposGUMActual.Where(vTablas => vTablas.indCambio == 1).Any())
-            {
-                if (pvIntIndYesNo == 1)
-                {
-                    if (System.Windows.MessageBox.Show(pvStrMensaje, "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.No)
-                    {
-                        vBoolresultado = false;
-                    }
-                    else
-                    {
-                        vBoolresultado = true;
-                    }
-
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show(pvStrMensaje, "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
-                    vBoolresultado = true;
-                }
-            }
-
-            return vBoolresultado;
-
-        }
-
-        //llamar antes de ejecutar procesos
-        private void GuardarExportar()
-        {
-
-            clsObjetosExportar vObjExportar;
-
-
-
-
-            foreach (clsCamposGUM vTabla in PubListCamposGUMActual.Where(vCampos=> vCampos.indCambio == 1 ))
-            {
-
-                vObjExportar = new clsObjetosExportar();
-                vObjExportar.nombreTablaGUM = "t7351_dd_campos";
-                vObjExportar.nombreObjeto = vTabla.nombre;
-                vObjExportar.indUpdate = 1;
-                vObjExportar.IndInsert = 0;
   
-
-                PubListExportar.Add(vObjExportar);
-                vObjExportar = null;
-            }
-
-
-
-
-        }
-
-
     }
 }

@@ -49,15 +49,26 @@
                    Grid.Column="2"/>
 
 
-            <StackPanel Grid.Column="3" Grid.Row="1">
+            <Grid Grid.Column="3" Grid.Row="1" MinWidth="211" >
+                <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <Button x:Name="minimizar" Click="minimizar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20" Background="Transparent" BorderThickness="0">
+                        <fa:ImageAwesome Icon="WindowMinimize" Width="10" Height="10" Foreground="White"/>
+                    </Button>
 
-                <TextBlock x:Name="CerrarDiccionarioTablasGum" TextAlignment="Right" VerticalAlignment="Center"  FontFamily="Avenir LT Std 65 Medium"                            
-                            Cursor="Hand"
-                           Foreground="White" 
-                        MinWidth="211" ToolTip="Cerrar ventana"><Run Text="X" MouseLeftButtonDown="Run_MouseLeftButtonDown"/></TextBlock>
-            </StackPanel>
+                    <Button x:Name="restaurar" Click="restaurar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20"  Background="Transparent" BorderThickness="0" >
+                        <fa:ImageAwesome Icon="WindowRestore" Width="10" Height="10" Foreground="White"/>
+                    </Button>
+                    
+                    <Button x:Name="maximizar" Click="maximizar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20"  Background="Transparent" BorderThickness="0" >
+                        <fa:ImageAwesome Icon="WindowMaximize" Width="10" Height="10" Foreground="White"/>
+                    </Button>
 
-         </Grid>
+                    <Button x:Name="cerrar" Click="cerrar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20" Background="Transparent" BorderThickness="0">
+                        <TextBlock Foreground="White" FontWeight="Bold" >x</TextBlock>
+                    </Button >
+                 </StackPanel>
+            </Grid>
+        </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -87,18 +98,85 @@
                        CellEditEnding="DtTablasGUM_CellEditEnding"
                        CurrentCellChanged="DtTablasGUM_CurrentCellChanged"
                        ItemsSource="{Binding PubListTablasGum }" 
-                       SelectedItem="{Binding PubObjTablaGumSeleccionada}" 
-                       Margin="0,8,0,0">
-                <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Header="Ind. Cambio en base de datos" Binding="{Binding  indCambioEnDB}" IsReadOnly="True"/>
-                    <DataGridCheckBoxColumn Header="Ind. Cambio en herramienta" Binding="{Binding indCambio}"   />
+                          SelectedItem="{Binding PubObjTablaGumSeleccionada}" 
+                       Margin="0,8,0,0"    
+                       HorizontalGridLinesBrush="#F0F0F0"
+                       VerticalGridLinesBrush="#F0F0F0"
+                       >
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell" >
+                        <Setter Property="BorderBrush" Value="Gray"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsReadOnly" Value="true">
+                                <Setter Property="Background" Value="#F7F7F7"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="Blue"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns  >
+                    <DataGridTemplateColumn Width="Auto" SortMemberPath="indCambio" IsReadOnly="True" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Button Background="Transparent" BorderThickness="0">
+                                        <fa:ImageAwesome  Icon="Circle" Width="10" Height="10" >
+                                        <fa:ImageAwesome.Style>
+                                            <Style TargetType="{x:Type fa:ImageAwesome}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding indCambio}" Value="0">
+                                                            <Setter Property="Foreground" Value="Green"/>
+                                                            <Setter Property="ToolTip" Value="Informaicion almacenada exitosamente"/>
+
+                                                        </DataTrigger>
+                                                    <DataTrigger Binding="{Binding indCambio}" Value="1">
+                                                        <Setter Property="Foreground" Value="Yellow"/>
+                                                            <Setter Property="ToolTip" Value="Informacion sin guardar"/>
+
+                                                        </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IndEsNuevo}" Value="1">
+                                                        <Setter Property="Foreground" Value="Red"/>
+                                                        <Setter Property="ToolTip" Value="Objeto Nuevo"/>
+                                                        </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </fa:ImageAwesome.Style>
+                                        </fa:ImageAwesome>
+                                    </Button>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Nombre tabla" Binding="{Binding  nombre }" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion}"  />
-                    <DataGridCheckBoxColumn Header="Activo GUM" Binding="{Binding  indProcesoGum }" />
+                    <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion}" >
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding descripcion}" Value="" >
+                                        <Setter Property="BorderBrush" Value="#EF274D"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+                    <DataGridCheckBoxColumn Header="Activo" Binding="{Binding  indProcesoGum }" />
+                    <DataGridCheckBoxColumn Header="Cambios" Binding="{Binding  indCambioEnDB}" IsReadOnly="True" />
                     <DataGridCheckBoxColumn Header="Campos Agregados" Binding="{Binding  indCampoAgregado  }" IsReadOnly="True"/>
                     <DataGridCheckBoxColumn Header="Campos Modificados" Binding="{Binding  indCampoModificado }" IsReadOnly="True"/>
-                    <DataGridCheckBoxColumn Header="Objeto Nuevo" Binding="{Binding  IndEsNuevo }" IsReadOnly="True"/>
-                    <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding  notas}" Width="*"  />
+                    <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding  notas}" Width="500"  >
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding notas}" Value="" >
+                                        <Setter Property="BorderBrush" Value="#EF274D"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
                     <DataGridTemplateColumn Header="Acciones" Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -116,6 +194,7 @@
                 </DataGrid.Columns>
             </DataGrid>
 
+
             <Button Click="ButtonAbrir_Click"
                     Style="{DynamicResource BtnStiloBotones}" 
                     Foreground="White" 
@@ -132,7 +211,7 @@
                     <TextBlock Text=" Actualizar"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="exportar"
+            <Button x:Name="Exportar"
                     Foreground="White"
                     Style="{DynamicResource BtnStiloBotones}" 
                     BorderThickness="0" 

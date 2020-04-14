@@ -54,12 +54,7 @@
                        Grid.Column="3"
                        Grid.Row="1"
                        ToolTip="Cerrar ventana"><Run Text="X" MouseLeftButtonDown="Run_MouseLeftButtonDown"/></TextBlock>
-        </Grid>
-
-
-
-    
-    
+        </Grid>    
     
     <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
@@ -94,21 +89,107 @@
                                   AutoGenerateColumns="False" 
                                   CellEditEnding="DtCamposGUM_CellEditEnding"
                                   CurrentCellChanged="DtCamposGUM_CurrentCellChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Nombre Campo" Binding="{Binding nombre}" Width="auto"  IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Descripción" Binding="{Binding  Path=descripcion}" Width="auto" />
-                            <DataGridTextColumn Header="Notas" Binding="{Binding  Path=notas}" Width="auto" />
-                            <DataGridTextColumn Header="Order de campo" Binding="{Binding  Path=orden}" Width="auto" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Order de campo PK" Binding="{Binding  Path=orden}" Width="auto" />
-                            <DataGridCheckBoxColumn Header="Es identity" Binding="{Binding  Path=indIdentity}" Width="auto" IsReadOnly="True"/>
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell" >
+                                    <Setter Property="BorderBrush" Value="Gray"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsReadOnly" Value="true">
+                                            <Setter Property="Background" Value="#F7F7F7"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="true">
+                                            <Setter Property="Background" Value="Blue"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.CellStyle>                              
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Width="Auto" SortMemberPath="indCambio" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Button Background="Transparent" BorderThickness="0">
+                                                    <fa:ImageAwesome  Icon="Circle" Width="10" Height="10" >
+                                                        <fa:ImageAwesome.Style>
+                                                            <Style TargetType="{x:Type fa:ImageAwesome}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding indCambio}" Value="0">
+                                                                        <Setter Property="Foreground" Value="Green"/>
+                                                                        <Setter Property="ToolTip" Value="Informaicion almacenada exitosamente"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding indCambio}" Value="1">
+                                                                        <Setter Property="Foreground" Value="Yellow"/>
+                                                                        <Setter Property="ToolTip" Value="Informacion sin guardar"/>
+
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IndEsNuevo}" Value="1">
+                                                                        <Setter Property="Foreground" Value="Red"/>
+                                                                        <Setter Property="ToolTip" Value="Objeto Nuevo"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </fa:ImageAwesome.Style>
+                                                    </fa:ImageAwesome>
+                                                </Button>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Nombre Campo" Binding="{Binding nombre}" Width="auto"  IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion}" Width="auto">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding descripcion}" Value="" >
+                                                    <Setter Property="BorderBrush" Value="#EF274D"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Notas" Binding="{Binding  Path=notas}" Width="auto" >
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding notas}" Value="" >
+                                                    <Setter Property="BorderBrush" Value="#EF274D"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                                    <DataGridTextColumn Header="Order de campo" Binding="{Binding  Path=orden}" Width="auto" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Order de campo PK" Binding="{Binding  Path=ordenPk}" Width="auto">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ordenPk}" Value="0" >
+                                                    <Setter Property="BorderBrush" Value="#EF274D"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+
+                                </DataGridTextColumn>
+                                    <DataGridCheckBoxColumn Header="Es identity" Binding="{Binding  Path=indIdentity}" Width="auto" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Longitud" Binding="{Binding  Path=longitud}" Width="auto" IsReadOnly="True" />
-                            <DataGridTextColumn Header="Orden de campo descripcion" Binding="{Binding  Path=ordenCampoDesc}" Width="auto" />
+                                <DataGridTextColumn Header="Orden de campo descripcion" Binding="{Binding  Path=ordenCampoDesc}" Width="auto" >
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ordenCampoDesc}" Value="0" >
+                                                    <Setter Property="BorderBrush" Value="#EF274D"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+
+                                </DataGridTextColumn>
                             <DataGridTextColumn Header="Tipo de dato en SQL" Binding="{Binding  Path=tipoDatoSql}" Width="auto" IsReadOnly="True"/>
                             <DataGridCheckBoxColumn Header="Acepta Nulo" Binding="{Binding  Path=indNulo}" Width="auto" IsReadOnly="True"/>
                             <DataGridCheckBoxColumn Header="Configurable en GUM" Binding="{Binding  Path=indGumConfigurable}" Width="auto" />
                             <DataGridCheckBoxColumn Header="Sincronizable en GUM" Binding="{Binding  Path=indGumSincronizado}" Width="auto" />
                             <DataGridCheckBoxColumn Header="Sugerible en GUM" Binding="{Binding  Path=indGumSugerir}" Width="auto" />
-                            <DataGridCheckBoxColumn Header="Ind Modificado en Herrmaienta" Binding="{Binding  Path=indCambio}" Width="auto" />
                         </DataGrid.Columns>
                                       
                         
