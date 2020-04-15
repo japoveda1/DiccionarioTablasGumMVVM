@@ -77,8 +77,6 @@
                 <TextBlock x:Name="PubStrNombreTablaGUM" />
             </StackPanel>
 
-            <CheckBox Content="Cambios en base de datos" Grid.Row="1" Grid.Column="3" IsChecked="{Binding PubIntTablaConCambios}" Margin="0,8,8,0" IsEnabled="False"/>
-
             <TabControl Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8,0,0">
                 <TabItem Header="Campos">
                     <Grid >
