@@ -32,7 +32,7 @@
                 <RowDefinition Height="8" />
             </Grid.RowDefinitions>
 
-            <TextBlock x:Name="TituloDiccionarioTablasGum" Text="DICCIONARIO TABLAS GUM" TextAlignment="center" VerticalAlignment="Center"
+            <TextBlock x:Name="TituloDiccionarioTablasGum" Text="DICCIONARIO DE DATOS SIESAEE" TextAlignment="center" VerticalAlignment="Center"
                        Background="#0E4D96"
                        FontFamily="Avenir LT Std 65 Medium" FontSize="16" FontWeight="Bold" Foreground="White" 
                        Grid.Column="1"
@@ -51,19 +51,19 @@
 
             <Grid Grid.Column="3" Grid.Row="1" MinWidth="211" >
                 <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" >
-                    <Button x:Name="minimizar" Click="minimizar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20" Background="Transparent" BorderThickness="0">
+                    <Button x:Name="btnMinimizar" Click="BtnMinimizar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20" Background="Transparent" BorderThickness="0">
                         <fa:ImageAwesome Icon="WindowMinimize" Width="10" Height="10" Foreground="White"/>
                     </Button>
 
-                    <Button x:Name="restaurar" Click="restaurar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20"  Background="Transparent" BorderThickness="0" >
+                    <Button x:Name="btnRestaurar" Click="BtnRestaurar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20"  Background="Transparent" BorderThickness="0" >
                         <fa:ImageAwesome Icon="WindowRestore" Width="10" Height="10" Foreground="White"/>
                     </Button>
                     
-                    <Button x:Name="maximizar" Click="maximizar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20"  Background="Transparent" BorderThickness="0" >
+                    <Button x:Name="btnMaximizar" Click="BtnMaximizar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20"  Background="Transparent" BorderThickness="0" >
                         <fa:ImageAwesome Icon="WindowMaximize" Width="10" Height="10" Foreground="White"/>
                     </Button>
 
-                    <Button x:Name="cerrar" Click="cerrar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20" Background="Transparent" BorderThickness="0">
+                    <Button x:Name="btnCerrar" Click="BtnCerrar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20" Background="Transparent" BorderThickness="0">
                         <TextBlock Foreground="White" FontWeight="Bold" >x</TextBlock>
                     </Button >
                  </StackPanel>
@@ -98,7 +98,7 @@
                        CellEditEnding="DtTablasGUM_CellEditEnding"
                        CurrentCellChanged="DtTablasGUM_CurrentCellChanged"
                        ItemsSource="{Binding PubListTablasGum }" 
-                          SelectedItem="{Binding PubObjTablaGumSeleccionada}" 
+                       SelectedItem="{Binding PubObjTablaGumSeleccionada}" 
                        Margin="0,8,0,0"    
                        HorizontalGridLinesBrush="#F0F0F0"
                        VerticalGridLinesBrush="#F0F0F0"
@@ -162,7 +162,7 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridCheckBoxColumn Header="Activo" Binding="{Binding  indProcesoGum }" />
+                    <DataGridCheckBoxColumn Header="Permite GUM" Binding="{Binding  indProcesoGum }" />
                     <DataGridCheckBoxColumn Header="Cambios" Binding="{Binding  indCambioEnDB}" IsReadOnly="True" />
                     <DataGridCheckBoxColumn Header="Campos Agregados" Binding="{Binding  indCampoAgregado  }" IsReadOnly="True"/>
                     <DataGridCheckBoxColumn Header="Campos Modificados" Binding="{Binding  indCampoModificado }" IsReadOnly="True"/>
@@ -195,7 +195,8 @@
             </DataGrid>
 
 
-            <Button Click="ButtonAbrir_Click"
+            <Button x:Name="btnActualizar"
+                    Click="Actualizar_Click"
                     Style="{DynamicResource BtnStiloBotones}" 
                     Foreground="White" 
                     Height="21" 
@@ -211,7 +212,8 @@
                     <TextBlock Text=" Actualizar"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="Exportar"
+            <Button x:Name="btnExportar"
+                    Click="BtnExportar_Click"
                     Foreground="White"
                     Style="{DynamicResource BtnStiloBotones}" 
                     BorderThickness="0" 

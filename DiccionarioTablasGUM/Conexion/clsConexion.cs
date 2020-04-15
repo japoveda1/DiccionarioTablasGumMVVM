@@ -18,6 +18,7 @@ namespace DiccionarioTablasGUM.Conexion
             public string nombreParametro { get; set; }
             public object valorParametro { get; set; }
             public SqlDbType? tipoParametro { get; set; }
+            public ParameterDirection direccion { get; set; } = ParameterDirection.Input;
         }
 
         private void Inicializar()
@@ -55,37 +56,54 @@ namespace DiccionarioTablasGUM.Conexion
             }
         }
 
-        public DataSet EjecutarCommand(string pvStrQuery)
+        public DataSet EjecutarCommand(string pvStrQuery,bool pvIndAbrirTran=true)
         {
 
             SqlCommand vCommand = new SqlCommand();
-            SqlTransaction vTransaction;
+            
             SqlDataAdapter vSqlDataAdapter = new SqlDataAdapter();
             DataSet vDataSet = new DataSet();
+            SqlTransaction vTransaction;
+            vTransaction = null;
+            if (pvIndAbrirTran) {
 
-            //vTransaction = prvSqlConnection.BeginTransaction();
+                vTransaction = prvSqlConnection.BeginTransaction();
+                vCommand.Transaction = vTransaction;
+            }
+           
 
             try
             {
 
                 vCommand.CommandText = pvStrQuery;
                 vCommand.CommandTimeout = 600;
-                //vCommand.Transaction = vTransaction;
+                //
                 vCommand.Connection = prvSqlConnection;
 
                 vSqlDataAdapter.SelectCommand = vCommand;
 
                 vSqlDataAdapter.Fill(vDataSet);
 
-               // vTransaction.Commit();
+
+                if (pvIndAbrirTran)
+                {
+                    vTransaction.Commit();
+                }
 
 
             } catch(Exception e) {
 
 
-                //vTransaction.Rollback();
+
+                if (pvIndAbrirTran)
+                {
+                    vTransaction.Rollback();
+                }
+
 
             }
+
+
 
             vCommand.Dispose();
 
@@ -110,14 +128,17 @@ namespace DiccionarioTablasGUM.Conexion
                 CommandType = CommandType.StoredProcedure,
                 Transaction = vTransaction
             };
-
+            
             try
             {
                 foreach (var item in paramsStp)
                 {
-                    vCommand.Parameters.AddWithValue("@" + item.nombreParametro, item.tipoParametro).Value = item.valorParametro;
-                }
+                  //  vCommand.Parameters.AddWithValue("@" + item.nombreParametro, item.tipoParametro);//.Value = item.valorParametro;
+                    vCommand.Parameters.AddWithValue("@" + item.nombreParametro, item.valorParametro).Direction = item.direccion;//.Value = item.valorParametro;
+                    
 
+                }
+               
 
                 using (SqlDataReader dataReader = vCommand.ExecuteReader())
                 {
@@ -130,7 +151,11 @@ namespace DiccionarioTablasGUM.Conexion
                         vDataSet.Tables[vIntContDataReader].Load(dataReader);
 
                         vIntContDataReader++;
+
+                        
                     }
+
+
                 }
 
                 vTransaction.Commit();
@@ -140,9 +165,9 @@ namespace DiccionarioTablasGUM.Conexion
 
                 vTransaction.Rollback();
 
-            }         
+            }
 
-
+           
             vCommand.Dispose();
 
             return vDataSet;

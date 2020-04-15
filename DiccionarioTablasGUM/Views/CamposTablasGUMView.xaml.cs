@@ -96,7 +96,7 @@ namespace DiccionarioTablasGUM.Views
 
         private void DtCamposGUM_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (e.Column.Header.Equals("Descripción") || e.Column.Header.Equals("Notas") || e.Column.Header.Equals("Activo GUM"))
+            if (e.Column.Header.Equals("Descripción") || e.Column.Header.Equals("Notas") || e.Column.Header.Equals("Configurable en GUM") || e.Column.Header.Equals("Sincronizable en GUM") || e.Column.Header.Equals("Sugerible en GUM") || e.Column.Header.Equals("Orden de campo descripcion"))
             {
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 ((clsCamposGUM)dtCamposGUM.Items.GetItemAt(e.Row.GetIndex())).indCambio = 1;
@@ -122,6 +122,17 @@ namespace DiccionarioTablasGUM.Views
             }
 
         }
-         
+
+        private void ConfirmarCambios_Click(object sender, RoutedEventArgs e)
+        {
+
+            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
+            vObjCamposTablasGUMViewModel.ConfirmarCambios();
+
+            dtCamposGUM.Items.Refresh();
+            dtRelacGUM.Items.Refresh();
+
+
+        }
     }
 }

@@ -28,13 +28,25 @@ namespace DiccionarioTablasGUM.Views
         private DataGridRow vRow;
         private int prvIndPermiteDragMove;
 
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// Contructor
+        /// </summary>
         public DiccionarioTablasGUMView()
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             prvIndPermiteDragMove = 1;
+            btnRestaurar.Visibility = Visibility.Visible;
+            btnMaximizar.Visibility = Visibility.Collapsed;
         }
 
+        /// <summary>
+        ///  req.162116 jpa 14042020
+        ///  permite desplazar la ventana principal haciendo clic sostenido desde la barra superiroi
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (prvIndPermiteDragMove == 1) {
@@ -45,21 +57,27 @@ namespace DiccionarioTablasGUM.Views
             prvIndPermiteDragMove = 1;
         }
 
-        private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-            this.Close();
-        }
-
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// Abre la ventana de campos
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnTablaCampos_Click(object sender, RoutedEventArgs e)
         {
             DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
             vObjDiccionarioTablasGUM.AbrirVentanaCampos();
         }
 
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// Se ejecuta cada vez que se termina de editar una celda de la grilla principal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DtTablasGUM_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (e.Column.Header.Equals("Descripción") || e.Column.Header.Equals("Notas") || e.Column.Header.Equals("Activo GUM"))
+            if (e.Column.Header.Equals("Descripción") || e.Column.Header.Equals("Notas") || e.Column.Header.Equals("Permite GUM"))
             {
                 Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
                 ((clsTablasGUM)dtTablasGUM.Items.GetItemAt(e.Row.GetIndex())).indCambio = 1;
@@ -68,32 +86,60 @@ namespace DiccionarioTablasGUM.Views
                 Mouse.OverrideCursor = null;
             }
         }
- 
-        private async void ButtonAbrir_Click(object sender, RoutedEventArgs e)
+
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// evento del boton actualizar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void Actualizar_Click(object sender, RoutedEventArgs e)
         {
            
             procesando = new ProcesandoView();
 
+  
             procesando.Show();
+
+            HabilitarControl(false);
 
             await ActualizarTablasGum();
 
             procesando.Close();
 
-        }
+            HabilitarControl(true);
 
-        private  void ButtonCerrar_Click(object sender, RoutedEventArgs e)
-        {
-
-            dtTablasGUM.Items.Refresh();
 
         }
 
+
+        public void HabilitarControl(bool pvindHabilitar) {
+
+            dtTablasGUM.IsEnabled = pvindHabilitar;
+            btnActualizar.IsEnabled = pvindHabilitar;
+            btnExportar.IsEnabled = pvindHabilitar;
+            ConfirmarCambios.IsEnabled = pvindHabilitar;
+            btnMinimizar.IsEnabled = pvindHabilitar;
+            btnMaximizar.IsEnabled = pvindHabilitar;
+            btnRestaurar.IsEnabled = pvindHabilitar;
+            btnCerrar.IsEnabled = pvindHabilitar;
+        }
+        /// <summary>
+        ///  req.162116 jpa 14042020
+        ///  Evento asincronico que ejecuta la actualizacion
+        /// </summary>
+        /// <returns></returns>
         private async Task ActualizarTablasGum() {
             DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
              await Task.Run(() => vObjDiccionarioTablasGUM.ObtenerTablasGUM(1));
         }
 
+        /// <summary>
+        ///  req.162116 jpa 14042020
+        ///  Evento que se ejecuta cuando los datos de la celda actual cambia
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DtTablasGUM_CurrentCellChanged(object sender, EventArgs e)
         {
            
@@ -111,17 +157,38 @@ namespace DiccionarioTablasGUM.Views
            
         }
 
-        private void minimizar_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// Minimiza la ventana principal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnMinimizar_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
-               
-        private void maximizar_Click(object sender, RoutedEventArgs e)
+
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// Maximiza la ventana principal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>      
+        private void BtnMaximizar_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Maximized;
+            btnRestaurar.Visibility = Visibility.Visible;
+            btnMaximizar.Visibility = Visibility.Collapsed;
+       
         }
 
-        private void cerrar_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// Cierra la ventana principal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnCerrar_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult vObjRespuestaUsuario;
             DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
@@ -152,11 +219,44 @@ namespace DiccionarioTablasGUM.Views
             this.Close();
         }
 
-        private void restaurar_Click(object sender, RoutedEventArgs e) {
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// Restaura el tamaño de la ventana principal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnRestaurar_Click(object sender, RoutedEventArgs e) {
             WindowState = WindowState.Normal;
+            btnRestaurar.Visibility = Visibility.Collapsed;
+            btnMaximizar.Visibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// req.162116 jpa 14042020
+        /// Ejectua la exportacion  a oracle
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void BtnExportar_Click(object sender, RoutedEventArgs e)
+        {
+            procesando = new ProcesandoView();
+
+            procesando.Show();
+
+            HabilitarControl(false);
+
+            await Exportar();
+
+            procesando.Close();
+
+            HabilitarControl(true);
 
         }
 
-
+        private async Task Exportar()
+        {
+            DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
+            await Task.Run(() => vObjDiccionarioTablasGUM.Exportar());
+        }
     }
 }
