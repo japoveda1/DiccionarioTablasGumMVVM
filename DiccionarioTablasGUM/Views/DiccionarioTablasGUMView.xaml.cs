@@ -3,6 +3,7 @@ using DiccionarioTablasGUM.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,13 @@ namespace DiccionarioTablasGUM.Views
     /// </summary>
     public partial class DiccionarioTablasGUMView : Window
     {
-        ProcesandoView procesando;
-        private DataGridRow vRow;
-        private int prvIndPermiteDragMove;
+        //Ventana procesando
+        ProcesandoView ProcesandoView;
+        //Guarda la fila que fue editada
+        private DataGridRow prvDgFilaEditada;
+
+        //PErmite controlar el loop despues de hacer commitEdit
+        private bool prvBoolControlLoop;
 
         /// <summary>
         /// req.162116 jpa 14042020
@@ -35,26 +40,24 @@ namespace DiccionarioTablasGUM.Views
         public DiccionarioTablasGUMView()
         {
             InitializeComponent();
+            //configuracion del tamaño de l a ventana segun el pantalla 
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-            prvIndPermiteDragMove = 1;
+
             btnRestaurar.Visibility = Visibility.Visible;
             btnMaximizar.Visibility = Visibility.Collapsed;
+
+            prvBoolControlLoop = true;
         }
 
         /// <summary>
         ///  req.162116 jpa 14042020
-        ///  permite desplazar la ventana principal haciendo clic sostenido desde la barra superiroi
+        ///  Permite desplazar la ventana principal haciendo clic sostenido desde la barra superiroi
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (prvIndPermiteDragMove == 1) {
-
-                this.DragMove();
-
-            }
-            prvIndPermiteDragMove = 1;
+            this.DragMove();
         }
 
         /// <summary>
@@ -69,23 +72,139 @@ namespace DiccionarioTablasGUM.Views
             vObjDiccionarioTablasGUM.AbrirVentanaCampos();
         }
 
-        /// <summary>
-        /// req.162116 jpa 14042020
-        /// Se ejecuta cada vez que se termina de editar una celda de la grilla principal
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        ///// <summary>
+        ///// req.162116 jpa 14042020
+        ///// Se ejecuta cada vez que se termina de editar una celda de la grilla principal
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
         private void DtTablasGUM_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (e.Column.Header.Equals("Descripción") || e.Column.Header.Equals("Notas") || e.Column.Header.Equals("Permite GUM"))
-            {
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                ((clsTablasGUM)dtTablasGUM.Items.GetItemAt(e.Row.GetIndex())).indCambio = 1;
 
-                vRow = e.Row;
-                Mouse.OverrideCursor = null;
-            }
+            
+            marcarRefrescarGRilla(e.Row.GetIndex(), e.Column.Header.ToString(),e.Row);
+
+
+            //bool vBoolCommithRow;
+            //bool vBoolCommitColumn;
+            ////Solo las columnas que son editables
+            //if (prvBoolControlLoop && (e.Column.Header.Equals("Descripción") || e.Column.Header.Equals("Notas") || e.Column.Header.Equals("Permite GUM")))
+            //{
+            //    //Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+            //    ((clsTablasGUM)PubListTablasGum.Items.GetItemAt(e.Row.GetIndex())).indCambio = 1;
+            //    //((clsTablasGUM)PubListTablasGum.Items.GetItemAt(e.Row.GetIndex())).indProcesoGum = 1;
+            //    prvDgFilaEditada = e.Row;
+
+            //    prvBoolControlLoop = false;
+
+            //    vBoolCommithRow = true;
+            //    vBoolCommitColumn = true;
+
+            //    vBoolCommithRow = PubListTablasGum.CommitEdit();
+            //    vBoolCommitColumn = PubListTablasGum.CommitEdit();
+
+            //    if (vBoolCommithRow && vBoolCommitColumn)
+            //    {
+            //        PubListTablasGum.Items.Refresh();
+            //    }
+            //    //prvDgFilaEditada = null;
+
+            //    //Mouse.OverrideCursor = null;
+            //}
+            //prvBoolControlLoop = true;
         }
+
+
+        public void marcarRefrescarGRilla(int index, string nombreColumna , DataGridRow row)
+        {
+            bool vBoolCommithRow;
+            bool vBoolCommitColumn;
+            //Solo las columnas que son editables
+            if (prvBoolControlLoop && (nombreColumna.Equals("Descripción") || nombreColumna.Equals("Notas") || nombreColumna.Equals("Permite GUM")))
+            {
+                //Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+                ((clsTablasGUM)PubListTablasGum.Items.GetItemAt(index)).indCambio = 1;
+                //((clsTablasGUM)PubListTablasGum.Items.GetItemAt(e.Row.GetIndex())).indProcesoGum = 1;
+
+                prvDgFilaEditada = row;
+
+                prvBoolControlLoop = false;
+
+                vBoolCommithRow = true;
+                vBoolCommitColumn = true;
+
+                vBoolCommithRow = PubListTablasGum.CommitEdit();
+                vBoolCommitColumn = PubListTablasGum.CommitEdit();
+
+                if (vBoolCommithRow && vBoolCommitColumn)
+                {
+                    PubListTablasGum.Items.Refresh();
+                }
+                //prvDgFilaEditada = null;
+
+                //Mouse.OverrideCursor = null;
+            }
+            prvBoolControlLoop = true;
+
+
+        }
+
+        ///// <summary>
+        /////  req.162116 jpa 14042020
+        /////  Evento que se ejecuta cuando los datos de la celda actual cambia
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        private void DtTablasGUM_CurrentCellChanged(object sender, EventArgs e)
+        {
+            System.Windows.Controls.DataGrid vObjCeldaActual = (System.Windows.Controls.DataGrid)sender;
+
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
+
+            if (prvDgFilaEditada != null)
+            {
+                //Solo para si sigue en la misma fila
+                if (prvDgFilaEditada.Item == vObjCeldaActual.CurrentCell.Item)
+                {
+                    #region Configuracion de focus
+
+                    PubListTablasGum.UpdateLayout();
+                    PubListTablasGum.ScrollIntoView(vObjCeldaActual.CurrentCell.Item, vObjCeldaActual.CurrentCell.Column);
+                    PubListTablasGum.Focus();
+                    PubListTablasGum.SelectedItem = vObjCeldaActual.CurrentItem;
+
+                    //Se valida que si haya seleccionada una celda
+                    if (PubListTablasGum.SelectedItem != null)
+                    {
+                        //se optiene el contenido de la celda seleccionada
+                        var cellcontent = PubListTablasGum.Columns[vObjCeldaActual.CurrentCell.Column.DisplayIndex].GetCellContent(PubListTablasGum.SelectedItem);
+
+                        //Se obtiene la celda
+                        var cell = cellcontent?.Parent as System.Windows.Controls.DataGridCell;
+
+                        if (cell != null)
+                        {
+                            cell.Focus();
+
+                            //Si la celda es solo de lectura no la configura editable.
+                            if (!cell.IsReadOnly)
+                            {
+                                cell.IsEditing = true;
+                            }
+
+                            cellcontent.Focus();
+                        }
+                    }
+                    #endregion
+                }
+            }
+
+
+            Mouse.OverrideCursor = null;
+        }
+
 
         /// <summary>
         /// req.162116 jpa 14042020
@@ -95,27 +214,27 @@ namespace DiccionarioTablasGUM.Views
         /// <param name="e"></param>
         private async void Actualizar_Click(object sender, RoutedEventArgs e)
         {
-           
-            procesando = new ProcesandoView();
 
-  
-            procesando.Show();
+            ProcesandoView = new ProcesandoView();
+
+
+            ProcesandoView.Show();
 
             HabilitarControl(false);
 
             await ActualizarTablasGum();
 
-            procesando.Close();
+            ProcesandoView.Close();
 
             HabilitarControl(true);
 
 
         }
 
+        public void HabilitarControl(bool pvindHabilitar)
+        {
 
-        public void HabilitarControl(bool pvindHabilitar) {
-
-            dtTablasGUM.IsEnabled = pvindHabilitar;
+            PubListTablasGum.IsEnabled = pvindHabilitar;
             btnActualizar.IsEnabled = pvindHabilitar;
             btnExportar.IsEnabled = pvindHabilitar;
             ConfirmarCambios.IsEnabled = pvindHabilitar;
@@ -124,38 +243,18 @@ namespace DiccionarioTablasGUM.Views
             btnRestaurar.IsEnabled = pvindHabilitar;
             btnCerrar.IsEnabled = pvindHabilitar;
         }
+
         /// <summary>
         ///  req.162116 jpa 14042020
         ///  Evento asincronico que ejecuta la actualizacion
         /// </summary>
         /// <returns></returns>
-        private async Task ActualizarTablasGum() {
-            DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
-             await Task.Run(() => vObjDiccionarioTablasGUM.ObtenerTablasGUM(1));
-        }
-
-        /// <summary>
-        ///  req.162116 jpa 14042020
-        ///  Evento que se ejecuta cuando los datos de la celda actual cambia
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void DtTablasGUM_CurrentCellChanged(object sender, EventArgs e)
+        private async Task ActualizarTablasGum()
         {
-           
-            if (vRow != null)
-
-            {
-                Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-                dtTablasGUM.CommitEdit();
-
-                dtTablasGUM.Items.Refresh();
-
-                vRow = null;
-                Mouse.OverrideCursor = null;
-            }
-           
+            DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
+            await Task.Run(() => vObjDiccionarioTablasGUM.ObtenerTablasGUM(1));
         }
+
 
         /// <summary>
         /// req.162116 jpa 14042020
@@ -179,7 +278,7 @@ namespace DiccionarioTablasGUM.Views
             WindowState = WindowState.Maximized;
             btnRestaurar.Visibility = Visibility.Visible;
             btnMaximizar.Visibility = Visibility.Collapsed;
-       
+
         }
 
         /// <summary>
@@ -209,7 +308,8 @@ namespace DiccionarioTablasGUM.Views
                 }
                 else
                 {
-                    if (vObjRespuestaUsuario == MessageBoxResult.Cancel) {
+                    if (vObjRespuestaUsuario == MessageBoxResult.Cancel)
+                    {
                         return;
                     }
 
@@ -225,7 +325,8 @@ namespace DiccionarioTablasGUM.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnRestaurar_Click(object sender, RoutedEventArgs e) {
+        private void BtnRestaurar_Click(object sender, RoutedEventArgs e)
+        {
             WindowState = WindowState.Normal;
             btnRestaurar.Visibility = Visibility.Collapsed;
             btnMaximizar.Visibility = Visibility.Visible;
@@ -239,15 +340,15 @@ namespace DiccionarioTablasGUM.Views
         /// <param name="e"></param>
         private async void BtnExportar_Click(object sender, RoutedEventArgs e)
         {
-            procesando = new ProcesandoView();
+            ProcesandoView = new ProcesandoView();
 
-            procesando.Show();
+            ProcesandoView.Show();
 
             HabilitarControl(false);
 
             await Exportar();
 
-            procesando.Close();
+            ProcesandoView.Close();
 
             HabilitarControl(true);
 
@@ -257,6 +358,14 @@ namespace DiccionarioTablasGUM.Views
         {
             DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
             await Task.Run(() => vObjDiccionarioTablasGUM.Exportar());
+        }
+
+        private void ChkIndProcesoGum_Click(object sender, RoutedEventArgs e)
+        {
+            var a = sender;
+            var b = e;
+            var c = 1;
+
         }
     }
 }

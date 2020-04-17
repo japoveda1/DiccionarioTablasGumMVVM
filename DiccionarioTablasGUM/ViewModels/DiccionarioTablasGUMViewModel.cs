@@ -1,15 +1,10 @@
 ﻿using Caliburn.Micro;
 using DiccionarioTablasGUM.Conexion;
 using DiccionarioTablasGUM.Models;
-using DiccionarioTablasGUM.Views;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -61,8 +56,8 @@ namespace DiccionarioTablasGUM.ViewModels
                 return _prvObjTablaGumSeleccionada;
             }
             set
-            {
-                _prvObjTablaGumSeleccionada = value;
+            {                
+                _prvObjTablaGumSeleccionada = value;                
                 NotifyOfPropertyChange(() => PubObjTablaGumSeleccionada);
             }
         }
@@ -321,6 +316,8 @@ namespace DiccionarioTablasGUM.ViewModels
              where vTablaGUM.nombre == PubObjTablaGumSeleccionada.nombre
              select vTablaGUM).ToList().ForEach(vTablaSistema => vTablaSistema.indCambio = 1);
 
+             PubObjTablaGumSeleccionada.indCambio = 1;
+       
             Mouse.OverrideCursor = null;
         }
 

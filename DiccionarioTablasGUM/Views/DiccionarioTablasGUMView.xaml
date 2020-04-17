@@ -93,15 +93,14 @@
                        CanUserAddRows="False"  
                        Grid.Row="2" 
                        Grid.Column="1" 
-                       x:Name="dtTablasGUM" 
                        Grid.ColumnSpan="5" 
+                       x:Name="PubListTablasGum"
+                       SelectedItem="{Binding PubObjTablaGumSeleccionada}" 
                        CellEditEnding="DtTablasGUM_CellEditEnding"
                        CurrentCellChanged="DtTablasGUM_CurrentCellChanged"
-                       ItemsSource="{Binding PubListTablasGum }" 
-                       SelectedItem="{Binding PubObjTablaGumSeleccionada}" 
                        Margin="0,8,0,0"    
                        HorizontalGridLinesBrush="#F0F0F0"
-                       VerticalGridLinesBrush="#F0F0F0"
+                       VerticalGridLinesBrush="#F0F0F0" 
                        >
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell" >
@@ -112,7 +111,7 @@
                                 <Setter Property="Background" Value="#F7F7F7"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="true">
-                                <Setter Property="Background" Value="Blue"/>
+                                <Setter Property="Background" Value="#85C1E9"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -130,12 +129,10 @@
                                                     <DataTrigger Binding="{Binding indCambio}" Value="0">
                                                             <Setter Property="Foreground" Value="Green"/>
                                                             <Setter Property="ToolTip" Value="Informaicion almacenada exitosamente"/>
-
                                                         </DataTrigger>
                                                     <DataTrigger Binding="{Binding indCambio}" Value="1">
                                                         <Setter Property="Foreground" Value="Yellow"/>
                                                             <Setter Property="ToolTip" Value="Informacion sin guardar"/>
-
                                                         </DataTrigger>
                                                     <DataTrigger Binding="{Binding IndEsNuevo}" Value="1">
                                                         <Setter Property="Foreground" Value="Red"/>
@@ -151,7 +148,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Nombre tabla" Binding="{Binding  nombre }" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion}" >
+                    <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion, UpdateSourceTrigger=PropertyChanged}" >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Style.Triggers>
@@ -162,11 +159,18 @@
                             </Style>
                         </DataGridTextColumn.CellStyle>
                     </DataGridTextColumn>
-                    <DataGridCheckBoxColumn Header="Permite GUM" Binding="{Binding  indProcesoGum }" />
+                    <DataGridCheckBoxColumn Header="Permite GUM" Binding="{Binding  indProcesoGum, UpdateSourceTrigger=PropertyChanged}" />
+                    <!--<DataGridTemplateColumn Header="Permite GUM" >
+                        <DataGridTemplateColumn.CellTemplate >
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" x:Name="chkIndProcesoGum" Click="ChkIndProcesoGum_Click" IsChecked="{Binding  indProcesoGum, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>-->
                     <DataGridCheckBoxColumn Header="Cambios" Binding="{Binding  indCambioEnDB}" IsReadOnly="True" />
                     <DataGridCheckBoxColumn Header="Campos Agregados" Binding="{Binding  indCampoAgregado  }" IsReadOnly="True"/>
-                    <DataGridCheckBoxColumn Header="Campos Modificados" Binding="{Binding  indCampoModificado }" IsReadOnly="True"/>
-                    <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding  notas}" Width="500"  >
+                    <DataGridCheckBoxColumn Header="Campos Modificados" Binding="{Binding  indCampoModificado  }" IsReadOnly="True"/>
+                    <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding  notas , UpdateSourceTrigger=PropertyChanged}" Width="500"  >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
                                 <Style.Triggers>
@@ -193,7 +197,6 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-
 
             <Button x:Name="btnActualizar"
                     Click="Actualizar_Click"
@@ -238,13 +241,12 @@
                      Grid.Row="3"  
                      Grid.Column="5"
                      Margin="0,8,0,0" 
-                     ToolTip="Guarda los cambios realizados sobre las tablas del diccionario GUM">                
+                     ToolTip="Guarda los cambios realizados sobre las tablas del diccionario GUM">
                 <StackPanel Orientation="Horizontal">
                     <fa:ImageAwesome Icon="Save" Width="10" Height="10" Foreground="White"/>
                     <TextBlock Text=" Guardar"/>
                 </StackPanel>
             </Button>
-
         </Grid>
     </Grid>
 </Window>
