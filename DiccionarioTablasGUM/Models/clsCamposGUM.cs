@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DiccionarioTablasGUM.Models
 {
-    public class clsCamposGUM
+    public class clsCamposGUM : INotifyPropertyChanged
     {
 
         public string nombreTabla { get; set; }
@@ -26,7 +28,26 @@ namespace DiccionarioTablasGUM.Models
         public Int16 indGumSincronizado { get; set; }
         public Int16 indGumSugerir { get; set; }
         public Int16 indCambioEnDb { get; set; }
-        public Int16 indCambio { get; set; }
         public Int16 indEsNuevo { get; set; }
+
+
+        private Int16 _indCambio;
+
+        public Int16 indCambio
+        {
+            get { return _indCambio; }
+            set
+            {
+                _indCambio = value;
+                OnPropertyChanged("indCambio");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

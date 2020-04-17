@@ -45,15 +45,10 @@
                    Grid.Column="2"
                    Grid.Row="1"/>
 
-            <TextBlock x:Name="CerrarDiccionarioTablasGum" 
-                       TextAlignment="Right" 
-                       VerticalAlignment="Center"  
-                       FontFamily="Avenir LT Std 65 Medium"                            
-                       Cursor="Hand"
-                       Foreground="White" 
-                       Grid.Column="3"
-                       Grid.Row="1"
-                       ToolTip="Cerrar ventana"><Run Text="X" MouseLeftButtonDown="Run_MouseLeftButtonDown"/></TextBlock>
+            <Button Grid.Column="3"
+                       Grid.Row="1" x:Name="btnCerrar" Click="BtnCerrar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20" Background="Transparent" BorderThickness="0">
+                <TextBlock Foreground="White" FontWeight="Bold" >x</TextBlock>
+            </Button >
         </Grid>
 
         <Grid Grid.Row="1">
@@ -74,9 +69,63 @@
 
             <StackPanel  Orientation="Horizontal" Grid.Row="1" Grid.Column="1"  Margin="0,8,8,0">
                 <TextBlock FontWeight="Bold" Text="Nombre de tabla: " />
+                <TextBlock x:Name="PubIntindCambioEnTabla" />
                 <TextBlock x:Name="PubStrNombreTablaGUM" />
             </StackPanel>
 
+
+            <!--<Button x:Name="indDeCambio"
+                    Foreground="White"
+                    Background="Transparent" 
+                    BorderThickness="0" 
+                    Grid.Row="1" 
+                    Grid.Column="3" 
+                    HorizontalAlignment="Right" 
+                    Height="30" 
+                    MinWidth="30" MaxWidth="30"
+                    Margin="0,0,0,0">
+                <fa:ImageAwesome Icon="Circle" Width="21" Height="21" Foreground="#0E4D96">
+                    <fa:ImageAwesome.Style>
+                        <Style TargetType="{x:Type fa:ImageAwesome}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding PubIntindCambioEnTabla}" Value="0">
+                                    <Setter Property="Foreground" Value="Green"/>
+                                    <Setter Property="ToolTip" Value="Informaicion almacenada exitosamente"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding PubIntindCambioEnTabla}" Value="1">
+                                    <Setter Property="Foreground" Value="Yellow"/>
+                                    <Setter Property="ToolTip" Value="Informacion sin guardar"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding PubIntindCambioEnTabla}" Value="3">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                    <Setter Property="ToolTip" Value="Objeto Nuevo"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </fa:ImageAwesome.Style>
+                </fa:ImageAwesome>
+            </Button>-->
+
+            <fa:ImageAwesome  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="3" Icon="Circle" Width="21" Height="21" >
+            <fa:ImageAwesome.Style>
+                <Style TargetType="{x:Type fa:ImageAwesome}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding PubIntindCambioEnTabla}" Value="0">
+                            <Setter Property="Foreground" Value="Green"/>
+                            <Setter Property="ToolTip" Value="Informaicion almacenada exitosamente"/>
+                        </DataTrigger>
+                            <DataTrigger Binding="{Binding PubIntindCambioEnTabla}" Value="1">
+                            <Setter Property="Foreground" Value="Yellow"/>
+                            <Setter Property="ToolTip" Value="Informacion sin guardar"/>
+                        </DataTrigger>
+                            <DataTrigger Binding="{Binding PubIntindCambioEnTabla}" Value="3">
+                            <Setter Property="Foreground" Value="Red"/>
+                            <Setter Property="ToolTip" Value="Objeto Nuevo"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </fa:ImageAwesome.Style>
+            </fa:ImageAwesome>
             <TabControl Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8,0,0">
                 <TabItem Header="Campos">
                     <Grid >
@@ -85,8 +134,9 @@
                                   ItemsSource="{Binding PubListCamposGUMActual}" 
                                   SelectedItem="{Binding PubListTablasGUMCamposSeleccionada}" 
                                   AutoGenerateColumns="False" 
-                                  CellEditEnding="DtCamposGUM_CellEditEnding"
-                                  CurrentCellChanged="DtCamposGUM_CurrentCellChanged">
+                                  BeginningEdit="DtCamposGUM_BeginningEdit"
+                                  
+                                  >
                             <DataGrid.CellStyle>
                                 <Style TargetType="DataGridCell" >
                                     <Setter Property="BorderBrush" Value="Gray"/>
@@ -96,7 +146,7 @@
                                             <Setter Property="Background" Value="#F7F7F7"/>
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="true">
-                                            <Setter Property="Background" Value="Blue"/>
+                                            <Setter Property="Background" Value="#85C1E9"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -120,7 +170,7 @@
                                                                         <Setter Property="ToolTip" Value="Informacion sin guardar"/>
 
                                                                     </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding IndEsNuevo}" Value="1">
+                                                                    <DataTrigger Binding="{Binding indEsNuevo}" Value="1">
                                                                         <Setter Property="Foreground" Value="Red"/>
                                                                         <Setter Property="ToolTip" Value="Objeto Nuevo"/>
                                                                     </DataTrigger>
@@ -145,7 +195,7 @@
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="Notas" Binding="{Binding  Path=notas}" Width="auto" >
+                                <DataGridTextColumn Header="Notas" Binding="{Binding notas}" Width="auto" >
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Style.Triggers>
@@ -156,8 +206,8 @@
                                         </Style>
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="Order de campo" Binding="{Binding  Path=orden}" Width="auto" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Order de campo PK" Binding="{Binding  Path=ordenPk}" Width="auto">
+                                <DataGridTextColumn Header="Orden de campo" Binding="{Binding  orden}" Width="auto" IsReadOnly="True" SortMemberPath="orden" SortDirection="Ascending" />
+                                <DataGridTextColumn Header="Orden de campo PK" Binding="{Binding ordenPk}" Width="auto">
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
                                             <Style.Triggers>
@@ -169,8 +219,8 @@
                                     </DataGridTextColumn.CellStyle>
 
                                 </DataGridTextColumn>
-                                <DataGridCheckBoxColumn Header="Es identity" Binding="{Binding  Path=indIdentity}" Width="auto" IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Longitud" Binding="{Binding  Path=longitud}" Width="auto" IsReadOnly="True" />
+                                <DataGridCheckBoxColumn Header="Es identity" Binding="{Binding indIdentity}" Width="auto" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Longitud" Binding="{Binding  longitud}" Width="auto" IsReadOnly="True" />
                                 <DataGridTextColumn Header="Orden de campo descripcion" Binding="{Binding  Path=ordenCampoDesc}" Width="auto" >
                                     <DataGridTextColumn.CellStyle>
                                         <Style TargetType="DataGridCell">
@@ -183,11 +233,11 @@
                                     </DataGridTextColumn.CellStyle>
 
                                 </DataGridTextColumn>
-                                <DataGridTextColumn Header="Tipo de dato en SQL" Binding="{Binding  Path=tipoDatoSql}" Width="auto" IsReadOnly="True"/>
-                                <DataGridCheckBoxColumn Header="Acepta Nulo" Binding="{Binding  Path=indNulo}" Width="auto" IsReadOnly="True"/>
-                                <DataGridCheckBoxColumn Header="Configurable en GUM" Binding="{Binding  Path=indGumConfigurable}" Width="auto" />
-                                <DataGridCheckBoxColumn Header="Sincronizable en GUM" Binding="{Binding  Path=indGumSincronizado}" Width="auto" />
-                                <DataGridCheckBoxColumn Header="Sugerible en GUM" Binding="{Binding  Path=indGumSugerir}" Width="auto" />
+                                <DataGridTextColumn Header="Tipo de dato en SQL" Binding="{Binding  tipoDatoSql}" Width="auto" IsReadOnly="True"/>
+                                <DataGridCheckBoxColumn Header="Acepta Nulo" Binding="{Binding  indNulo}" Width="auto" IsReadOnly="True"/>
+                                <DataGridCheckBoxColumn Header="Configurable en GUM" Binding="{Binding  indGumConfigurable}" Width="auto" />
+                                <DataGridCheckBoxColumn Header="Sincronizable en GUM" Binding="{Binding indGumSincronizado}" Width="auto" />
+                                <DataGridCheckBoxColumn Header="Sugerible en GUM" Binding="{Binding indGumSugerir}" Width="auto" />
                             </DataGrid.Columns>
 
 
@@ -216,7 +266,7 @@
                                             <Setter Property="Background" Value="#F7F7F7"/>
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="true">
-                                            <Setter Property="Background" Value="Blue"/>
+                                            <Setter Property="Background" Value="#85C1E9"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -294,7 +344,8 @@
                             MinWidth="60" 
                             MaxWidth="60" 
                             Grid.Column="0" 
-                            Margin="0,0,8,0">
+                            Margin="0,0,8,0"
+                            ToolTip="Desplazarse a los campos de la primera tabla">
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Name="row1" Icon="ChevronLeft" Width="21" Height="21" Foreground="#0E4D96"/>
                             <fa:ImageAwesome Name="row2" Icon="ChevronLeft" Width="21" Height="21" Foreground="#0E4D96"/>
@@ -307,7 +358,8 @@
                             Foreground="White" 
                             Click="BtnAnterior_Click"  
                             Height="30" 
-                            MinWidth="30" MaxWidth="30" Grid.Column="1" Margin="0,0,8,0">
+                            MinWidth="30" MaxWidth="30" Grid.Column="1" Margin="0,0,8,0"
+                            ToolTip="Desplazarse a los campos de la tabla anterior">
                         <fa:ImageAwesome Name="anterior" Icon="ChevronLeft" Width="21" Height="21" Foreground="#0E4D96"/>
                     </Button>
                     <Button x:Name="btnSiguiente"  
@@ -316,7 +368,8 @@
                             BorderThickness="0" 
                             Click="BtnSiguiente_Click"   
                             Height="30" 
-                            MinWidth="30" MaxWidth="30" Grid.Column="2" Margin="0,0,8,0">
+                            MinWidth="30" MaxWidth="30" Grid.Column="2" Margin="0,0,8,0"
+                            ToolTip="Desplazarse a los campos de la tabla siguiente">
                         <fa:ImageAwesome Name="siguiente" Icon="ChevronRight" Width="21" Height="21" Foreground="#0E4D96"/>
                     </Button>
                     <Button x:Name="btnUltimo" 
@@ -326,7 +379,8 @@
                             Click="BtnUltimo_Click"   
                             Height="30" 
                             MinWidth="60" MaxWidth="60" Grid.Column="3" 
-                            Margin="0,0,8,0">
+                            Margin="0,0,8,0"
+                            ToolTip="Desplazarse a los campos de la ultima tabla">
                         <StackPanel Orientation="Horizontal">
                             <fa:ImageAwesome Name="ultimo1" Icon="ChevronRight" Width="21" Height="21" Foreground="#0E4D96"/>
                             <fa:ImageAwesome Name="ultimo2" Icon="ChevronRight" Width="21" Height="21" Foreground="#0E4D96"/>
@@ -336,7 +390,7 @@
 
             </StackPanel>
 
-            <Button Click="ConfirmarCambios_Click"
+            <!--<Button Click="ConfirmarCambios_Click"
                     Foreground="White"
                     Background="Transparent" 
                     BorderThickness="0" 
@@ -347,6 +401,22 @@
                     MinWidth="30" MaxWidth="30"
                     Margin="0,8,0,0">
                 <fa:ImageAwesome Icon="Save" Width="21" Height="21" Foreground="#0E4D96"/>
+            </Button>-->
+
+            <Button  Click="ConfirmarCambios_Click"
+                     Foreground="White" 
+                     Style="{DynamicResource BtnStiloBotones}" 
+                     Height="21" 
+                     MinWidth="100" 
+                     MaxWidth="100"
+                     Grid.Row="3"  
+                     Grid.Column="3"
+                     Margin="0,8,0,0" 
+                     ToolTip="Guarda los cambios realizados sobre los campos de la Tabla">
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Save" Width="10" Height="10" Foreground="White"/>
+                    <TextBlock Text=" Guardar"/>
+                </StackPanel>
             </Button>
 
         </Grid>

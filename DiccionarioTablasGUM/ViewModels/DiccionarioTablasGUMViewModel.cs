@@ -309,16 +309,10 @@ namespace DiccionarioTablasGUM.ViewModels
         /// </summary>
         public void MarcarCambio()
         {
-            Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
-
             //Actualizacion de campo seleccion en publica con tablas del sistema
             (from vTablaGUM in PubListTablasGum
              where vTablaGUM.nombre == PubObjTablaGumSeleccionada.nombre
              select vTablaGUM).ToList().ForEach(vTablaSistema => vTablaSistema.indCambio = 1);
-
-             PubObjTablaGumSeleccionada.indCambio = 1;
-       
-            Mouse.OverrideCursor = null;
         }
 
 

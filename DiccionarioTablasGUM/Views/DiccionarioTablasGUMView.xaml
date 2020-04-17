@@ -95,9 +95,8 @@
                        Grid.Column="1" 
                        Grid.ColumnSpan="5" 
                        x:Name="PubListTablasGum"
-                       SelectedItem="{Binding PubObjTablaGumSeleccionada}" 
-                       CellEditEnding="DtTablasGUM_CellEditEnding"
-                       CurrentCellChanged="DtTablasGUM_CurrentCellChanged"
+                       SelectedItem="{Binding PubObjTablaGumSeleccionada}"
+                       BeginningEdit="PubListTablasGum_BeginningEdit"
                        Margin="0,8,0,0"    
                        HorizontalGridLinesBrush="#F0F0F0"
                        VerticalGridLinesBrush="#F0F0F0" 
@@ -117,7 +116,7 @@
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns  >
-                    <DataGridTemplateColumn Width="Auto" SortMemberPath="indCambio" IsReadOnly="True" >
+                    <DataGridTemplateColumn  x:Name="column1" Width="Auto" SortMemberPath="indCambio" IsReadOnly="True" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -148,25 +147,9 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Nombre tabla" Binding="{Binding  nombre }" IsReadOnly="True" />
-                    <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion, UpdateSourceTrigger=PropertyChanged}" >
-                        <DataGridTextColumn.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding descripcion}" Value="" >
-                                        <Setter Property="BorderBrush" Value="#EF274D"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.CellStyle>
-                    </DataGridTextColumn>
-                    <DataGridCheckBoxColumn Header="Permite GUM" Binding="{Binding  indProcesoGum, UpdateSourceTrigger=PropertyChanged}" />
-                    <!--<DataGridTemplateColumn Header="Permite GUM" >
-                        <DataGridTemplateColumn.CellTemplate >
-                            <DataTemplate>
-                                <CheckBox HorizontalAlignment="Center" x:Name="chkIndProcesoGum" Click="ChkIndProcesoGum_Click" IsChecked="{Binding  indProcesoGum, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
+                    <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion, UpdateSourceTrigger=PropertyChanged}" />
+                    <DataGridCheckBoxColumn Header="Permite GUM"  Binding="{Binding  indProcesoGum, UpdateSourceTrigger=PropertyChanged}"/>
+        
                     <DataGridCheckBoxColumn Header="Cambios" Binding="{Binding  indCambioEnDB}" IsReadOnly="True" />
                     <DataGridCheckBoxColumn Header="Campos Agregados" Binding="{Binding  indCampoAgregado  }" IsReadOnly="True"/>
                     <DataGridCheckBoxColumn Header="Campos Modificados" Binding="{Binding  indCampoModificado  }" IsReadOnly="True"/>

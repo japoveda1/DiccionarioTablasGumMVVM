@@ -18,6 +18,17 @@ namespace DiccionarioTablasGUM.ViewModels
 
 		private string _prvStrNombreTablaGUM;
         private int? _prvIntTablaConCambios;
+        //pubIntindCambioEnTabla
+
+        private int _prvIntindCambioEnTabla;
+
+        public int PubIntindCambioEnTabla
+        {
+            get { return _prvIntindCambioEnTabla; }
+            set { _prvIntindCambioEnTabla = value;
+                NotifyOfPropertyChange(() => PubIntindCambioEnTabla);
+            }
+        }
 
         //Objeto privado lista que contiene las tablas que  ya se encuentran agregadas al GUM
         private List<clsTablasGUM> PrvListTablasGum;
@@ -103,7 +114,7 @@ namespace DiccionarioTablasGUM.ViewModels
         public CamposTablasGUMViewModel(List<clsTablasGUM> pvListTablasGUM ,clsTablasGUM pvObjTablaGUMSeleccionada,
                                         List<clsCamposGUM> pvListTablasGUMCampos, List<clsRelacCamposGUM> pvListRelacCamposGUM,
                                         List<clsCambiosCamposGUM> pvListCambiosCampoGUM)
-		    {
+		{
 
             PubStrNombreTablaGUM = pvObjTablaGUMSeleccionada.nombre;
             PubIntTablaConCambios = pvObjTablaGUMSeleccionada.indCambioEnDB;
@@ -111,13 +122,23 @@ namespace DiccionarioTablasGUM.ViewModels
             PrvListTablasGum = pvListTablasGUM;
             PrvObjTablaGumSeleccionada = pvObjTablaGUMSeleccionada;
             PrvListCamposGUM = pvListTablasGUMCampos;
-            PubListCamposGUMActual = new  BindableCollection<clsCamposGUM>( PrvListCamposGUM.Where(vCampo => vCampo.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
+            PubListCamposGUMActual = new  BindableCollection<clsCamposGUM>( PrvListCamposGUM.Where(vCampo => vCampo.nombreTabla.Equals(PubStrNombreTablaGUM)).OrderBy(vCampo => vCampo.orden).ToList());
             PrvListRelacCamposGUM = pvListRelacCamposGUM;
-            PubListRelacCamposGUMActual = new BindableCollection<clsRelacCamposGUM>(PrvListRelacCamposGUM.Where(vRelac => vRelac.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
+            PubListRelacCamposGUMActual = new BindableCollection<clsRelacCamposGUM>(PrvListRelacCamposGUM.Where(vRelac => vRelac.nombreTabla.Equals(PubStrNombreTablaGUM)).OrderBy(vCampo => vCampo.nombreRelacion).ToList());
             PrvListCambiosCamposGum = pvListCambiosCampoGUM;
             PubListCambiosCampoGUMAtual = new BindableCollection<clsCambiosCamposGUM>(PrvListCambiosCamposGum.Where(vCambios => vCambios.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
 
+            PubIntindCambioEnTabla = 0;
+            if (PubListCamposGUMActual.Where(x => x.indCambio == 1).Any()) {
+
+                PubIntindCambioEnTabla = 1;
             }
+            else if(PubListCamposGUMActual.Where(x => x.indEsNuevo == 1).Any())
+            {
+                PubIntindCambioEnTabla = 3;
+
+            }
+        }
 
         /// <summary>
         ///  req. 162259 jpa 25032020 
@@ -228,7 +249,7 @@ namespace DiccionarioTablasGUM.ViewModels
             
             //Cursor en espera
             Mouse.OverrideCursor = null;
-
+            PubIntindCambioEnTabla = 0;
             System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
 
         }
@@ -294,7 +315,7 @@ namespace DiccionarioTablasGUM.ViewModels
             PubIntTablaConCambios = PrvObjTablaGumSeleccionada.indCambioEnDB;
             PubStrNombreTablaGUM = PrvObjTablaGumSeleccionada.nombre;
 
-            PubListCamposGUMActual = new BindableCollection<clsCamposGUM>(PrvListCamposGUM.Where(vCampo => vCampo.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
+            PubListCamposGUMActual = new BindableCollection<clsCamposGUM>(PrvListCamposGUM.Where(vCampo => vCampo.nombreTabla.Equals(PubStrNombreTablaGUM)).OrderBy(vCampo => vCampo.orden).ToList());
             PubListRelacCamposGUMActual = new BindableCollection<clsRelacCamposGUM>(PrvListRelacCamposGUM.Where(vRelac => vRelac.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
             PubListCambiosCampoGUMAtual = new BindableCollection<clsCambiosCamposGUM>(PrvListCambiosCamposGum.Where(vCambios => vCambios.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
 
@@ -501,6 +522,20 @@ namespace DiccionarioTablasGUM.ViewModels
 
         }
 
+
+        /// <summary>
+        /// req. 162259 jpa 17042020
+        /// Marca el indicador de modificado en la tabla selleccionada
+        /// </summary>
+        public void MarcarCambio()
+        {
+            //Actualizacion de campo seleccion en publica con tablas del sistema
+            (from vCamposGUM in PubListCamposGUMActual
+             where vCamposGUM.nombre == PubListTablasGUMCamposSeleccionada.nombre
+             select vCamposGUM).ToList().ForEach(vTablaSistema => vTablaSistema.indCambio = 1);
+
+            PubIntindCambioEnTabla = 1;
+        }
 
     }
 }
