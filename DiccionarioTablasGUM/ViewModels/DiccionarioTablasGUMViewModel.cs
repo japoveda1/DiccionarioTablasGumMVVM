@@ -96,7 +96,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
                     if (System.Windows.MessageBox.Show("Para realizar esta operacion es necesario salvar los datos.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
-                        ConfirmarCambios();
+                        ConfirmarCambios(false);
                     }
                     else {
 
@@ -205,7 +205,7 @@ namespace DiccionarioTablasGUM.ViewModels
         ///  req. 162259 jpa 24032020
         ///  Se guarda la informacion digitada para las tablas del agregadas en el diccionario de tablas GUM  
         /// </summary>
-        public void ConfirmarCambios()
+        public void ConfirmarCambios(bool pvIntMostrarConfirmacion = true)
         {
             //Cursor en espera
             //Mouse.OverrideCursor = System.Windows.Input.Cursors.Wait;
@@ -264,7 +264,11 @@ namespace DiccionarioTablasGUM.ViewModels
             //Cursor en espera
             //Mouse.OverrideCursor = null;
 
-            System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);            
+            if (pvIntMostrarConfirmacion) {
+                System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
+
+            }
+           
 
         }
 
@@ -284,7 +288,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
                     vStrNombreTablaSeleccionda = PubObjTablaGumSeleccionada.nombre;
 
-                    ConfirmarCambios();
+                    ConfirmarCambios(false);
 
                     PubObjTablaGumSeleccionada = PubListTablasGum.Where(vTabla => vTabla.nombre == vStrNombreTablaSeleccionda).First();
 
@@ -315,8 +319,6 @@ namespace DiccionarioTablasGUM.ViewModels
              select vTablaGUM).ToList().ForEach(vTablaSistema => vTablaSistema.indCambio = 1);
         }
 
-
-
         /// <summary>
         /// req. 162116 jpa 13042020
         /// </summary>
@@ -339,7 +341,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
                 if (System.Windows.MessageBox.Show("Para realizar esta operacion es necesario salvar los datos.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    ConfirmarCambios();
+                    ConfirmarCambios(false);
                 }
                 else
                 {
@@ -347,10 +349,7 @@ namespace DiccionarioTablasGUM.ViewModels
                     return;
                 }
             }
-
-
-
-
+                                 
             vObjConexionDB.AbrirConexion();
 
             vListParametrosSP = new List<clsConexion.ParametrosSP>();
@@ -358,6 +357,8 @@ namespace DiccionarioTablasGUM.ViewModels
             vDsTablasRelacionadas = vObjConexionDB.EjecutarCommand("sp_gum_dd_exportar",false);
 
             vObjConexionDB.CerrarConexion();
+
+            #region codigo de escritura en  archivo
 
             /*
             vDtmFechaHora = DateTime.Now;
@@ -382,6 +383,7 @@ namespace DiccionarioTablasGUM.ViewModels
                 }
             }                     
             */
+            #endregion
 
             System.Windows.MessageBox.Show("Todos los datos del diccionario se actualizaron en Oracle desarrollo", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
   

@@ -56,7 +56,7 @@ namespace DiccionarioTablasGUM.Views
 
                 if (vObjRespuestaUsuario == MessageBoxResult.Yes)
                 {
-                    vObjCamposTablasGUMViewModel.ConfirmarCambios();
+                    vObjCamposTablasGUMViewModel.ConfirmarCambios(false);
                 }
                 else
                 {
@@ -215,8 +215,6 @@ namespace DiccionarioTablasGUM.Views
 
             MessageBoxResult vObjRespuestaUsuario;
 
-
-
             if (vObjCamposTablasGUMViewModel.PubListCamposGUMActual.Where(vCampo => vCampo.indCambio == 1).Any())
             {
                 vObjRespuestaUsuario = System.Windows.MessageBox.Show("Hay cambios sin salvar.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNoCancel);
@@ -228,7 +226,7 @@ namespace DiccionarioTablasGUM.Views
 
                 if (vObjRespuestaUsuario == MessageBoxResult.Yes)
                 {
-                    vObjCamposTablasGUMViewModel.ConfirmarCambios();
+                    vObjCamposTablasGUMViewModel.ConfirmarCambios(false);
                 }
                 else
                 {
@@ -239,11 +237,7 @@ namespace DiccionarioTablasGUM.Views
 
                 }
             }
-
-
             this.Close();
-
-
         }
     }
 }

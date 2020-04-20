@@ -28,7 +28,7 @@ namespace DiccionarioTablasGUM.Views
     public partial class DiccionarioTablasGUMView : Window
     {
         //Ventana procesando
-        ProcesandoView ProcesandoView;
+        //ProcesandoView ProcesandoView = new ProcesandoView();
 
         private bool prvboolPermiteRefrescar;
 
@@ -92,19 +92,15 @@ namespace DiccionarioTablasGUM.Views
         /// <param name="e"></param>
         private async void Actualizar_Click(object sender, RoutedEventArgs e)
         {
+       
 
-            ProcesandoView = new ProcesandoView();
+            ProcesandoView vProcesandoView = new ProcesandoView();
+          
+            vProcesandoView.pubDiccionarioTablasGUMViewModel = (DiccionarioTablasGUMViewModel)DataContext;
 
-            ProcesandoView.Show();
+            vProcesandoView.pubIndAccion = 1;
 
-            HabilitarControl(false);
-
-            await ActualizarTablasGum();
-
-            ProcesandoView.Close();
-
-            HabilitarControl(true);
-
+            vProcesandoView.ShowDialog();
 
         }
 
@@ -180,7 +176,7 @@ namespace DiccionarioTablasGUM.Views
 
                 if (vObjRespuestaUsuario == MessageBoxResult.Yes)
                 {
-                    vObjDiccionarioTablasGUM.ConfirmarCambios();
+                    vObjDiccionarioTablasGUM.ConfirmarCambios(false);
                 }
                 else
                 {
@@ -188,7 +184,6 @@ namespace DiccionarioTablasGUM.Views
                     {
                         return;
                     }
-
                 }
             }
 
@@ -214,29 +209,19 @@ namespace DiccionarioTablasGUM.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void BtnExportar_Click(object sender, RoutedEventArgs e)
+        private void BtnExportar_Click(object sender, RoutedEventArgs e)
         {
-            ProcesandoView = new ProcesandoView();
 
-            ProcesandoView.Show();
+            ProcesandoView vProcesandoView = new ProcesandoView();
 
-            HabilitarControl(false);
+            vProcesandoView.pubDiccionarioTablasGUMViewModel = (DiccionarioTablasGUMViewModel)DataContext;
 
-            await Exportar();
+            vProcesandoView.pubIndAccion = 2;
 
-            ProcesandoView.Close();
+            vProcesandoView.ShowDialog();
 
-            HabilitarControl(true);
 
         }
-
-        private async Task Exportar()
-        {
-            DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
-            await Task.Run(() => vObjDiccionarioTablasGUM.Exportar());
-        }
-
-        
 
         private void PubListTablasGum_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {

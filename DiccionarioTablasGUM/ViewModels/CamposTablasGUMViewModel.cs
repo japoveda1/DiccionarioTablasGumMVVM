@@ -144,7 +144,7 @@ namespace DiccionarioTablasGUM.ViewModels
         ///  req. 162259 jpa 25032020 
         ///  Se guarda la informacion digitada para las campos agregadas en el diccionario de tablas GUM  
         /// </summary>
-        public void ConfirmarCambios()
+        public void ConfirmarCambios(bool pvMostrorMensaje = true)
         {
             clsConexion vObjConexionDB = new clsConexion();
             //Objeto con parametros lista de parametros
@@ -250,7 +250,11 @@ namespace DiccionarioTablasGUM.ViewModels
             //Cursor en espera
             Mouse.OverrideCursor = null;
             PubIntindCambioEnTabla = 0;
-            System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
+
+            if (pvMostrorMensaje) {
+                System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
+
+            }
 
         }
 
@@ -270,7 +274,7 @@ namespace DiccionarioTablasGUM.ViewModels
 
                 if (System.Windows.MessageBox.Show("Para realizar esta operacion es necesario salvar los datos.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    ConfirmarCambios();
+                    ConfirmarCambios(false);
                 }
                 else {
                     return;
@@ -411,8 +415,6 @@ namespace DiccionarioTablasGUM.ViewModels
             PubListRelacCamposGUMActual = new BindableCollection<clsRelacCamposGUM>(PrvListRelacCamposGUM.Where(vRelac => vRelac.nombreTabla.Equals(PubStrNombreTablaGUM)).ToList());
             //Cursor en espera
             Mouse.OverrideCursor = null;
-
-            System.Windows.MessageBox.Show("Los cambios se guardaron correctamente", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
 
         }
 

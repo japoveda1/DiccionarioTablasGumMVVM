@@ -6,9 +6,15 @@
         xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         mc:Ignorable="d"
-        Title="ProcesandoView"   Height="300" Width="300" WindowStyle="None" Background="Transparent" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" AllowsTransparency="True">
+        Title="ProcesandoView"   
+        Height="300" Width="300" 
+        WindowStyle="None" 
+        Background="Transparent" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" AllowsTransparency="True" Loaded="Window_Loaded" >
     <Grid>
       
         <Image gif:ImageBehavior.AnimatedSource="/Assets/animacionLoading.gif" />        
+        
     </Grid>
 </Window>

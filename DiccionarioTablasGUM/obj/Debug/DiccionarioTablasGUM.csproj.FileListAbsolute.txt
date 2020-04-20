@@ -41,6 +41,7 @@ C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\bin\Debug\FontAwesome.WPF.xml
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\bin\Debug\WpfAnimatedGif.pdb
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\bin\Debug\WpfAnimatedGif.xml
+C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.csprojAssemblyReference.cache
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\CamposTablasGUMView.g.cs
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\DiccionarioTablasGUMView.g.cs
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\ProcesandoView.g.cs
@@ -60,4 +61,3 @@ C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.csproj.CopyComplete
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.exe
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.pdb
-C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.csprojAssemblyReference.cache

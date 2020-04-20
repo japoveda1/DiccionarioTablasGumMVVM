@@ -10,7 +10,7 @@
         FontSize="14"
         Title="Siesa - Diccionario Tablas GUM"  WindowStyle="None" Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen"
         WindowState="Maximized" ResizeMode="CanResizeWithGrip"  >
-    <Grid Background="#FFE0E0E0" >
+    <Grid x:Name="grid1" Background="#FFE0E0E0" >
 
         <Grid.RowDefinitions >
             <RowDefinition Height="auto"/>
@@ -232,4 +232,6 @@
             </Button>
         </Grid>
     </Grid>
+
+
 </Window>

@@ -207,18 +207,7 @@
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
                                 <DataGridTextColumn Header="Orden de campo" Binding="{Binding  orden}" Width="auto" IsReadOnly="True" SortMemberPath="orden" SortDirection="Ascending" />
-                                <DataGridTextColumn Header="Orden de campo PK" Binding="{Binding ordenPk}" Width="auto">
-                                    <DataGridTextColumn.CellStyle>
-                                        <Style TargetType="DataGridCell">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ordenPk}" Value="0" >
-                                                    <Setter Property="BorderBrush" Value="#EF274D"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGridTextColumn.CellStyle>
-
-                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Orden de campo PK" Binding="{Binding ordenPk}" Width="auto" IsReadOnly="True" />
                                 <DataGridCheckBoxColumn Header="Es identity" Binding="{Binding indIdentity}" Width="auto" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Longitud" Binding="{Binding  longitud}" Width="auto" IsReadOnly="True" />
                                 <DataGridTextColumn Header="Orden de campo descripcion" Binding="{Binding  Path=ordenCampoDesc}" Width="auto" >
