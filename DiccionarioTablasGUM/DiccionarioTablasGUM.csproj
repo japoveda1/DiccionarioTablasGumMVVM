@@ -83,6 +83,7 @@
     <Compile Include="Models\clsTablasGUM.cs" />
     <Compile Include="ViewModels\CamposTablasGUMViewModel.cs" />
     <Compile Include="ViewModels\DiccionarioTablasGUMViewModel.cs" />
+    <Compile Include="ViewModels\TablaVirtualViewModel.cs" />
     <Compile Include="Views\CamposTablasGUMView.xaml.cs">
       <DependentUpon>CamposTablasGUMView.xaml</DependentUpon>
     </Compile>
@@ -97,6 +98,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Views\TablaVirtualView.xaml.cs">
+      <DependentUpon>TablaVirtualView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Estilos\Estilos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -110,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcesandoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TablaVirtualView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -146,31 +154,19 @@
     <Folder Include="Recursos\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\11.png" />
-    <Resource Include="Assets\12.png" />
-    <Resource Include="Assets\13.png" />
-    <Resource Include="Assets\21.png" />
-    <Resource Include="Assets\22.png" />
-    <Resource Include="Assets\23.png" />
     <Resource Include="Assets\85Activo.png" />
     <Resource Include="Assets\85Inactivo.png" />
     <Resource Include="Assets\btnValidar.png" />
     <Resource Include="Assets\Caso.png" />
     <Resource Include="Assets\Casos.png" />
     <Resource Include="Assets\CasosConocidos.png" />
-    <Resource Include="Assets\engranaje.gif" />
     <Resource Include="Assets\enterpriseActivo.png" />
     <Resource Include="Assets\enterpriseInactivo.png" />
     <Resource Include="Assets\iconoSiesaCompBD.ICO" />
-    <Resource Include="Assets\img.png" />
-    <Resource Include="Assets\imgSplash.png" />
-    <Resource Include="Assets\importar.png" />
     <Resource Include="Assets\info.png" />
     <Resource Include="Assets\Logo85Inactivo.png" />
     <Resource Include="Assets\LogoEEInactivo.png" />
     <Resource Include="Assets\logoSiesaBlanco.png" />
-    <Resource Include="Assets\MasInfo.png" />
-    <Resource Include="Assets\oracle.png" />
     <Resource Include="Assets\siesa logo old.png" />
     <Resource Include="Assets\siesa logo.png" />
     <Resource Include="Assets\SIESA-85-azul.png" />
@@ -181,7 +177,6 @@
     <Resource Include="Assets\Siesa85Inactivo.png" />
     <Resource Include="Assets\SiesaEEActivo.png" />
     <Resource Include="Assets\SiesaEEInactivo.png" />
-    <Resource Include="Assets\sql_server.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\animacionLoading.gif" />

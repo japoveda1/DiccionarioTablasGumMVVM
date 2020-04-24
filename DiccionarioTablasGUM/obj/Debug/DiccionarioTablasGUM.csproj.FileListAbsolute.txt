@@ -45,6 +45,7 @@ C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\CamposTablasGUMView.g.cs
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\DiccionarioTablasGUMView.g.cs
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\ProcesandoView.g.cs
+C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\TablaVirtualView.g.cs
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\App.g.cs
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM_MarkupCompile.cache
@@ -54,6 +55,7 @@ C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\CamposTablasGUMView.baml
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\DiccionarioTablasGUMView.baml
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\ProcesandoView.baml
+C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\Views\TablaVirtualView.baml
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.g.resources
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.Properties.Resources.resources
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Debug\DiccionarioTablasGUM.csproj.GenerateResource.cache

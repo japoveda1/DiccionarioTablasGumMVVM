@@ -128,6 +128,7 @@ namespace DiccionarioTablasGUM.ViewModels
                     vTablaGum.indEsNuevo = Convert.ToInt16(vDrTablas["f1_ind_es_nuevo"]);
                     vTablaGum.indCampoAgregado = Convert.ToInt16(vDrTablas["f1_ind_campo_agregado"]); 
                     vTablaGum.indCampoModificado = Convert.ToInt16(vDrTablas["f1_ind_campo_modificado"]);
+                    vTablaGum.indTablaVirtual = Convert.ToInt16(vDrTablas["f1_ind_tabla_virtual"]);
 
                     vListTablasGUM.Add(vTablaGum);
                     vTablaGum = null;
@@ -412,6 +413,53 @@ namespace DiccionarioTablasGUM.ViewModels
 
                 System.Windows.MessageBox.Show("Todos los datos del diccionario se actualizaron en Oracle desarrollo", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
 
+            }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message.ToString(), "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.OK);
+            }
+
+        }
+
+
+        /// <summary>
+        /// req 164291 jpa  23042020 
+        /// </summary>
+        public void AbrirVentanaTablaVirtual()
+        {
+            try
+            {
+                List<string> vListNombreTablasGUM;
+                string vStrNombreTablaSeleccionda;
+
+                if (PubListTablasGum.Where(vTablas => vTablas.indCambio == 1).Any())
+                {
+
+                    if (System.Windows.MessageBox.Show("Para realizar esta operacion es necesario salvar los datos.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+
+                        vStrNombreTablaSeleccionda = PubObjTablaGumSeleccionada.nombre;
+
+                        ConfirmarCambios(false);
+
+                        PubObjTablaGumSeleccionada = PubListTablasGum.Where(vTabla => vTabla.nombre == vStrNombreTablaSeleccionda).First();
+
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                vListNombreTablasGUM = PubListTablasGum.Select(vTabla => vTabla.nombre).ToList();
+
+                TablaVirtualViewModel vObjTablaVirtual = new TablaVirtualViewModel(vListNombreTablasGUM);
+
+                prvObjManager.ShowDialog(vObjTablaVirtual, null, null);
+
+
+                ObtenerTablasGUM();
+                
             }
             catch (Exception e)
             {

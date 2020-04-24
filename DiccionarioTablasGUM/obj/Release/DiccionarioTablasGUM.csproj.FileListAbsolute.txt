@@ -33,3 +33,5 @@ C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Release\DiccionarioTablasGUM.csproj.CopyComplete
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Release\DiccionarioTablasGUM.exe
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Release\DiccionarioTablasGUM.pdb
+C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Release\Views\TablaVirtualView.g.cs
+C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\obj\Release\Views\TablaVirtualView.baml

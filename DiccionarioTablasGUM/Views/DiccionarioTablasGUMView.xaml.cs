@@ -228,6 +228,12 @@ namespace DiccionarioTablasGUM.Views
             DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
             vObjDiccionarioTablasGUM.MarcarCambio();
         }
+
+        private void BtnTablaVirtual_Click(object sender, RoutedEventArgs e)
+        {
+            DiccionarioTablasGUMViewModel vObjDiccionarioTablasGUM = (DiccionarioTablasGUMViewModel)DataContext;
+            vObjDiccionarioTablasGUM.AbrirVentanaTablaVirtual();
+        }
     }
 
   

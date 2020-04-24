@@ -8,7 +8,7 @@
         mc:Ignorable="d" 
         FontFamily="Avenir Light"  
         FontSize="14"
-        Title="Siesa - Diccionario Tablas GUM"  WindowStyle="None" Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen"
+        Title="Siesa - Diccionario de datos SIESAEE"  WindowStyle="None" Icon="/Assets/iconoSiesaCompBD.ICO" WindowStartupLocation="CenterScreen"
         WindowState="Maximized" ResizeMode="CanResizeWithGrip"  >
     <Grid Background="#FFE0E0E0" >
 
@@ -74,8 +74,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8"/>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="144*"/>
-                <ColumnDefinition Width="347*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="8"/>
@@ -115,6 +115,15 @@
                         </Style.Triggers>
                     </Style>
                 </DataGrid.CellStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <TextBlock Text="{Binding nombre}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns  >
                     <DataGridTemplateColumn Width="Auto" SortMemberPath="indCambio" IsReadOnly="True" >
                         <DataGridTemplateColumn.CellTemplate>
@@ -133,7 +142,7 @@
                                                         <Setter Property="Foreground" Value="Yellow"/>
                                                             <Setter Property="ToolTip" Value="Informacion sin guardar"/>
                                                         </DataTrigger>
-                                                    <DataTrigger Binding="{Binding IndEsNuevo}" Value="1">
+                                                    <DataTrigger Binding="{Binding indEsNuevo}" Value="1">
                                                         <Setter Property="Foreground" Value="Red"/>
                                                         <Setter Property="ToolTip" Value="Objeto Nuevo"/>
                                                         </DataTrigger>
@@ -146,6 +155,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    
                     <DataGridTextColumn Header="Nombre tabla" Binding="{Binding  nombre }" IsReadOnly="True" />
                     <DataGridTextColumn Header="Descripción" Binding="{Binding  descripcion, UpdateSourceTrigger=PropertyChanged}" >
                         <DataGridTextColumn.CellStyle>
@@ -162,6 +172,7 @@
                     <DataGridCheckBoxColumn Header="Cambios" Binding="{Binding  indCambioEnDB}" IsReadOnly="True" />
                     <DataGridCheckBoxColumn Header="Campos Agregados" Binding="{Binding  indCampoAgregado  }" IsReadOnly="True"/>
                     <DataGridCheckBoxColumn Header="Campos Modificados" Binding="{Binding  indCampoModificado  }" IsReadOnly="True"/>
+                    <DataGridCheckBoxColumn Header="Tabla virtual" Binding="{Binding  indTablaVirtual  }" IsReadOnly="True"/>
                     <DataGridTextColumn x:Name="Cell_Notas" Header="Notas" Binding="{Binding  notas , UpdateSourceTrigger=PropertyChanged}" Width="500"  >
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
@@ -207,6 +218,23 @@
                     <TextBlock Text=" Actualizar"/>
                 </StackPanel>
             </Button>
+
+            <Button x:Name="AbrirVentanaTablaVirtual"
+                    Style="{DynamicResource BtnStiloBotones}" 
+                    Foreground="White" 
+                    Height="21" 
+                    MaxHeight="21" 
+                    Grid.Row="3" 
+                    Grid.Column="2" 
+                    Margin="0,13,8,5"  
+                    MinWidth="150"                    
+                    Width="Auto" >
+                <StackPanel Orientation="Horizontal">
+                    <fa:ImageAwesome Icon="Plus" Width="10" Height="10" Foreground="White"/>
+                    <TextBlock Text=" Crear tabla virtual"/>
+                </StackPanel>
+            </Button>
+            
             <Button x:Name="btnExportar"
                     Click="BtnExportar_Click"
                     Foreground="White"
@@ -224,6 +252,7 @@
                     <TextBlock Text=" Exportar"/>
                 </StackPanel>
             </Button>
+            
             <Button  x:Name="ConfirmarCambios"  
                      Foreground="White" 
                      Style="{DynamicResource BtnStiloBotones}" 

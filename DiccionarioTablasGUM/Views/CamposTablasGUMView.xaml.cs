@@ -38,40 +38,6 @@ namespace DiccionarioTablasGUM.Views
             this.DragMove();
         }
 
-        private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
-
-            MessageBoxResult vObjRespuestaUsuario;
-
-           
-
-            if (vObjCamposTablasGUMViewModel.PubListCamposGUMActual.Where(vCampo => vCampo.indCambio == 1).Any())
-            {
-                vObjRespuestaUsuario = System.Windows.MessageBox.Show("Hay cambios sin salvar.¿Desea salvarlos?", "Siesa - Diccionario Tablas GUM", System.Windows.MessageBoxButton.YesNoCancel);
-
-                if (vObjRespuestaUsuario == MessageBoxResult.None) {
-                    return;
-                }
-
-                if (vObjRespuestaUsuario == MessageBoxResult.Yes)
-                {
-                    vObjCamposTablasGUMViewModel.ConfirmarCambios(false);
-                }
-                else
-                {
-                    if (vObjRespuestaUsuario == MessageBoxResult.Cancel)
-                    {
-                        return;
-                    }
-                    
-                }
-            }
-
-     
-            this.Close();
-        }
-
         private void BtnPrimero_Click(object sender, RoutedEventArgs e)
         {
             CamposTablasGUMViewModel vObjCamposTablasGUMViewModel = (CamposTablasGUMViewModel)this.DataContext;
@@ -143,51 +109,6 @@ namespace DiccionarioTablasGUM.Views
             //}
             //prvBoolControlLoop = true;
         }
-
-        //private void DtCamposGUM_CurrentCellChanged(object sender, EventArgs e)
-        //{
-
-        //    System.Windows.Controls.DataGrid vObjCeldaActual = (System.Windows.Controls.DataGrid)sender;
-            
-        //    if (prvDgFilaEditada != null)
-        //    {
-        //        //Solo para si sigue en la misma fila
-        //        if (prvDgFilaEditada.Item == vObjCeldaActual.CurrentCell.Item)
-        //        {
-        //            #region Configuracion de focus
-
-        //            dtCamposGUM.UpdateLayout();
-        //            dtCamposGUM.ScrollIntoView(vObjCeldaActual.CurrentCell.Item, vObjCeldaActual.CurrentCell.Column);
-        //            dtCamposGUM.Focus();
-        //            dtCamposGUM.SelectedItem = vObjCeldaActual.CurrentItem;
-
-        //            //Se valida que si haya seleccionada una celda
-        //            if (dtCamposGUM.SelectedItem != null)
-        //            {
-        //                //se optiene el contenido de la celda seleccionada
-        //                var cellcontent = dtCamposGUM.Columns[vObjCeldaActual.CurrentCell.Column.DisplayIndex].GetCellContent(dtCamposGUM.SelectedItem);
-
-        //                //Se obtiene la celda
-        //                var cell = cellcontent?.Parent as System.Windows.Controls.DataGridCell;
-
-        //                if (cell != null)
-        //                {
-        //                    cell.Focus();
-
-        //                    //Si la celda es solo de lectura no la configura editable.
-        //                    if (!cell.IsReadOnly)
-        //                    {
-        //                        cell.IsEditing = true;
-        //                    }
-
-        //                    cellcontent.Focus();
-        //                }
-        //            }
-        //            #endregion
-        //        }
-        //    }
-
-        //}
 
         private void ConfirmarCambios_Click(object sender, RoutedEventArgs e)
         {

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\johan.poveda\source\repos\DiccionarioTablasGumMVVM\DiccionarioTablasGUM\App.xaml
-41685108128
+51412970894
 
-20-1403780570
+2270574470
 74-64083768
-Estilos\Estilos.xaml;Views\CamposTablasGUMView.xaml;Views\DiccionarioTablasGUMView.xaml;Views\ProcesandoView.xaml;
+Estilos\Estilos.xaml;Views\CamposTablasGUMView.xaml;Views\DiccionarioTablasGUMView.xaml;Views\ProcesandoView.xaml;Views\TablaVirtualView.xaml;
 
-True
+False
 

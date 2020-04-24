@@ -18,6 +18,7 @@ namespace DiccionarioTablasGUM.Models
         private string _descripcion;
         private string _notas;
         private Int16 _ordenCampoDesc;
+        private Int16 _ordenIdentificador;
 
         public string nombreTabla { get; set; }
         public string nombre { get; set; }      
@@ -26,7 +27,6 @@ namespace DiccionarioTablasGUM.Models
         public Int16 indIdentity { get; set; }
         public Int16 longitud { get; set; }
         public Int16 presicion { get; set; }
-        public Int16 ordenIdentificador { get; set; }
         public string tipoDatoSql { get; set; }
         public Int16 indNulo { get; set; }
         public Int16 indGumConfigurable { get; set; }
@@ -70,7 +70,17 @@ namespace DiccionarioTablasGUM.Models
                 _indCambio = value;
                 OnPropertyChanged("indCambio");
             }
-        }       
+        }
+
+        public Int16 ordenIdentificador
+        {
+            get { return _ordenIdentificador; }
+            set
+            {
+                _ordenIdentificador = value;
+                OnPropertyChanged("ordenIdentificador");
+            }
+        }
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {

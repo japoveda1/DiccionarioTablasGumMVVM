@@ -1,0 +1,109 @@
+﻿<Window x:Class="DiccionarioTablasGUM.Views.TablaVirtualView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d"
+        FontFamily="Avenir Light"  
+        FontSize="14"
+        Title="Siesa - Diccionario de datos SIESAEE" 
+        Height="195" 
+        Width="400" 
+        ResizeMode="CanResizeWithGrip" 
+        AllowsTransparency="True" 
+        WindowStyle="None" 
+        Icon="/Assets/iconoSiesaCompBD.ICO"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
+    <Grid>
+
+        <Grid Background="#FFE0E0E0">
+            <Grid.RowDefinitions >
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#0E4D96" Height="50" VerticalAlignment="Top" MouseLeftButtonDown="Grid_MouseLeftButtonDown" >
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="8"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="8" />
+                </Grid.RowDefinitions>
+
+                <Image x:Name="ImagenLogoSiesa" 
+                   Source="/Assets/logoSiesaBlanco.png" 
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Left"
+                   Height="auto"
+                   Grid.Column="2"
+                   Grid.Row="1"/>
+
+                <Button Grid.Column="3"
+                       Grid.Row="1" x:Name="btnCerrar" Click="BtnCerrar_Click" HorizontalAlignment="Right" Margin="5" MinWidth="20" Background="Transparent" BorderThickness="0">
+                    <TextBlock Foreground="White" FontWeight="Bold" >x</TextBlock>
+                </Button >
+            </Grid>
+            
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="8" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="1" Grid.Column="1" Content="Tabla origen:"/>
+                <ComboBox Name="cboTablasGUM" ItemsSource="{Binding}" Grid.Row="2" Grid.Column="1" SelectedItem="{Binding PubListTablasGumSeleccionada}">
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                </ComboBox>
+                <!--<ComboBox x:Name="cboTablasGUM"  Margin="6,0,0,0" SelectedItem="{Binding PubListTablasGumSeleccionada}"   Grid.Row="2" Grid.Column="1" Height="21"/>-->
+                <Label Grid.Row="3" Grid.Column="1" Content="Nombre tabla virtual:"/>
+                <TextBox  x:Name="PubNombreTablaVirtual" Margin="6,0,0,0" Grid.Row="4" Grid.Column="1" Height="21"/>
+
+                <Button  x:Name="btnConfirmarCambios"
+                         Click="BtnConfirmarCambios_Click"
+                     Foreground="White" 
+                     Style="{DynamicResource BtnStiloBotones}" 
+                     Height="21" 
+                     MinWidth="100" 
+                     MaxWidth="100"
+                     Grid.Row="5"  
+                     Grid.Column="1"
+                     Margin="0,8,0,0" 
+                     HorizontalAlignment="Right"
+                     ToolTip="Guarda los cambios realizados sobre los campos de la Tabla">
+                    <StackPanel Orientation="Horizontal">
+                        <fa:ImageAwesome Icon="Check" Width="10" Height="10" Foreground="White"/>
+                        <TextBlock Text=" Crear"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Window>

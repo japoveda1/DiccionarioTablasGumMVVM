@@ -22,6 +22,7 @@ namespace DiccionarioTablasGUM.Models
         public Int16 indEsNuevo { get; set; }
         public Int16 indCampoAgregado { get; set; }
         public Int16 indCampoModificado { get; set; }
+        public Int16 indTablaVirtual { get; set; }
 
         public string notas
         {

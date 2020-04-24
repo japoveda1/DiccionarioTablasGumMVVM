@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiccionarioTablasGUM.Views"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        mc:Ignorable="d" FontFamily="Avenir Light"  FontSize="14"
-        Title="Siesa - Diccionario Tablas GUM" 
+        mc:Ignorable="d" 
+        FontFamily="Avenir Light"  
+        FontSize="14"
+        Title="Siesa - Diccionario de datos SIESAEE" 
         Height="480" 
         Width="800" 
         ResizeMode="CanResizeWithGrip" 
@@ -69,12 +71,9 @@
 
             <StackPanel  Orientation="Horizontal" Grid.Row="1" Grid.Column="1"  Margin="0,8,8,0">
                 <TextBlock FontWeight="Bold" Text="Nombre de tabla: " />
-                <TextBlock x:Name="PubIntindCambioEnTabla" />
                 <TextBlock x:Name="PubStrNombreTablaGUM" />
             </StackPanel>
 
-
-           
             <fa:ImageAwesome  HorizontalAlignment="Right" Grid.Row="1" Grid.Column="3" Icon="Circle" Width="21" Height="21" >
             <fa:ImageAwesome.Style>
                 <Style TargetType="{x:Type fa:ImageAwesome}">
@@ -95,6 +94,7 @@
                 </Style>
             </fa:ImageAwesome.Style>
             </fa:ImageAwesome>
+            
             <TabControl Grid.Row="2"  Grid.Column="1" Grid.ColumnSpan="3" Margin="0,8,0,0">
                 <TabItem Header="Campos">
                     <Grid >
@@ -118,6 +118,15 @@
                                     </Style.Triggers>
                                 </Style>
                             </DataGrid.CellStyle>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="ToolTip">
+                                        <Setter.Value>
+                                            <TextBlock Text="{Binding nombre}" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.RowStyle>
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn Width="Auto" SortMemberPath="indCambio" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -174,30 +183,12 @@
                                     </DataGridTextColumn.CellStyle>
                                 </DataGridTextColumn>
                                 <DataGridTextColumn Header="Orden de campo" Binding="{Binding  orden}" Width="auto" IsReadOnly="True" SortMemberPath="orden" SortDirection="Ascending" />
-                                <DataGridTextColumn Header="Orden de campo PK" Binding="{Binding ordenPk}" Width="auto" IsReadOnly="True"  >
-                                    <DataGridTextColumn.CellStyle>
-                                        <Style TargetType="DataGridCell">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ordenPk}" Value="0" >
-                                                    <Setter Property="BorderBrush" Value="#EF274D"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Orden de campo PK" Binding="{Binding ordenPk}" Width="auto" IsReadOnly="True"  />
                                 <DataGridCheckBoxColumn Header="Es identity" Binding="{Binding indIdentity}" Width="auto" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Longitud" Binding="{Binding  longitud}" Width="auto" IsReadOnly="True" />
-                                <DataGridTextColumn Header="Orden de campo descripcion" Binding="{Binding  Path=ordenCampoDesc}" Width="auto" >
-                                    <DataGridTextColumn.CellStyle>
-                                        <Style TargetType="DataGridCell">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ordenCampoDesc}" Value="0" >
-                                                    <Setter Property="BorderBrush" Value="#EF274D"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DataGridTextColumn.CellStyle>
-                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Orden identificados" Binding="{Binding  ordenIdentificador}" Width="auto"/>
+                                <DataGridTextColumn Header="Precision" Binding="{Binding  presicion}" Width="auto" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Orden de campo descripcion" Binding="{Binding  Path=ordenCampoDesc}" Width="auto" />
                                 <DataGridTextColumn Header="Tipo de dato en SQL" Binding="{Binding  tipoDatoSql}" Width="auto" IsReadOnly="True"/>
                                 <DataGridCheckBoxColumn Header="Acepta Nulo" Binding="{Binding  indNulo}" Width="auto" IsReadOnly="True"/>
                                 <DataGridCheckBoxColumn Header="Configurable en GUM" Binding="{Binding  indGumConfigurable}" Width="auto" />
@@ -247,9 +238,9 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Relacion" Binding="{Binding Path=nombreRelacion}"  />
                                 <DataGridTextColumn Header="Orden" Binding="{Binding Path=indOrden}" />
-                                <DataGridTextColumn Header="Nombre tabla Referenciada" Binding="{Binding Path=nombreTablaRef}"  />
+                                <DataGridTextColumn Header="Nombre tabla referenciada" Binding="{Binding Path=nombreTablaRef}"  />
                                 <DataGridTextColumn Header="Nombre campo" Binding="{Binding Path=nombreCampo}" />
-                                <DataGridTextColumn Header="nombre campo Referenciado" Binding="{Binding Path=nombreCampoRef}"  />
+                                <DataGridTextColumn Header="Nombre campo referenciado" Binding="{Binding Path=nombreCampoRef}"  />
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
