@@ -253,7 +253,8 @@
                 </StackPanel>
             </Button>
             
-            <Button  x:Name="ConfirmarCambios"  
+            <Button  x:Name="btnConfirmarCambios"  
+                     Click="BtnConfirmarCambios_Click"
                      Foreground="White" 
                      Style="{DynamicResource BtnStiloBotones}" 
                      Height="21" 
