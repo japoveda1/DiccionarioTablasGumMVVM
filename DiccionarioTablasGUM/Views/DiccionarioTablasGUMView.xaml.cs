@@ -103,19 +103,7 @@ namespace DiccionarioTablasGUM.Views
             vProcesandoView.ShowDialog();
 
         }
-
-        public void HabilitarControl(bool pvindHabilitar)
-        {
-
-            PubListTablasGum.IsEnabled = pvindHabilitar;
-            btnActualizar.IsEnabled = pvindHabilitar;
-            btnExportar.IsEnabled = pvindHabilitar;
-            ConfirmarCambios.IsEnabled = pvindHabilitar;
-            btnMinimizar.IsEnabled = pvindHabilitar;
-            btnMaximizar.IsEnabled = pvindHabilitar;
-            btnRestaurar.IsEnabled = pvindHabilitar;
-            btnCerrar.IsEnabled = pvindHabilitar;
-        }
+        
 
         /// <summary>
         ///  req.162116 jpa 14042020
